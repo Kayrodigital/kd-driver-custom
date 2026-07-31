@@ -15,14 +15,16 @@ export function BookingFormMobile() {
       <div className="kd-fields">
         <AddressAutocomplete label="Départ" value={booking.pickup} onChange={booking.setPickup} allowGeolocation />
         <AddressAutocomplete label="Destination" value={booking.destination} onChange={booking.setDestination} />
-        <label className="kd-field">
-          <span className="kd-field-label">Date</span>
-          <input className="kd-input" type="date" value={booking.date} onChange={(event) => booking.setDate(event.target.value)} required />
-        </label>
-        <label className="kd-field">
-          <span className="kd-field-label">Heure</span>
-          <input className="kd-input" type="time" value={booking.time} onChange={(event) => booking.setTime(event.target.value)} required />
-        </label>
+        <div className="kd-datetime-row">
+          <label className="kd-field">
+            <span className="kd-field-label">Date</span>
+            <input className="kd-input" type="date" value={booking.date} onChange={(event) => booking.setDate(event.target.value)} required />
+          </label>
+          <label className="kd-field">
+            <span className="kd-field-label">Heure</span>
+            <input className="kd-input" type="time" value={booking.time} onChange={(event) => booking.setTime(event.target.value)} required />
+          </label>
+        </div>
         <label className="kd-field">
           <span className="kd-field-label">Téléphone</span>
           <input className="kd-input" type="tel" placeholder="06 12 34 56 78" value={booking.phone} onChange={(event) => booking.setPhone(event.target.value)} required />

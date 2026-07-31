@@ -13,6 +13,7 @@
   --kd-gold-soft: #d9c495;
   --kd-ink: #1b1812;
   --kd-muted: #746c60;
+  --kd-muted-strong: #58513f;
   --kd-muted-on-dark: #b7ae9d;
   --kd-line: #e4dcc9;
   --kd-line-on-dark: rgba(245, 239, 224, 0.14);
@@ -95,21 +96,35 @@
   --kd-btn-fg: var(--kd-cream);
   --kd-btn-border: var(--kd-black);
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  border-radius: var(--kd-radius-pill);
+  border-radius: 7px;
   border: 1px solid var(--kd-btn-border);
   background: var(--kd-btn-bg);
   color: var(--kd-btn-fg);
-  padding: 16px 30px;
-  font-size: 0.95rem; font-weight: 700; letter-spacing: 0.01em;
+  padding: 15px 28px;
+  font-size: 0.95rem; font-weight: 600; letter-spacing: 0.01em;
   min-height: 52px;
   cursor: pointer;
   text-decoration: none;
   transition: transform 0.18s var(--kd-ease), background 0.18s var(--kd-ease), color 0.18s var(--kd-ease), border-color 0.18s var(--kd-ease), box-shadow 0.18s var(--kd-ease);
 }
+/* Le reset Tailwind (a { color: inherit }) a spécificité égale/supérieure à
+   .kd-btn seul et gagne sur <a>, rendant le texte illisible (c'était la
+   cause exacte du bug "Demander une réservation" signalé dans le brief).
+   On ne force QUE color ici, jamais les custom properties, pour ne pas
+   court-circuiter les modificateurs --gold/--outline/--ghost-dark plus bas. */
+a.kd-btn { color: var(--kd-btn-fg); }
 .kd-btn:hover { transform: translateY(-1px); box-shadow: var(--kd-shadow-sm); }
 .kd-btn:active { transform: translateY(0); }
 .kd-btn:focus-visible { outline: 2px solid var(--kd-gold); outline-offset: 3px; }
-.kd-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+/* État désactivé : couleurs dédiées (jamais opacity) pour rester lisible
+   plutôt que de virer au beige délavé illisible. */
+.kd-btn:disabled {
+  background: var(--kd-line); color: var(--kd-muted-strong); border-color: var(--kd-line);
+  opacity: 1; cursor: not-allowed; transform: none; box-shadow: none;
+}
+.kd-on-dark .kd-btn:disabled, .kd-card--dark .kd-btn:disabled {
+  background: rgba(245, 239, 224, 0.1); color: var(--kd-muted-on-dark); border-color: rgba(245, 239, 224, 0.1);
+}
 
 .kd-btn--primary:hover { background: var(--kd-gold); border-color: var(--kd-gold); color: var(--kd-black); }
 
@@ -319,8 +334,8 @@
 .kd-hero-copy h1 { text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
 .kd-hero-copy p.kd-lead { color: var(--kd-muted-on-dark); text-shadow: 0 1px 12px rgba(0,0,0,0.35); }
 .kd-hero-badges { display: flex; gap: var(--kd-space-5); margin-top: var(--kd-space-3); flex-wrap: wrap; }
-.kd-hero-badge { font-size: 0.78rem; color: var(--kd-muted-on-dark); display: flex; gap: 8px; align-items: center; }
-.kd-hero-badge b { color: var(--kd-cream); font-family: var(--kd-font-display); font-size: 1.1rem; font-weight: 500; }
+.kd-hero-badge { font-size: 0.82rem; font-weight: 600; color: var(--kd-cream); display: flex; gap: 8px; align-items: center; }
+.kd-hero-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--kd-gold); flex: none; }
 
 /* Variante A — formulaire horizontal sous le hero */
 .kd-hero--a .kd-hero-form-wrap { margin-top: var(--kd-space-2); }
@@ -345,7 +360,39 @@
 /* ---------- form (card / mobile shared shell) ---------- */
 .kd-booking-card { display: grid; gap: var(--kd-space-4); }
 .kd-booking-card .kd-fields { display: grid; gap: var(--kd-space-3); }
-.kd-booking-card--compact { padding: var(--kd-space-4); gap: var(--kd-space-3); }
+
+/* Formulaire mobile compact (inspiration Blacklane) : labels minuscules,
+   champs en simple soulignement plutôt qu'en boîte pleine, hauteurs et
+   espaces verticaux réduits pour tenir sans scroll excessif. */
+.kd-booking-card--compact {
+  padding: 18px 18px 16px; gap: 4px;
+  border-radius: var(--kd-radius-md);
+}
+.kd-booking-card--compact .kd-fields { gap: 0; }
+.kd-booking-card--compact .kd-field,
+.kd-booking-card--compact .address-field {
+  gap: 2px; padding: 9px 0; border-bottom: 1px solid var(--kd-line);
+}
+.kd-booking-card--compact .kd-field:first-child,
+.kd-booking-card--compact .address-field:first-child { padding-top: 0; }
+.kd-booking-card--compact > .kd-fields > .kd-field:last-child { border-bottom: none; padding-bottom: 0; }
+.kd-booking-card--compact .kd-field-label,
+.kd-booking-card--compact .address-field > label {
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.03em; color: var(--kd-muted); text-transform: uppercase;
+}
+.kd-booking-card--compact .kd-input,
+.kd-booking-card--compact .address-control input {
+  border: 0; border-radius: 0; padding: 3px 0 0; min-height: auto; font-size: 0.92rem; background: transparent;
+}
+.kd-booking-card--compact .kd-input:focus,
+.kd-booking-card--compact .address-control input:focus { box-shadow: none; }
+.kd-booking-card--compact .address-control input { padding: 3px 34px 0 26px; }
+.kd-booking-card--compact .address-icon { left: 0; font-size: 0.85rem; }
+.kd-booking-card--compact .locate-icon { right: 0; top: 2px; width: 30px; min-height: 30px; font-size: 1rem; }
+.kd-booking-card--compact .kd-datetime-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; padding: 9px 0; border-bottom: 1px solid var(--kd-line); }
+.kd-booking-card--compact .kd-datetime-row .kd-field { border-bottom: none; padding: 0; }
+.kd-booking-card--compact .kd-btn { margin-top: 10px; }
+.kd-booking-card--compact .kd-more-toggle { font-size: 0.78rem; justify-self: center; margin-top: 2px; }
 .kd-more-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   background: none; border: 0; padding: 0; cursor: pointer;
@@ -360,8 +407,13 @@
 .kd-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--kd-space-4); }
 .kd-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--kd-space-5); }
 
-.kd-service-card { display: grid; gap: var(--kd-space-3); }
-.kd-service-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--kd-cream); display: grid; place-items: center; color: var(--kd-gold); border: 1px solid var(--kd-line); }
+a.kd-card { display: block; text-decoration: none; color: var(--kd-ink); }
+.kd-card--dark.kd-card, a.kd-card--dark { color: var(--kd-cream); }
+.kd-service-card { display: grid; gap: 10px; padding: 18px; }
+.kd-service-image { aspect-ratio: 4/3; margin: -18px -18px 4px; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
+.kd-card-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; font-weight: 700; color: var(--kd-gold); margin-top: 4px; }
+.kd-card-link span { transition: transform 0.18s var(--kd-ease); }
+a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 
 .kd-advantage { display: flex; gap: var(--kd-space-3); align-items: flex-start; }
 .kd-advantage-num { font-family: var(--kd-font-display); font-size: 1.4rem; color: var(--kd-gold); flex: none; width: 40px; }
@@ -448,6 +500,7 @@
 }
 @media (max-width: 680px) {
   .kd-nav-links { display: none; }
+  .kd-nav-phone { display: none; }
   .kd-grid-4, .kd-grid-3, .kd-grid-2 { grid-template-columns: 1fr; }
   .kd-form-inline { grid-template-columns: 1fr; }
   .kd-footer-grid { grid-template-columns: 1fr; }

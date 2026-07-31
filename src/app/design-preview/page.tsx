@@ -6,6 +6,7 @@ import { BookingFormInline } from "@/components/booking/kd/booking-form-inline";
 import { BookingFormMobile } from "@/components/booking/kd/booking-form-mobile";
 import { DesignSystemShowcase } from "./design-system-showcase";
 import { SceneImage } from "./scene-image";
+import { ServicePageTemplate } from "./service-page-template";
 import {
   AdvantagesSection,
   AirportSection,
@@ -30,9 +31,9 @@ function HeroA() {
           <h1 className="kd-h1">Votre chauffeur, à l’heure près.</h1>
           <p className="kd-lead">Un service premium et local, sans attente ni surprise sur le tarif.</p>
           <div className="kd-hero-badges">
-            <span className="kd-hero-badge"><b>4.9/5</b>satisfaction client</span>
-            <span className="kd-hero-badge"><b>24/7</b>disponibilité</span>
-            <span className="kd-hero-badge"><b>100%</b>chauffeurs locaux</span>
+            <span className="kd-hero-badge">Tarif annoncé avant confirmation</span>
+            <span className="kd-hero-badge">Chauffeur dédié</span>
+            <span className="kd-hero-badge">Réservation en quelques secondes</span>
           </div>
         </div>
         <div className="kd-hero-form-wrap">
@@ -53,9 +54,9 @@ function HeroB() {
           <h1 className="kd-h1">Votre trajet, réservé en toute sérénité.</h1>
           <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
           <div className="kd-hero-badges">
-            <span className="kd-hero-badge"><b>4.9/5</b>satisfaction client</span>
-            <span className="kd-hero-badge"><b>24/7</b>disponibilité</span>
-            <span className="kd-hero-badge"><b>100%</b>chauffeurs locaux</span>
+            <span className="kd-hero-badge">Tarif annoncé avant confirmation</span>
+            <span className="kd-hero-badge">Chauffeur dédié</span>
+            <span className="kd-hero-badge">Réservation en quelques secondes</span>
           </div>
         </div>
         <div className="kd-hero-form-card">
@@ -162,12 +163,24 @@ export default function DesignPreviewPage() {
           <a href="#design-system">Design system</a>
           <a href="#desktop">Desktop A/B</a>
           <a href="#mobile">Mobile</a>
+          <a href="#template-service">Template page service</a>
         </nav>
       </div>
 
       <DesignSystemShowcase />
       <DesktopPreview />
       <MobilePreview />
+
+      <section id="template-service" className="kd-section" style={{ paddingTop: "var(--kd-space-6)" }}>
+        <div className="kd-container" style={{ marginBottom: "var(--kd-space-6)" }}>
+          <div className="kd-section-head kd-section-head--center">
+            <p className="kd-eyebrow">Template page service — validation</p>
+            <h2 className="kd-h2">Transfert aéroport Lyon-Saint Exupéry</h2>
+            <p className="kd-lead" style={{ margin: "0 auto" }}>Premier gabarit à valider avant déclinaison sur Transfert gare, Entreprise, Mise à disposition et Longues distances.</p>
+          </div>
+        </div>
+        <ServicePageTemplate />
+      </section>
 
       <div className="kd-section kd-on-cream" style={{ paddingTop: "var(--kd-space-5)" }}>
         <div className="kd-container">

@@ -1,31 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 
 /**
  * Emplacement image d'ambiance : affiche la photo si le fichier existe dans
- * /public/images, sinon retombe sur le dégradé kd-scene existant.
- *
- * L'échec de chargement (404 local, quasi instantané) peut survenir avant que
- * React n'attache son écouteur `onError` sur l'élément — d'où la vérification
- * `complete`/`naturalWidth` après montage en complément du handler.
+ * /public/images, sinon retombe sur le dégradé kd-scene existant. Passe par
+ * next/image (optimisation automatique, WebP/AVIF selon le navigateur).
  */
-export function SceneImage({ src, alt, note, className = "", style }: { src: string; alt: string; note?: string; className?: string; style?: React.CSSProperties }) {
-  const imgRef = useRef<HTMLImageElement>(null);
+export function SceneImage({ src, alt, note, className = "", style, priority = false, sizes = "(max-width: 700px) 100vw, 50vw" }: { src: string; alt: string; note?: string; className?: string; style?: React.CSSProperties; priority?: boolean; sizes?: string }) {
   const [broken, setBroken] = useState(false);
-
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img?.complete && img.naturalWidth === 0) setBroken(true);
-  }, [src]);
 
   return (
     <div className={`kd-scene ${className}`} style={style}>
       {!broken && (
-        <img
-          ref={imgRef}
+        <Image
           src={src}
           alt={alt}
+          fill
+          sizes={sizes}
+          priority={priority}
           className="kd-scene-photo"
           onError={() => setBroken(true)}
         />

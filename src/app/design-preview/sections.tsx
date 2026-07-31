@@ -1,16 +1,16 @@
 import { SceneImage } from "./scene-image";
 
 const services = [
-  { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape." },
-  { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente." },
-  { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure." },
+  { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg" },
+  { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente.", image: "/images/service-transferts.jpg" },
+  { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure.", image: "/images/service-disposition.jpg" },
 ];
 
 const advantages = [
-  { num: "01", title: "Chauffeurs locaux vérifiés", body: "Une équipe basée à Lyon, expérimentée et sélectionnée avec exigence." },
+  { num: "01", title: "Chauffeurs locaux", body: "Une équipe basée à Lyon, à l’écoute de vos habitudes de déplacement." },
   { num: "02", title: "Tarif annoncé à l’avance", body: "Un prix calculé avant confirmation, sans surprise à l’arrivée." },
-  { num: "03", title: "Disponible jour et nuit", body: "Une demande envoyée en quelques secondes, une réponse rapide." },
-  { num: "04", title: "Véhicules entretenus", body: "Une flotte récente, propre et confortable pour chaque trajet." },
+  { num: "03", title: "Réservation immédiate", body: "Une demande envoyée en quelques secondes, sans compte à créer." },
+  { num: "04", title: "Véhicules soignés", body: "Une flotte pensée pour le confort, adaptée à chaque trajet." },
 ];
 
 const vehicles = [
@@ -49,11 +49,12 @@ export function ServicesSection() {
         </div>
         <div className="kd-grid-3">
           {services.map((service) => (
-            <div key={service.title} className="kd-card kd-card--hover kd-service-card">
-              <span className="kd-service-icon" aria-hidden="true">●</span>
+            <a key={service.title} href="#reserver" className="kd-card kd-card--hover kd-card--flat kd-service-card">
+              <SceneImage src={service.image} alt={service.title} className="kd-service-image" />
               <h3 className="kd-h4">{service.title}</h3>
               <p className="kd-body">{service.body}</p>
-            </div>
+              <span className="kd-card-link">Découvrir <span aria-hidden="true">→</span></span>
+            </a>
           ))}
         </div>
       </div>
