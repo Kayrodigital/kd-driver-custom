@@ -1,9 +1,10 @@
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 
-function PageShell({ children }: { children: React.ReactNode }) {
+function PageShell({ children, framed = true }: { children: React.ReactNode; framed?: boolean }) {
+  const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
   return (
-    <div style={{ border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" }}>
+    <div style={frameStyle}>
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
       {children}
       <FooterSection />
@@ -31,9 +32,9 @@ const allVehicles = [
   { name: "Monospace", mode: "Sur devis", body: "Pour les groupes avec davantage de bagages.", image: "/images/vehicle-monospace.jpg" },
 ];
 
-export function VehiclesPage() {
+export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   return (
-    <PageShell>
+    <PageShell framed={framed}>
       <PageHero eyebrow="Nos véhicules" title="Une flotte adaptée à chaque trajet" lead="Les catégories Berline et Confort affichent un prix calculé avant confirmation. Luxe, Van et Monospace font l’objet d’un devis." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
@@ -67,10 +68,10 @@ const pricingPrinciples = [
   { title: "Aucune surprise à l’arrivée", body: "Le montant annoncé au moment de la confirmation est celui qui s’applique." },
 ];
 
-export function TarifsPage() {
+export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
   return (
-    <PageShell>
-      <PageHero eyebrow="Tarifs" title="Un prix connu avant de partir" lead="KD Driver calcule le tarif de votre trajet côté serveur, à partir de la distance réelle, avant toute confirmation." />
+    <PageShell framed={framed}>
+      <PageHero eyebrow="Tarifs" title="Un prix connu avant de partir" lead="KDRIVE calcule le tarif de votre trajet côté serveur, à partir de la distance réelle, avant toute confirmation." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
           {pricingPrinciples.map((principle) => (
@@ -101,10 +102,10 @@ export function TarifsPage() {
   );
 }
 
-export function AboutPage() {
+export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
   return (
-    <PageShell>
-      <PageHero eyebrow="À propos" title="Une entreprise locale, à Lyon" lead="KD Driver propose un service de chauffeur privé pensé pour les habitants, les entreprises et les visiteurs de Lyon et sa région." />
+    <PageShell framed={framed}>
+      <PageHero eyebrow="À propos" title="Une entreprise locale, à Lyon" lead="KDRIVE propose un service de chauffeur privé pensé pour les habitants, les entreprises et les visiteurs de Lyon et sa région." />
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
           <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} />
@@ -114,7 +115,7 @@ export function AboutPage() {
         <div className="kd-container" style={{ maxWidth: 640 }}>
           <p className="kd-eyebrow">Notre approche</p>
           <p className="kd-lead" style={{ marginTop: 12 }}>
-            Chaque demande est traitée directement par l’équipe KD Driver : pas de réservation automatisée sans
+            Chaque demande est traitée directement par l’équipe KDRIVE : pas de réservation automatisée sans
             vérification, pas d’intermédiaire. L’objectif est simple — un trajet confirmé, un tarif clair, un chauffeur
             ponctuel.
           </p>
@@ -131,9 +132,9 @@ export function AboutPage() {
   );
 }
 
-export function ContactPage() {
+export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
   return (
-    <PageShell>
+    <PageShell framed={framed}>
       <PageHero eyebrow="Contact" title="Nous contacter" lead="Pour une demande de réservation, le formulaire reste le moyen le plus rapide. Pour toute autre question, contactez-nous directement." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-2" style={{ alignItems: "start" }}>
@@ -161,17 +162,17 @@ export function ContactPage() {
 }
 
 const faqItems = [
-  { q: "Comment réserver un trajet ?", a: "Renseignez le départ, la destination, la date, l’heure et votre téléphone dans le formulaire de réservation. KD Driver vous confirme rapidement la disponibilité et le tarif." },
+  { q: "Comment réserver un trajet ?", a: "Renseignez le départ, la destination, la date, l’heure et votre téléphone dans le formulaire de réservation. KDRIVE vous confirme rapidement la disponibilité et le tarif." },
   { q: "Le paiement se fait-il en ligne ?", a: "Non, il n’y a pas de paiement en ligne pour le moment. Le règlement se fait directement avec votre chauffeur." },
   { q: "Le prix annoncé peut-il changer ?", a: "Pour les catégories à prix calculé, le montant est déterminé avant confirmation et ne change pas. Pour les trajets sur devis, un tarif vous est communiqué avant tout engagement." },
   { q: "Puis-je réserver pour un trajet longue distance ?", a: "Oui. Au-delà d’un certain rayon autour de Lyon, un devis personnalisé est établi avant confirmation." },
-  { q: "Puis-je demander à être rappelé plutôt que de recevoir une estimation ?", a: "Oui, le formulaire propose les deux options : demander une estimation ou être rappelé par l’équipe KD Driver." },
+  { q: "Puis-je demander à être rappelé plutôt que de recevoir une estimation ?", a: "Oui, le formulaire propose les deux options : demander une estimation ou être rappelé par l’équipe KDRIVE." },
 ];
 
-export function FaqPage() {
+export function FaqPage({ framed = true }: { framed?: boolean } = {}) {
   return (
-    <PageShell>
-      <PageHero eyebrow="FAQ" title="Questions fréquentes" lead="Les réponses aux questions les plus courantes sur la réservation et le déroulement d’un trajet avec KD Driver." />
+    <PageShell framed={framed}>
+      <PageHero eyebrow="FAQ" title="Questions fréquentes" lead="Les réponses aux questions les plus courantes sur la réservation et le déroulement d’un trajet avec KDRIVE." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
           {faqItems.map((item) => (

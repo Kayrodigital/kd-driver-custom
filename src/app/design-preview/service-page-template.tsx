@@ -28,9 +28,10 @@ export type ServicePageContent = {
  * bénéfices, visuel, déroulement de réservation, infos utiles,
  * réassurance, CTA final.
  */
-export function ServicePageTemplate({ content }: { content: ServicePageContent }) {
+export function ServicePageTemplate({ content, framed = true }: { content: ServicePageContent; framed?: boolean }) {
+  const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
   return (
-    <div style={{ border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" }}>
+    <div style={frameStyle}>
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
       <section className="kd-hero kd-hero--a kd-on-dark">

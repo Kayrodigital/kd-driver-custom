@@ -308,8 +308,11 @@ a.kd-btn { color: var(--kd-btn-fg); }
   display: flex; align-items: center; justify-content: space-between;
   padding: var(--kd-space-4) 0;
 }
-.kd-logo { font-family: var(--kd-font-display); font-size: 1.35rem; letter-spacing: 0.01em; }
+a:has(> .kd-logo) { text-decoration: none; }
+.kd-logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--kd-font-display); font-size: 1.35rem; letter-spacing: 0.03em; color: var(--kd-cream); }
+.kd-logo img { display: block; }
 .kd-logo b { color: var(--kd-gold); font-weight: 500; }
+.kd-on-white .kd-logo, .kd-on-cream .kd-logo { color: var(--kd-ink); }
 .kd-nav-links { display: flex; gap: var(--kd-space-5); list-style: none; margin: 0; padding: 0; font-size: 0.86rem; font-weight: 600; }
 .kd-nav-links a { text-decoration: none; opacity: 0.85; transition: opacity 0.15s; }
 .kd-nav-links a:hover { opacity: 1; }

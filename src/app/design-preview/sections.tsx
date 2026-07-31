@@ -1,10 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SceneImage } from "./scene-image";
 
 const services = [
-  { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg" },
-  { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente.", image: "/images/service-transferts.jpg" },
-  { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure.", image: "/images/service-disposition.jpg" },
+  { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
+  { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
+  { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
 ];
 
 const advantages = [
@@ -22,14 +23,23 @@ const vehicles = [
 
 const zones = ["Lyon", "Villeurbanne", "Aéroport Lyon-Saint Exupéry", "Gare Part-Dieu", "Gare Perrache", "Écully", "Caluire-et-Cuire", "Vénissieux"];
 
+export function Logo({ size = 34 }: { size?: number }) {
+  return (
+    <span className="kd-logo">
+      <Image src="/logo-icon.png" alt="" width={size} height={size} style={{ height: size, width: "auto" }} priority />
+      <span>KDRIVE</span>
+    </span>
+  );
+}
+
 export function SiteNav() {
   return (
     <div className="kd-container kd-nav">
-      <span className="kd-logo">KD <b>Driver</b></span>
+      <Link href="/" aria-label="KDRIVE, accueil"><Logo /></Link>
       <ul className="kd-nav-links">
         <li><Link href="/#services">Services</Link></li>
-        <li><Link href="/#vehicules">Véhicules</Link></li>
-        <li><Link href="/#entreprise">Entreprise</Link></li>
+        <li><Link href="/vehicules">Véhicules</Link></li>
+        <li><Link href="/chauffeur-entreprise">Entreprise</Link></li>
         <li><Link href="/#zones">Zones desservies</Link></li>
       </ul>
       <div className="kd-nav-actions">
@@ -50,12 +60,12 @@ export function ServicesSection() {
         </div>
         <div className="kd-grid-3">
           {services.map((service) => (
-            <a key={service.title} href="#reserver" className="kd-card kd-card--hover kd-card--flat kd-service-card">
+            <Link key={service.title} href={service.href} className="kd-card kd-card--hover kd-card--flat kd-service-card">
               <SceneImage src={service.image} alt={service.title} className="kd-service-image" />
               <h3 className="kd-h4">{service.title}</h3>
               <p className="kd-body">{service.body}</p>
               <span className="kd-card-link">Découvrir <span aria-hidden="true">→</span></span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -68,7 +78,7 @@ export function AdvantagesSection() {
     <section className="kd-section kd-on-white">
       <div className="kd-container">
         <div className="kd-section-head">
-          <p className="kd-eyebrow">Pourquoi KD Driver</p>
+          <p className="kd-eyebrow">Pourquoi KDRIVE</p>
           <h2 className="kd-h2">L’exigence d’un service premium, l’ancrage local en plus</h2>
         </div>
         <div className="kd-grid-2">
@@ -97,14 +107,14 @@ export function VehiclesSection() {
         </div>
         <div className="kd-grid-3">
           {vehicles.map((vehicle) => (
-            <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
+            <Link key={vehicle.name} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
               <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" />
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
                 <small>{vehicle.mode}</small>
               </div>
               <p className="kd-body">{vehicle.body}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -121,7 +131,7 @@ export function AirportSection() {
           <p className="kd-eyebrow">Aéroport &amp; gares</p>
           <h2 className="kd-h2">Votre vol ou votre train suivi, votre chauffeur à l’heure</h2>
           <p className="kd-lead">Le trajet est ajusté en fonction des horaires réels : votre chauffeur vous attend, pas l’inverse.</p>
-          <a className="kd-btn kd-btn--outline" href="#reserver">Réserver un transfert</a>
+          <Link className="kd-btn kd-btn--outline" href="/transfert-aeroport">Réserver un transfert</Link>
         </div>
       </div>
     </section>
@@ -136,7 +146,7 @@ export function CorporateSection() {
           <p className="kd-eyebrow">Entreprise</p>
           <h2 className="kd-h2">Des déplacements professionnels sans friction</h2>
           <p className="kd-lead">Facturation centralisée, chauffeurs dédiés, disponibilité étendue : une offre pensée pour les équipes qui se déplacent souvent.</p>
-          <a className="kd-btn kd-btn--outline" href="#contact-entreprise">Nous contacter</a>
+          <Link className="kd-btn kd-btn--outline" href="/chauffeur-entreprise">En savoir plus</Link>
         </div>
         <SceneImage src="/images/corporate.jpg" alt="Déplacements professionnels" note="photo à venir" className="kd-scene--tall" />
       </div>
@@ -167,7 +177,7 @@ export function CtaSection() {
         <p className="kd-eyebrow">Réservation</p>
         <h2 className="kd-h2">Votre chauffeur, en quelques secondes</h2>
         <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
-        <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation</a>
+        <Link className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation</Link>
       </div>
     </section>
   );
@@ -179,16 +189,28 @@ export function FooterSection() {
       <div className="kd-container">
         <div className="kd-footer-grid">
           <div className="kd-footer-col">
-            <span className="kd-logo">KD <b>Driver</b></span>
+            <Logo size={30} />
             <p className="kd-body" style={{ color: "var(--kd-muted-on-dark)", marginTop: 12 }}>Chauffeur privé premium à Lyon et dans sa région.</p>
           </div>
           <div className="kd-footer-col">
             <h4>Services</h4>
-            <ul><li>Trajets d’affaires</li><li>Aéroport &amp; gares</li><li>Mise à disposition</li></ul>
+            <ul>
+              <li><Link href="/chauffeur-entreprise">Trajets d’affaires</Link></li>
+              <li><Link href="/transfert-aeroport">Transfert aéroport</Link></li>
+              <li><Link href="/transfert-gare">Transfert gare</Link></li>
+              <li><Link href="/mise-a-disposition">Mise à disposition</Link></li>
+              <li><Link href="/longues-distances">Longues distances</Link></li>
+              <li><Link href="/vehicules">Nos véhicules</Link></li>
+            </ul>
           </div>
           <div className="kd-footer-col">
             <h4>Entreprise</h4>
-            <ul><li>À propos</li><li>Entreprises</li><li>Contact</li></ul>
+            <ul>
+              <li><Link href="/a-propos">À propos</Link></li>
+              <li><Link href="/tarifs">Tarifs</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+            </ul>
           </div>
           <div className="kd-footer-col">
             <h4>Contact</h4>
@@ -196,7 +218,7 @@ export function FooterSection() {
           </div>
         </div>
         <div className="kd-footer-bottom">
-          <span>© {new Date().getFullYear()} KD Driver</span>
+          <span>© {new Date().getFullYear()} KDRIVE</span>
           <span>Mentions légales · Confidentialité</span>
         </div>
       </div>

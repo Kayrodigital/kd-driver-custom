@@ -14,7 +14,7 @@ import {
 } from "@/app/design-preview/sections";
 
 export const metadata: Metadata = {
-  title: "KD Driver — Chauffeur privé à Lyon",
+  title: "KDRIVE — Chauffeur privé à Lyon",
   description: "Réservation de chauffeur privé premium à Lyon : transferts aéroport et gare, entreprise, mise à disposition.",
 };
 

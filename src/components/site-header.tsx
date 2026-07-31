@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  if (pathname === "/" || pathname?.startsWith("/design-preview") || pathname?.startsWith("/reserver") || pathname?.startsWith("/reservation")) return null;
+  // Seul /admin conserve encore l'ancien habillage ; toutes les autres pages
+  // rendent leur propre SiteNav (design system KDRIVE).
+  if (!pathname?.startsWith("/admin")) return null;
   return (
     <header className="site-header">
       <Link href="/" aria-label="KD Driver, accueil"><span>KD</span> DRIVER</Link>

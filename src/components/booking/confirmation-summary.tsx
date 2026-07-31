@@ -33,7 +33,7 @@ export function ConfirmationSummary({ reference }: { reference: string }) {
             <p className="kd-body">Le récapitulatif détaillé n’est disponible que sur l’appareil ayant effectué la demande.</p>
           )}
 
-          <p className="kd-body">KD Driver vous confirme rapidement la disponibilité et le tarif.</p>
+          <p className="kd-body">KDRIVE vous confirme rapidement la disponibilité et le tarif.</p>
 
           {KD_DRIVER_PHONE && (
             <div style={{ display: "flex", gap: 12 }}>

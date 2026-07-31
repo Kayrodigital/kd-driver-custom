@@ -21,7 +21,7 @@ export const servicePages: ServicePageContent[] = [
     steps: [
       { title: "Indiquez votre trajet", body: "Adresse ou aéroport de départ, destination, date et heure." },
       { title: "Confirmez votre demande", body: "Un numéro de téléphone suffit pour envoyer votre demande." },
-      { title: "Votre chauffeur vous attend", body: "KD Driver confirme rapidement la disponibilité et le tarif." },
+      { title: "Votre chauffeur vous attend", body: "KDRIVE confirme rapidement la disponibilité et le tarif." },
     ],
     usefulInfo: [
       "Aéroport Lyon-Saint Exupéry (LYS)",
@@ -29,7 +29,7 @@ export const servicePages: ServicePageContent[] = [
       "Trajet aller simple ou aller-retour",
     ],
     reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KD Driver est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
+    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
     ctaFinalTitle: "Votre transfert aéroport, en quelques secondes",
   },
   {
@@ -52,7 +52,7 @@ export const servicePages: ServicePageContent[] = [
     steps: [
       { title: "Indiquez votre trajet", body: "Gare de départ ou d’arrivée, destination, date et heure." },
       { title: "Confirmez votre demande", body: "Un numéro de téléphone suffit pour envoyer votre demande." },
-      { title: "Votre chauffeur vous attend", body: "KD Driver confirme rapidement la disponibilité et le tarif." },
+      { title: "Votre chauffeur vous attend", body: "KDRIVE confirme rapidement la disponibilité et le tarif." },
     ],
     usefulInfo: [
       "Gare de Lyon Part-Dieu",
@@ -60,7 +60,7 @@ export const servicePages: ServicePageContent[] = [
       "Trajet aller simple ou aller-retour",
     ],
     reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KD Driver est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
+    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
     ctaFinalTitle: "Votre transfert gare, en quelques secondes",
   },
   {
@@ -73,7 +73,7 @@ export const servicePages: ServicePageContent[] = [
     heroImage: "/images/service-affaires.jpg",
     presentationEyebrow: "La prestation",
     presentationTitle: "Un chauffeur pour vos enjeux professionnels",
-    presentationBody: "Rendez-vous clients, accueil de visiteurs, trajets d’équipe : KD Driver accompagne les entreprises lyonnaises qui veulent confier leurs déplacements à un service fiable, sans les contraintes d’un parc de véhicules.",
+    presentationBody: "Rendez-vous clients, accueil de visiteurs, trajets d’équipe : KDRIVE accompagne les entreprises lyonnaises qui veulent confier leurs déplacements à un service fiable, sans les contraintes d’un parc de véhicules.",
     benefits: [
       { title: "Discrétion professionnelle", body: "Un service sobre, adapté aux échanges confidentiels." },
       { title: "Ponctualité", body: "Un chauffeur en avance sur le point de rendez-vous convenu." },
@@ -82,7 +82,7 @@ export const servicePages: ServicePageContent[] = [
     visualImage: "/images/corporate.jpg",
     steps: [
       { title: "Décrivez votre besoin", body: "Trajet ponctuel, récurrent ou mise à disposition d’équipe." },
-      { title: "Échangez avec KD Driver", body: "Un contact direct pour cadrer le déroulé et le tarif." },
+      { title: "Échangez avec KDRIVE", body: "Un contact direct pour cadrer le déroulé et le tarif." },
       { title: "Votre chauffeur intervient", body: "Selon le calendrier et les points de rendez-vous convenus." },
     ],
     usefulInfo: [
@@ -91,7 +91,7 @@ export const servicePages: ServicePageContent[] = [
       "Interlocuteur dédié pour les entreprises",
     ],
     reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KD Driver est une entreprise locale à Lyon. Chaque demande professionnelle est traitée par un échange direct avec l’équipe.",
+    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande professionnelle est traitée par un échange direct avec l’équipe.",
     ctaFinalTitle: "Parlons de vos déplacements professionnels",
   },
   {
@@ -114,7 +114,7 @@ export const servicePages: ServicePageContent[] = [
     steps: [
       { title: "Décrivez votre programme", body: "Durée souhaitée, étapes principales, date et heure de début." },
       { title: "Confirmez votre demande", body: "Un numéro de téléphone suffit pour envoyer votre demande." },
-      { title: "Votre chauffeur vous accompagne", body: "KD Driver confirme rapidement la disponibilité et le tarif." },
+      { title: "Votre chauffeur vous accompagne", body: "KDRIVE confirme rapidement la disponibilité et le tarif." },
     ],
     usefulInfo: [
       "Mise à disposition à l’heure ou à la journée",
@@ -122,7 +122,7 @@ export const servicePages: ServicePageContent[] = [
       "Programme ajustable en cours de prestation",
     ],
     reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KD Driver est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
+    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
     ctaFinalTitle: "Votre mise à disposition, en quelques secondes",
   },
   {
@@ -139,12 +139,12 @@ export const servicePages: ServicePageContent[] = [
     benefits: [
       { title: "Devis personnalisé", body: "Un tarif établi selon la distance réelle et les conditions du trajet." },
       { title: "Un seul chauffeur", body: "Pas de changement de véhicule en cours de route." },
-      { title: "Échange direct", body: "Votre demande est confirmée par KD Driver avant tout engagement." },
+      { title: "Échange direct", body: "Votre demande est confirmée par KDRIVE avant tout engagement." },
     ],
     visualImage: "/images/about-lyon.jpg",
     steps: [
       { title: "Indiquez votre trajet", body: "Adresse de départ, destination, date et heure souhaitées." },
-      { title: "Recevez votre devis", body: "KD Driver revient vers vous avec un tarif adapté au trajet." },
+      { title: "Recevez votre devis", body: "KDRIVE revient vers vous avec un tarif adapté au trajet." },
       { title: "Confirmez votre départ", body: "Une fois le devis validé, votre chauffeur est confirmé." },
     ],
     usefulInfo: [
@@ -153,7 +153,7 @@ export const servicePages: ServicePageContent[] = [
       "Aller simple ou aller-retour",
     ],
     reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KD Driver est une entreprise locale à Lyon. Chaque trajet longue distance est cadré par un échange direct avant confirmation.",
+    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque trajet longue distance est cadré par un échange direct avant confirmation.",
     ctaFinalTitle: "Demandez votre devis longue distance",
   },
 ];
