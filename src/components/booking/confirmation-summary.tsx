@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useSyncExternalStore } from "react";
+import { SiteNav } from "@/app/design-preview/sections";
 
 type Summary = { pickupAddress: string; destinationAddress: string; pickupAt: string; phone: string; requestType: "estimate" | "callback" };
 
@@ -13,28 +14,37 @@ export function ConfirmationSummary({ reference }: { reference: string }) {
   const whatsappNumber = KD_DRIVER_PHONE?.replace(/[^\d]/g, "");
 
   return (
-    <main className="confirmation">
-      <p className="success-mark" aria-hidden="true">✓</p>
-      <p className="eyebrow">Demande envoyée</p>
-      <h1>Votre demande a bien été reçue.</h1>
-      <p>Référence : <strong>{reference}</strong></p>
-      {summary ? (
-        <dl className="confirmation-grid">
-          <div><dt>Trajet</dt><dd>{summary.pickupAddress}<br />→ {summary.destinationAddress}</dd></div>
-          <div><dt>Date</dt><dd>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(summary.pickupAt))}</dd></div>
-          <div><dt>Téléphone</dt><dd>{summary.phone}</dd></div>
-        </dl>
-      ) : (
-        <p className="notice">Le récapitulatif détaillé n’est disponible que sur l’appareil ayant effectué la demande.</p>
-      )}
-      <p className="notice">KD Driver vous confirme rapidement la disponibilité et le tarif.</p>
-      {KD_DRIVER_PHONE && (
-        <div className="actions">
-          <a className="secondary" href={`tel:${KD_DRIVER_PHONE}`}>Appeler</a>
-          <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">WhatsApp</a>
+    <>
+      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <main className="kd-section kd-on-cream" style={{ minHeight: "70vh" }}>
+        <div className="kd-container kd-cta" style={{ maxWidth: 560 }}>
+          <span className="kd-service-icon" aria-hidden="true" style={{ width: 56, height: 56, borderRadius: "50%", background: "var(--kd-gold)", color: "var(--kd-black)", fontSize: "1.4rem" }}>✓</span>
+          <p className="kd-eyebrow">Demande envoyée</p>
+          <h1 className="kd-h2">Votre demande a bien été reçue.</h1>
+          <p className="kd-body">Référence : <strong>{reference}</strong></p>
+
+          {summary ? (
+            <dl className="kd-card kd-stack" style={{ textAlign: "left", width: "100%" }}>
+              <div><dt className="kd-field-label">Trajet</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{summary.pickupAddress}<br />→ {summary.destinationAddress}</dd></div>
+              <div><dt className="kd-field-label">Date</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(summary.pickupAt))}</dd></div>
+              <div><dt className="kd-field-label">Téléphone</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{summary.phone}</dd></div>
+            </dl>
+          ) : (
+            <p className="kd-body">Le récapitulatif détaillé n’est disponible que sur l’appareil ayant effectué la demande.</p>
+          )}
+
+          <p className="kd-body">KD Driver vous confirme rapidement la disponibilité et le tarif.</p>
+
+          {KD_DRIVER_PHONE && (
+            <div style={{ display: "flex", gap: 12 }}>
+              <a className="kd-btn kd-btn--outline" href={`tel:${KD_DRIVER_PHONE}`}>Appeler</a>
+              <a className="kd-btn kd-btn--gold" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">WhatsApp</a>
+            </div>
+          )}
+
+          <Link href="/reserver" className="kd-card-link">Nouvelle demande <span aria-hidden="true">→</span></Link>
         </div>
-      )}
-      <Link href="/reserver">Nouvelle demande</Link>
-    </main>
+      </main>
+    </>
   );
 }

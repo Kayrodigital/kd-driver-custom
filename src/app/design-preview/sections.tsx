@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SceneImage } from "./scene-image";
 
 const services = [
@@ -26,14 +27,14 @@ export function SiteNav() {
     <div className="kd-container kd-nav">
       <span className="kd-logo">KD <b>Driver</b></span>
       <ul className="kd-nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#vehicules">Véhicules</a></li>
-        <li><a href="#entreprise">Entreprise</a></li>
-        <li><a href="#zones">Zones desservies</a></li>
+        <li><Link href="/#services">Services</Link></li>
+        <li><Link href="/#vehicules">Véhicules</Link></li>
+        <li><Link href="/#entreprise">Entreprise</Link></li>
+        <li><Link href="/#zones">Zones desservies</Link></li>
       </ul>
       <div className="kd-nav-actions">
         <a className="kd-nav-phone" href="tel:+33652211292">06 52 21 12 92</a>
-        <a className="kd-btn kd-btn--sm kd-btn--gold" href="#reserver">Réserver</a>
+        <Link className="kd-btn kd-btn--sm kd-btn--gold" href="/reserver">Réserver</Link>
       </div>
     </div>
   );
