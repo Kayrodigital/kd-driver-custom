@@ -1,66 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { emptyAddress, type AddressValue } from "@/domain/booking/address";
 import { AddressAutocomplete } from "./address-autocomplete";
-
-type RequestType = "estimate" | "callback";
-
-function toIsoWithOffset(date: string, time: string): string | null {
-  if (!date || !time) return null;
-  const local = new Date(`${date}T${time}`);
-  if (Number.isNaN(local.getTime())) return null;
-  return local.toISOString();
-}
+import { useQuickBooking } from "./use-quick-booking";
 
 export function QuickBookingForm() {
-  const [pickup, setPickup] = useState<AddressValue>(emptyAddress);
-  const [destination, setDestination] = useState<AddressValue>(emptyAddress);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [requestType, setRequestType] = useState<RequestType>("estimate");
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [passengers, setPassengers] = useState(1);
-  const [luggage, setLuggage] = useState(0);
-  const [notes, setNotes] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [idempotencyKey] = useState(() => crypto.randomUUID());
-
-  const valid = pickup.address.length >= 3 && destination.address.length >= 3 && Boolean(date) && Boolean(time) && phone.trim().length >= 6;
-
-  async function submit() {
-    const pickupAt = toIsoWithOffset(date, time);
-    if (!valid || !pickupAt) return;
-    setBusy(true); setError("");
-    try {
-      const response = await fetch("/api/reservations", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          idempotencyKey,
-          pickup,
-          destination,
-          pickupAt,
-          requestType,
-          passengers,
-          luggage,
-          customer: { firstName: firstName || undefined, email: email || undefined, phone },
-          notes,
-        }),
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error);
-      sessionStorage.setItem(`reservation:${payload.reference}`, JSON.stringify(payload.summary));
-      window.location.assign(`/reservation/confirmation/${payload.reference}`);
-    } catch {
-      setError("La demande n’a pas pu être envoyée. Réessayez.");
-    } finally {
-      setBusy(false);
-    }
-  }
+  const booking = useQuickBooking();
 
   return (
     <section className="booking-search booking-search--card" aria-labelledby="quick-booking-title">
@@ -69,30 +13,30 @@ export function QuickBookingForm() {
         <h1 id="quick-booking-title">Demander une course</h1>
       </div>
       <div className="search-fields">
-        <AddressAutocomplete label="Adresse de départ" value={pickup} onChange={setPickup} allowGeolocation />
-        <AddressAutocomplete label="Destination" value={destination} onChange={setDestination} />
+        <AddressAutocomplete label="Adresse de départ" value={booking.pickup} onChange={booking.setPickup} allowGeolocation />
+        <AddressAutocomplete label="Destination" value={booking.destination} onChange={booking.setDestination} />
         <label>
           Date
-          <input type="date" value={date} onChange={(event) => setDate(event.target.value)} required />
+          <input type="date" value={booking.date} onChange={(event) => booking.setDate(event.target.value)} required />
         </label>
         <label>
           Heure
-          <input type="time" value={time} onChange={(event) => setTime(event.target.value)} required />
+          <input type="time" value={booking.time} onChange={(event) => booking.setTime(event.target.value)} required />
         </label>
         <label>
           Téléphone
-          <input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+          <input type="tel" value={booking.phone} onChange={(event) => booking.setPhone(event.target.value)} required />
         </label>
       </div>
 
       <fieldset>
         <legend>Que souhaitez-vous ?</legend>
         <label className="check">
-          <input type="radio" name="requestType" checked={requestType === "estimate"} onChange={() => setRequestType("estimate")} />
+          <input type="radio" name="requestType" checked={booking.requestType === "estimate"} onChange={() => booking.setRequestType("estimate")} />
           Demander une estimation
         </label>
         <label className="check">
-          <input type="radio" name="requestType" checked={requestType === "callback"} onChange={() => setRequestType("callback")} />
+          <input type="radio" name="requestType" checked={booking.requestType === "callback"} onChange={() => booking.setRequestType("callback")} />
           Être rappelé
         </label>
       </fieldset>
@@ -102,29 +46,29 @@ export function QuickBookingForm() {
         <div className="search-fields">
           <label>
             Prénom
-            <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} />
+            <input type="text" value={booking.firstName} onChange={(event) => booking.setFirstName(event.target.value)} />
           </label>
           <label>
             E-mail
-            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+            <input type="email" value={booking.email} onChange={(event) => booking.setEmail(event.target.value)} />
           </label>
           <label>
             Passagers
-            <input type="number" min="1" max="20" value={passengers} onChange={(event) => setPassengers(Number(event.target.value))} />
+            <input type="number" min="1" max="20" value={booking.passengers} onChange={(event) => booking.setPassengers(Number(event.target.value))} />
           </label>
           <label>
             Bagages
-            <input type="number" min="0" max="30" value={luggage} onChange={(event) => setLuggage(Number(event.target.value))} />
+            <input type="number" min="0" max="30" value={booking.luggage} onChange={(event) => booking.setLuggage(Number(event.target.value))} />
           </label>
         </div>
         <label>
           Note
-          <textarea value={notes} maxLength={1_000} onChange={(event) => setNotes(event.target.value)} />
+          <textarea value={booking.notes} maxLength={1_000} onChange={(event) => booking.setNotes(event.target.value)} />
         </label>
       </details>
 
-      <button type="button" onClick={submit} disabled={!valid || busy}>{busy ? "Envoi…" : "Envoyer ma demande"}</button>
-      {error && <p className="error" role="alert">{error}</p>}
+      <button type="button" onClick={booking.submit} disabled={!booking.valid || booking.busy}>{booking.busy ? "Envoi…" : "Envoyer ma demande"}</button>
+      {booking.error && <p className="error" role="alert">{booking.error}</p>}
     </section>
   );
 }

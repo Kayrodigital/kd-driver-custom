@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body><header className="site-header"><Link href="/" aria-label="KD Driver, accueil"><span>KD</span> DRIVER</Link><p>Prototype Sprint 1</p></header>{children}</body></html>;
+  return <html lang="fr"><body><SiteHeader />{children}</body></html>;
 }
