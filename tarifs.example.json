@@ -1,0 +1,26 @@
+{
+  "currency": "EUR",
+  "distanceUnit": "km",
+  "categories": {
+    "berline": {
+      "mode": "calculated",
+      "baseFee": 5,
+      "pricePerKm": 2.25,
+      "minimumPrice": 25
+    },
+    "confort": {
+      "mode": "calculated",
+      "baseFee": 5,
+      "pricePerKm": 2,
+      "minimumPrice": 20
+    },
+    "luxe": { "mode": "quote" },
+    "van": { "mode": "quote" },
+    "monospace": { "mode": "quote" }
+  },
+  "longDistance": {
+    "thresholdKm": 30,
+    "mode": "quote",
+    "airportException": true
+  }
+}
