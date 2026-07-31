@@ -30,7 +30,7 @@ export function SceneImage({ src, alt, note, className = "", style }: { src: str
           onError={() => setBroken(true)}
         />
       )}
-      {note && <span className="kd-scene-note">{note}</span>}
+      {broken && note && <span className="kd-scene-note">{note}</span>}
     </div>
   );
 }

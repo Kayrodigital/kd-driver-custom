@@ -24,7 +24,6 @@ function HeroA() {
   return (
     <section className="kd-hero kd-hero--a kd-on-dark">
       <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" />
-      <div className="kd-hero-bg" aria-hidden="true" />
       <div className="kd-container kd-hero-inner">
         <div className="kd-hero-copy">
           <p className="kd-eyebrow">Chauffeur privé · Lyon</p>
@@ -48,7 +47,6 @@ function HeroB() {
   return (
     <section className="kd-hero kd-hero--b kd-on-dark">
       <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" />
-      <div className="kd-hero-bg" aria-hidden="true" />
       <div className="kd-container kd-hero-inner">
         <div className="kd-hero-copy">
           <p className="kd-eyebrow">Chauffeur privé · Lyon</p>

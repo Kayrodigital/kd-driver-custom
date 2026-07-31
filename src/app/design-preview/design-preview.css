@@ -276,12 +276,15 @@
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
 }
 .kd-scene--tall { min-height: 320px; }
-/* Image du hero : cache le bandeau de note et assombrit pour la lisibilité du texte. */
-.kd-hero-photo { position: absolute; inset: 0; z-index: 0; }
-.kd-hero-photo .kd-scene-photo { filter: saturate(0.95) brightness(0.85); }
+/* Image du hero : dégradé directionnel (sombre côté texte, la photo respire
+   côté droit) plutôt qu'un voile uniforme qui écraserait une photo claire. */
+.kd-hero-photo { position: absolute; inset: 0; z-index: 0; border-radius: 0; min-height: 0; }
+.kd-hero-photo .kd-scene-photo { filter: saturate(1.05); }
 .kd-hero-photo::before {
   content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(165deg, rgba(14,13,12,0.55) 0%, rgba(11,10,9,0.88) 70%);
+  background:
+    linear-gradient(100deg, rgba(10,9,8,0.88) 0%, rgba(10,9,8,0.68) 30%, rgba(10,9,8,0.3) 58%, rgba(10,9,8,0.1) 82%),
+    linear-gradient(0deg, rgba(10,9,8,0.45) 0%, transparent 35%);
 }
 
 /* ---------- header / nav ---------- */
@@ -312,8 +315,9 @@
   mix-blend-mode: overlay;
 }
 .kd-hero-inner { position: relative; display: grid; gap: var(--kd-space-7); }
-.kd-hero-copy { display: grid; gap: var(--kd-space-4); max-width: 640px; }
-.kd-hero-copy p.kd-lead { color: var(--kd-muted-on-dark); }
+.kd-hero-copy { display: grid; gap: var(--kd-space-4); max-width: 640px; position: relative; z-index: 2; }
+.kd-hero-copy h1 { text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+.kd-hero-copy p.kd-lead { color: var(--kd-muted-on-dark); text-shadow: 0 1px 12px rgba(0,0,0,0.35); }
 .kd-hero-badges { display: flex; gap: var(--kd-space-5); margin-top: var(--kd-space-3); flex-wrap: wrap; }
 .kd-hero-badge { font-size: 0.78rem; color: var(--kd-muted-on-dark); display: flex; gap: 8px; align-items: center; }
 .kd-hero-badge b { color: var(--kd-cream); font-family: var(--kd-font-display); font-size: 1.1rem; font-weight: 500; }
