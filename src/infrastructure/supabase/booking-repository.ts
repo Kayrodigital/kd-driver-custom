@@ -5,23 +5,24 @@ import { createAdminClient } from "./admin-client";
 export class SupabaseReservationRepository implements ReservationRepository {
   async create(record: ReservationRecord) {
     const supabase = createAdminClient();
-    const customerResult = await supabase.from("customers").upsert({
-      email: record.request.customer.email.toLowerCase(),
-      first_name: record.request.customer.firstName,
-      last_name: record.request.customer.lastName,
+    const email = record.request.customer.email?.toLowerCase() ?? null;
+    const customerPayload = {
+      email,
+      first_name: record.request.customer.firstName ?? null,
       phone: record.request.customer.phone,
-    }, { onConflict: "email" }).select("id").single();
+    };
+    const customerResult = email
+      ? await supabase.from("customers").upsert(customerPayload, { onConflict: "email" }).select("id").single()
+      : await supabase.from("customers").insert(customerPayload).select("id").single();
     if (customerResult.error) throw customerResult.error;
-
-    const vehicleResult = await supabase.from("vehicles").select("id").eq("slug", record.request.vehicleSlug).eq("active", true).single();
-    if (vehicleResult.error) throw vehicleResult.error;
 
     const payload = {
       public_reference: record.reference,
       idempotency_key: record.request.idempotencyKey,
       customer_id: customerResult.data.id,
-      vehicle_id: vehicleResult.data.id,
+      vehicle_id: null,
       status: record.status,
+      request_type: record.request.requestType,
       pickup_address: record.request.pickup.address,
       pickup_latitude: record.request.pickup.latitude,
       pickup_longitude: record.request.pickup.longitude,
@@ -37,7 +38,7 @@ export class SupabaseReservationRepository implements ReservationRepository {
       luggage: record.request.luggage,
       distance_meters: record.route.distanceMeters,
       duration_seconds: record.route.durationSeconds,
-      is_airport_trip: record.request.isAirportTrip,
+      is_airport_trip: false,
       pricing_mode: record.pricing.mode,
       amount_cents: record.pricing.totalCents,
       currency: record.pricing.currency,

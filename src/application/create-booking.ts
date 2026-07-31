@@ -4,12 +4,16 @@ import { calculatePrice } from "@/domain/pricing/pricing-engine";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
 import type { MapsProvider } from "@/infrastructure/maps/maps-provider";
 
+const REFERENCE_CATEGORY = "berline";
+
+export type ReservationStatus = "new" | "quote_requested";
+
 export type ReservationRecord = {
   reference: string;
   request: ReservationRequest;
   route: RouteResult;
   pricing: ReturnType<typeof calculatePrice>;
-  status: "pending_confirmation";
+  status: ReservationStatus;
 };
 
 export interface ReservationRepository {
@@ -24,21 +28,17 @@ export async function createReservation(untrustedInput: unknown, repository: Res
   const request = reservationRequestSchema.parse(untrustedInput);
   if (new Date(request.pickupAt).getTime() <= now.getTime()) throw new RangeError("La date de prise en charge doit être dans le futur.");
   const route = await maps.calculateRoute({ pickup: request.pickup, destination: request.destination });
-  const pricing = calculatePrice({ category: request.vehicleSlug, distanceMeters: route.distanceMeters, isAirportTrip: request.isAirportTrip }, pricingConfig);
-  const result = await repository.create({ reference: createReference(now), request, route, pricing, status: "pending_confirmation" });
+  const pricing = calculatePrice({ category: REFERENCE_CATEGORY, distanceMeters: route.distanceMeters, isAirportTrip: false }, pricingConfig);
+  const status: ReservationStatus = pricing.mode === "quote" ? "quote_requested" : "new";
+  const result = await repository.create({ reference: createReference(now), request, route, pricing, status });
   return {
     ...result,
     summary: {
       pickupAddress: request.pickup.address,
       destinationAddress: request.destination.address,
       pickupAt: request.pickupAt,
-      passengers: request.passengers,
-      luggage: request.luggage,
-      vehicleSlug: request.vehicleSlug,
-      distanceMeters: route.distanceMeters,
-      durationSeconds: route.durationSeconds,
-      pricing,
-      customerName: `${request.customer.firstName} ${request.customer.lastName}`,
+      phone: request.customer.phone,
+      requestType: request.requestType,
     },
   };
 }
