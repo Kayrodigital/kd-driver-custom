@@ -1,3 +1,5 @@
+import { SceneImage } from "./scene-image";
+
 const services = [
   { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape." },
   { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente." },
@@ -12,9 +14,9 @@ const advantages = [
 ];
 
 const vehicles = [
-  { name: "Berline", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien." },
-  { name: "Confort", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes." },
-  { name: "Van", body: "Jusqu’à 7 passagers · pour les groupes et les familles." },
+  { name: "Berline", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien.", image: "/images/vehicle-berline.jpg" },
+  { name: "Confort", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes.", image: "/images/vehicle-confort.jpg" },
+  { name: "Van", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
 ];
 
 const zones = ["Lyon", "Villeurbanne", "Aéroport Lyon-Saint Exupéry", "Gare Part-Dieu", "Gare Perrache", "Écully", "Caluire-et-Cuire", "Vénissieux"];
@@ -94,7 +96,7 @@ export function VehiclesSection() {
         <div className="kd-grid-3">
           {vehicles.map((vehicle) => (
             <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
-              <div className="kd-scene kd-vehicle-image"><span className="kd-scene-note">photo à venir</span></div>
+              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" />
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
                 <small>Prix calculé</small>
@@ -112,7 +114,7 @@ export function AirportSection() {
   return (
     <section className="kd-section kd-on-white">
       <div className="kd-container kd-grid-2" style={{ alignItems: "center" }}>
-        <div className="kd-scene" style={{ minHeight: 320 }}><span className="kd-scene-note">ambiance aéroport — photo à venir</span></div>
+        <SceneImage src="/images/airport-transfer.jpg" alt="Transfert aéroport" note="photo à venir" className="kd-scene--tall" />
         <div className="kd-stack">
           <p className="kd-eyebrow">Aéroport &amp; gares</p>
           <h2 className="kd-h2">Votre vol ou votre train suivi, votre chauffeur à l’heure</h2>
@@ -134,7 +136,7 @@ export function CorporateSection() {
           <p className="kd-lead">Facturation centralisée, chauffeurs dédiés, disponibilité étendue : une offre pensée pour les équipes qui se déplacent souvent.</p>
           <a className="kd-btn kd-btn--outline" href="#contact-entreprise">Nous contacter</a>
         </div>
-        <div className="kd-scene" style={{ minHeight: 280 }}><span className="kd-scene-note">ambiance business — photo à venir</span></div>
+        <SceneImage src="/images/corporate.jpg" alt="Déplacements professionnels" note="photo à venir" className="kd-scene--tall" />
       </div>
     </section>
   );

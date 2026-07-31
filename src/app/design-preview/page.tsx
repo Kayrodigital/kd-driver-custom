@@ -5,6 +5,7 @@ import { BookingFormCard } from "@/components/booking/kd/booking-form-card";
 import { BookingFormInline } from "@/components/booking/kd/booking-form-inline";
 import { BookingFormMobile } from "@/components/booking/kd/booking-form-mobile";
 import { DesignSystemShowcase } from "./design-system-showcase";
+import { SceneImage } from "./scene-image";
 import {
   AdvantagesSection,
   AirportSection,
@@ -22,6 +23,7 @@ type HeroVariant = "a" | "b";
 function HeroA() {
   return (
     <section className="kd-hero kd-hero--a kd-on-dark">
+      <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" />
       <div className="kd-hero-bg" aria-hidden="true" />
       <div className="kd-container kd-hero-inner">
         <div className="kd-hero-copy">
@@ -45,6 +47,7 @@ function HeroA() {
 function HeroB() {
   return (
     <section className="kd-hero kd-hero--b kd-on-dark">
+      <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" />
       <div className="kd-hero-bg" aria-hidden="true" />
       <div className="kd-container kd-hero-inner">
         <div className="kd-hero-copy">
@@ -128,9 +131,9 @@ function MobilePreview() {
               <div className="kd-mobile-col">
                 <p className="kd-eyebrow">Véhicules</p>
                 <div className="kd-mobile-scroll">
-                  <div className="kd-card"><div className="kd-scene kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Berline</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
-                  <div className="kd-card"><div className="kd-scene kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Confort</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
-                  <div className="kd-card"><div className="kd-scene kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Van</b><small style={{ color: "var(--kd-muted)" }}>7 passagers</small></div>
+                  <div className="kd-card"><SceneImage src="/images/vehicle-berline.jpg" alt="Berline" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Berline</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
+                  <div className="kd-card"><SceneImage src="/images/vehicle-confort.jpg" alt="Confort" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Confort</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
+                  <div className="kd-card"><SceneImage src="/images/vehicle-van.jpg" alt="Van" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Van</b><small style={{ color: "var(--kd-muted)" }}>7 passagers</small></div>
                 </div>
               </div>
             </div>

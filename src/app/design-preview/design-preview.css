@@ -163,22 +163,24 @@
 
 /* ---------- overrides pour le moteur de réservation réutilisé
    (AddressAutocomplete, etc.) : même logique, habillage kd-*. ---------- */
-.kd-preview .address-field { display: grid; gap: 7px; font-size: 0.82rem; font-weight: 700; }
+.kd-preview .address-field { display: grid; gap: 7px; font-size: 0.82rem; font-weight: 700; position: relative; }
 .kd-preview .address-field > label { font-size: 0.78rem; letter-spacing: 0.02em; color: var(--kd-ink); }
 .kd-card--dark .address-field > label, .kd-on-dark .address-field > label { color: var(--kd-cream); }
-.kd-preview .places-host input,
-.kd-preview .address-field input {
+.kd-preview .address-control { position: relative; }
+.kd-preview .address-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.55; pointer-events: none; }
+.kd-preview .address-control input {
   width: 100%; border: 1px solid var(--kd-line); border-radius: var(--kd-radius-sm);
-  padding: 14px 16px; background: var(--kd-white); color: var(--kd-ink); font-size: 0.95rem;
+  padding: 14px 16px 14px 42px; background: var(--kd-white); color: var(--kd-ink); font-size: 0.95rem;
   transition: border-color 0.15s var(--kd-ease), box-shadow 0.15s var(--kd-ease);
 }
-.kd-preview .places-host input:focus, .kd-preview .address-field input:focus {
+.kd-preview .address-control input:focus {
   outline: none; border-color: var(--kd-gold); box-shadow: 0 0 0 4px rgba(176, 141, 79, 0.16);
 }
-.kd-on-dark .kd-preview .places-host input, .kd-on-dark .kd-preview .address-field input,
-.kd-form-inline .places-host input, .kd-form-inline .address-field input {
+.kd-on-dark .kd-preview .address-control input, .kd-card--dark .kd-preview .address-control input,
+.kd-form-inline .address-control input {
   background: rgba(245, 239, 224, 0.06); border-color: rgba(245, 239, 224, 0.22); color: var(--kd-cream);
 }
+.kd-on-dark .kd-preview .address-icon, .kd-card--dark .kd-preview .address-icon, .kd-form-inline .address-icon { opacity: 0.7; }
 .kd-preview .locate-icon {
   position: absolute; right: 5px; top: 4px; width: 40px; min-height: 40px; padding: 0;
   border-radius: 9px; background: var(--kd-gold); color: var(--kd-black); font-size: 1.2rem; border: 0;
@@ -187,6 +189,33 @@
 .kd-preview .location-confirm { display: grid; gap: 9px; background: rgba(63, 107, 77, 0.1); border: 1px solid rgba(63, 107, 77, 0.35); border-radius: 10px; padding: 12px; font-weight: 400; font-size: 0.85rem; }
 .kd-preview .location-confirm button { justify-self: start; min-height: 34px; padding: 8px 14px; border-radius: var(--kd-radius-pill); background: var(--kd-success); color: #fff; border: 0; font-weight: 700; }
 .kd-preview .field-error { color: var(--kd-error); font-size: 0.78rem; margin: 0; font-weight: 600; }
+
+/* ---------- suggestions d'adresse (dropdown premium façon Blacklane) ---------- */
+.kd-preview .address-suggestions {
+  list-style: none; margin: 8px 0 0; padding: 10px;
+  position: absolute; z-index: 30; left: 0; right: 0; top: 100%;
+  background: var(--kd-black-soft); border: 1px solid var(--kd-line-on-dark);
+  border-radius: var(--kd-radius-md); box-shadow: var(--kd-shadow-lg);
+  max-height: 360px; overflow: auto;
+}
+.kd-preview .address-suggestions li { margin: 0; }
+.kd-preview .address-suggestions button {
+  width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
+  background: transparent; color: var(--kd-cream); border: 0; border-radius: 10px;
+  padding: 12px 12px; min-height: auto; font-weight: 400;
+}
+.kd-preview .address-suggestions button:hover, .kd-preview .address-suggestions button.is-highlighted { background: rgba(245, 239, 224, 0.08); }
+.kd-preview .suggestion-icon { flex: none; font-size: 1.05rem; margin-top: 1px; opacity: 0.85; }
+.kd-preview .suggestion-text { display: grid; gap: 3px; }
+.kd-preview .suggestion-text b { font-weight: 700; font-size: 0.94rem; color: var(--kd-cream); }
+.kd-preview .suggestion-text small { color: var(--kd-muted-on-dark); font-size: 0.8rem; }
+.kd-preview .address-suggestions-footer { padding: 10px 12px 2px; font-size: 0.7rem; letter-spacing: 0.02em; color: var(--kd-muted-on-dark); border-top: 1px solid var(--kd-line-on-dark); margin-top: 6px; }
+/* Cartes claires (variante B) : suggestions sur fond clair pour rester lisibles. */
+.kd-card:not(.kd-card--dark) .address-suggestions { background: var(--kd-white); border-color: var(--kd-line); }
+.kd-card:not(.kd-card--dark) .suggestion-text b { color: var(--kd-ink); }
+.kd-card:not(.kd-card--dark) .suggestion-text small, .kd-card:not(.kd-card--dark) .address-suggestions-footer { color: var(--kd-muted); }
+.kd-card:not(.kd-card--dark) .address-suggestions-footer { border-top-color: var(--kd-line); }
+.kd-card:not(.kd-card--dark) .address-suggestions button:hover, .kd-card:not(.kd-card--dark) .address-suggestions button.is-highlighted { background: var(--kd-cream-soft); }
 
 /* ---------- cards ---------- */
 .kd-card {
@@ -242,6 +271,17 @@
 .kd-scene-note {
   position: absolute; left: var(--kd-space-4); bottom: var(--kd-space-4);
   font-size: 0.72rem; color: var(--kd-muted-on-dark); letter-spacing: 0.04em;
+}
+.kd-scene-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.kd-scene--tall { min-height: 320px; }
+/* Image du hero : cache le bandeau de note et assombrit pour la lisibilité du texte. */
+.kd-hero-photo { position: absolute; inset: 0; z-index: 0; }
+.kd-hero-photo .kd-scene-photo { filter: saturate(0.95) brightness(0.85); }
+.kd-hero-photo::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(165deg, rgba(14,13,12,0.55) 0%, rgba(11,10,9,0.88) 70%);
 }
 
 /* ---------- header / nav ---------- */
