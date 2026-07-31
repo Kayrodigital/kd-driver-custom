@@ -14,9 +14,9 @@ const advantages = [
 ];
 
 const vehicles = [
-  { name: "Berline", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien.", image: "/images/vehicle-berline.jpg" },
-  { name: "Confort", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes.", image: "/images/vehicle-confort.jpg" },
-  { name: "Van", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
+  { name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien.", image: "/images/vehicle-berline.jpg" },
+  { name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes.", image: "/images/vehicle-confort.jpg" },
+  { name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
 ];
 
 const zones = ["Lyon", "Villeurbanne", "Aéroport Lyon-Saint Exupéry", "Gare Part-Dieu", "Gare Perrache", "Écully", "Caluire-et-Cuire", "Vénissieux"];
@@ -100,7 +100,7 @@ export function VehiclesSection() {
               <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" />
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
-                <small>Prix calculé</small>
+                <small>{vehicle.mode}</small>
               </div>
               <p className="kd-body">{vehicle.body}</p>
             </div>

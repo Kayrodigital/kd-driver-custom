@@ -5,8 +5,10 @@ import { BookingFormCard } from "@/components/booking/kd/booking-form-card";
 import { BookingFormInline } from "@/components/booking/kd/booking-form-inline";
 import { BookingFormMobile } from "@/components/booking/kd/booking-form-mobile";
 import { DesignSystemShowcase } from "./design-system-showcase";
+import { AboutPage, ContactPage, FaqPage, TarifsPage, VehiclesPage } from "./other-pages-templates";
 import { SceneImage } from "./scene-image";
 import { ServicePageTemplate } from "./service-page-template";
+import { servicePages } from "./service-pages-content";
 import {
   AdvantagesSection,
   AirportSection,
@@ -100,6 +102,50 @@ function DesktopPreview() {
   );
 }
 
+type OtherPageKey = "vehicules" | "tarifs" | "a-propos" | "contact" | "faq";
+const otherPages: { key: OtherPageKey; label: string; Component: () => React.JSX.Element }[] = [
+  { key: "vehicules", label: "Nos véhicules", Component: VehiclesPage },
+  { key: "tarifs", label: "Tarifs", Component: TarifsPage },
+  { key: "a-propos", label: "À propos", Component: AboutPage },
+  { key: "contact", label: "Contact", Component: ContactPage },
+  { key: "faq", label: "FAQ", Component: FaqPage },
+];
+
+function PagesPreview() {
+  const [pageKey, setPageKey] = useState<string>(servicePages[0].key);
+  const service = servicePages.find((page) => page.key === pageKey);
+  const other = otherPages.find((page) => page.key === pageKey);
+
+  return (
+    <section id="pages" className="kd-section" style={{ paddingTop: "var(--kd-space-6)" }}>
+      <div className="kd-container" style={{ marginBottom: "var(--kd-space-6)" }}>
+        <div className="kd-section-head kd-section-head--center">
+          <p className="kd-eyebrow">Pages — validation</p>
+          <h2 className="kd-h2">Toutes les pages, un seul gabarit</h2>
+          <p className="kd-lead" style={{ margin: "0 auto" }}>
+            Cinq pages de service partagent le template validé (hero, présentation, bénéfices, visuel, réservation en
+            3 étapes, infos utiles, réassurance, CTA). Véhicules, Tarifs, À propos, Contact et FAQ suivent la même
+            direction artistique avec une structure adaptée à leur contenu.
+          </p>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="kd-toggle-group" aria-label="Choisir une page" style={{ flexWrap: "wrap", justifyContent: "center" }}>
+            {servicePages.map((page) => (
+              <button key={page.key} type="button" aria-pressed={pageKey === page.key} onClick={() => setPageKey(page.key)}>{page.navLabel}</button>
+            ))}
+            {otherPages.map((page) => (
+              <button key={page.key} type="button" aria-pressed={pageKey === page.key} onClick={() => setPageKey(page.key)}>{page.label}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {service && <ServicePageTemplate content={service} />}
+      {other && <other.Component />}
+    </section>
+  );
+}
+
 function MobilePreview() {
   return (
     <section id="mobile" className="kd-section kd-on-white">
@@ -163,24 +209,14 @@ export default function DesignPreviewPage() {
           <a href="#design-system">Design system</a>
           <a href="#desktop">Desktop A/B</a>
           <a href="#mobile">Mobile</a>
-          <a href="#template-service">Template page service</a>
+          <a href="#pages">Pages</a>
         </nav>
       </div>
 
       <DesignSystemShowcase />
       <DesktopPreview />
       <MobilePreview />
-
-      <section id="template-service" className="kd-section" style={{ paddingTop: "var(--kd-space-6)" }}>
-        <div className="kd-container" style={{ marginBottom: "var(--kd-space-6)" }}>
-          <div className="kd-section-head kd-section-head--center">
-            <p className="kd-eyebrow">Template page service — validation</p>
-            <h2 className="kd-h2">Transfert aéroport Lyon-Saint Exupéry</h2>
-            <p className="kd-lead" style={{ margin: "0 auto" }}>Premier gabarit à valider avant déclinaison sur Transfert gare, Entreprise, Mise à disposition et Longues distances.</p>
-          </div>
-        </div>
-        <ServicePageTemplate />
-      </section>
+      <PagesPreview />
 
       <div className="kd-section kd-on-cream" style={{ paddingTop: "var(--kd-space-5)" }}>
         <div className="kd-container">
