@@ -30,10 +30,20 @@ type PlacesLibrary = {
   };
 };
 
+type MapsLibrary = { Map: new (element: HTMLElement, options: unknown) => unknown; LatLngBounds: new () => { extend(point: unknown): void }; Marker?: new (options: unknown) => unknown };
+type MarkerLibrary = { AdvancedMarkerElement: new (options: unknown) => unknown };
+type GeometryLibrary = { encoding: { decodePath(encoded: string): unknown[] } };
+
 type GoogleMapsWindow = Window & {
   google?: {
     maps: {
       importLibrary(name: "places"): Promise<PlacesLibrary>;
+      importLibrary(name: "maps"): Promise<MapsLibrary>;
+      importLibrary(name: "marker"): Promise<MarkerLibrary>;
+      importLibrary(name: "geometry"): Promise<GeometryLibrary>;
+      Polyline: new (options: unknown) => { setMap(map: unknown): void };
+      Marker: new (options: unknown) => unknown;
+      LatLngBounds: new () => { extend(point: unknown): void };
     };
   };
 };
@@ -66,6 +76,31 @@ async function getPlacesLibrary(): Promise<PlacesLibrary> {
   if (!google) throw new Error("Google Maps indisponible.");
   if (!placesLibrary) placesLibrary = google.maps.importLibrary("places");
   return placesLibrary;
+}
+
+let mapsLibrary: Promise<MapsLibrary> | null = null;
+let geometryLibrary: Promise<GeometryLibrary> | null = null;
+
+export async function getMapsLibrary(): Promise<MapsLibrary> {
+  await loadGoogleMaps();
+  const google = (window as GoogleMapsWindow).google;
+  if (!google) throw new Error("Google Maps indisponible.");
+  if (!mapsLibrary) mapsLibrary = google.maps.importLibrary("maps");
+  return mapsLibrary;
+}
+
+export async function getGeometryLibrary(): Promise<GeometryLibrary> {
+  await loadGoogleMaps();
+  const google = (window as GoogleMapsWindow).google;
+  if (!google) throw new Error("Google Maps indisponible.");
+  if (!geometryLibrary) geometryLibrary = google.maps.importLibrary("geometry");
+  return geometryLibrary;
+}
+
+export function getGoogleMapsNamespace() {
+  const google = (window as GoogleMapsWindow).google;
+  if (!google) throw new Error("Google Maps indisponible.");
+  return google.maps;
 }
 
 export async function createAutocompleteSession() {

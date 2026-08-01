@@ -6,12 +6,20 @@ import type { MapsProvider } from "@/infrastructure/maps/maps-provider";
 
 export type ReservationStatus = "new" | "quote_requested";
 
+/**
+ * confirmed / adjusted / pending_confirmation n'existent pas encore côté
+ * création (réservées au workflow propriétaire, Phase 5) : à la création,
+ * seuls "estimated" et "quote_required" sont produits.
+ */
+export type PricingStatus = "estimated" | "pending_confirmation" | "confirmed" | "adjusted" | "quote_required";
+
 export type ReservationRecord = {
   reference: string;
   request: ReservationRequest;
   route: RouteResult;
   pricing: ReturnType<typeof calculatePrice>;
   status: ReservationStatus;
+  pricingStatus: PricingStatus;
   isAirportTrip: boolean;
   composedNotes: string;
 };
@@ -42,8 +50,9 @@ export async function createReservation(untrustedInput: unknown, repository: Res
   const isAirportTrip = Boolean(request.flightNumber);
   const pricing = calculatePrice({ category: request.vehicleSlug, distanceMeters: route.distanceMeters, isAirportTrip }, pricingConfig);
   const status: ReservationStatus = pricing.mode === "quote" ? "quote_requested" : "new";
+  const pricingStatus: PricingStatus = pricing.mode === "quote" ? "quote_required" : "estimated";
   const composedNotes = composeNotes(request);
-  const result = await repository.create({ reference: createReference(now), request, route, pricing, status, isAirportTrip, composedNotes });
+  const result = await repository.create({ reference: createReference(now), request, route, pricing, status, pricingStatus, isAirportTrip, composedNotes });
   return {
     ...result,
     summary: {

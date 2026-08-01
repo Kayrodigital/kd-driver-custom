@@ -60,7 +60,7 @@ export function useBookingWizard() {
   const [searchBusy, setSearchBusy] = useState(false);
   const [searchError, setSearchError] = useState("");
 
-  const [route, setRoute] = useState<{ distanceMeters: number; durationSeconds: number } | null>(null);
+  const [route, setRoute] = useState<{ distanceMeters: number; durationSeconds: number; encodedPolyline?: string | null } | null>(null);
   const [vehicleOptions, setVehicleOptions] = useState<VehicleOption[]>([]);
   const [vehicleSlug, setVehicleSlug] = useState<VehicleSlug | null>(null);
 

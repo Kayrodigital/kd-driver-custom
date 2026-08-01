@@ -11,4 +11,6 @@ export type RouteRequest = z.infer<typeof routeRequestSchema>;
 export type RouteResult = {
   distanceMeters: number;
   durationSeconds: number;
+  /** Optionnel pour ne pas casser les appelants existants (tests, providers). */
+  encodedPolyline?: string | null;
 };

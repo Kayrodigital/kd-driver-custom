@@ -463,6 +463,28 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-more-fields { display: grid; gap: var(--kd-space-3); }
 .kd-request-type { display: flex; gap: var(--kd-space-4); flex-wrap: wrap; }
 
+/* ---------- carte d'itinéraire (RouteMap) ---------- */
+.kd-route-map-block { display: grid; gap: 8px; }
+.kd-route-map { display: grid; gap: 8px; }
+.kd-route-map-canvas {
+  position: relative; width: 100%; height: 200px; border-radius: var(--kd-radius-md);
+  overflow: hidden; background: var(--kd-cream-soft); border: 1px solid var(--kd-line);
+}
+.kd-route-map-fallback {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 0 16px; margin: 0; font-size: 0.82rem; color: var(--kd-muted);
+  background: var(--kd-cream-soft);
+}
+.kd-route-map-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.78rem; color: var(--kd-muted); }
+.kd-route-map-note { font-style: italic; }
+@media (min-width: 900px) {
+  .kd-route-map-canvas { height: 240px; }
+}
+
+.kd-price-detail { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; font-size: 0.86rem; }
+.kd-price-detail li { display: flex; justify-content: space-between; gap: 12px; }
+.kd-price-detail-total { font-weight: 700; border-top: 1px solid var(--kd-line); padding-top: 6px; margin-top: 2px; }
+
 /* ---------- sections ---------- */
 .kd-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--kd-space-4); }
 .kd-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--kd-space-4); }
@@ -480,7 +502,19 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 .kd-advantage { display: flex; gap: var(--kd-space-3); align-items: flex-start; }
 .kd-advantage-num { font-family: var(--kd-font-display); font-size: 1.4rem; color: var(--kd-gold); flex: none; width: 40px; }
 
-.kd-vehicle-card { display: grid; gap: 10px; padding: 18px; }
+.kd-vehicle-card {
+  display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px;
+}
+@media (max-width: 480px) {
+  .kd-vehicle-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+  }
+  .kd-vehicle-card-image { grid-column: 1; grid-row: 1; }
+  .kd-vehicle-card-body { grid-column: 2; grid-row: 1; }
+  .kd-vehicle-card-action { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+}
 .kd-vehicle-image { aspect-ratio: 4/3; margin: -18px -18px 4px; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
 .kd-vehicle-meta { display: flex; justify-content: space-between; align-items: baseline; }
 .kd-vehicle-meta small { color: var(--kd-muted); }

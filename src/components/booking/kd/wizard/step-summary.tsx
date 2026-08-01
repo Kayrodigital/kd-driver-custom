@@ -1,12 +1,14 @@
 "use client";
 
 import { formatEuros } from "@/domain/pricing/money";
+import { PRICING_TRANSPARENCY_NOTE, priceHeadline } from "@/domain/pricing/pricing-display";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { useBookingWizard } from "./use-booking-wizard";
 
 export function StepSummary({ wizard }: { wizard: ReturnType<typeof useBookingWizard> }) {
   const vehicle = vehicleCatalog.find((v) => v.slug === wizard.vehicleSlug);
-  const isQuote = wizard.selectedVehicleOption?.pricing.mode === "quote";
+  const pricing = wizard.selectedVehicleOption?.pricing;
+  const isQuote = pricing?.mode === "quote";
   const options: string[] = [];
   if (wizard.childSeat) options.push("Siège enfant");
   if (wizard.pet) options.push("Animal");
@@ -30,11 +32,24 @@ export function StepSummary({ wizard }: { wizard: ReturnType<typeof useBookingWi
         <div><span className="kd-field-label">Contact</span><p style={{ margin: "2px 0 0" }}>{wizard.phone}{wizard.email ? ` · ${wizard.email}` : ""}</p></div>
         <div>
           <span className="kd-field-label">Tarif</span>
-          <p style={{ margin: "2px 0 0", fontWeight: 700 }}>{isQuote ? "Sur devis" : formatEuros(wizard.selectedVehicleOption?.pricing.totalCents ?? 0)}</p>
+          <p style={{ margin: "2px 0 0", fontWeight: 700 }}>{pricing ? priceHeadline(pricing) : "—"}</p>
         </div>
       </div>
 
+      {pricing && pricing.mode === "calculated" && (
+        <details>
+          <summary className="kd-more-toggle">Détail du tarif</summary>
+          <ul className="kd-price-detail">
+            {pricing.lines.map((line) => (
+              <li key={line.code}><span>{line.label}</span><span>{formatEuros(line.amountCents)}</span></li>
+            ))}
+            <li className="kd-price-detail-total"><span>Total</span><span>{formatEuros(pricing.totalCents ?? 0)}</span></li>
+          </ul>
+        </details>
+      )}
+
       <p className="kd-body">Paiement au chauffeur. Le tarif est recalculé côté serveur avant confirmation.</p>
+      {pricing && pricing.mode === "calculated" && <p className="kd-field-hint">{PRICING_TRANSPARENCY_NOTE}</p>}
 
       {wizard.submitError && <p className="kd-field-error" role="alert">{wizard.submitError}</p>}
 

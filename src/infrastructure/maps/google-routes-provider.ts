@@ -2,7 +2,7 @@ import "server-only";
 import type { RouteRequest, RouteResult } from "@/domain/maps/route";
 import type { MapsProvider } from "./maps-provider";
 
-type GoogleRoute = { distanceMeters?: number; duration?: string };
+type GoogleRoute = { distanceMeters?: number; duration?: string; polyline?: { encodedPolyline?: string } };
 
 function waypoint(value: RouteRequest["pickup"]) {
   if (value.placeId) return { placeId: value.placeId };
@@ -21,7 +21,7 @@ export class GoogleRoutesProvider implements MapsProvider {
       headers: {
         "content-type": "application/json",
         "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration",
+        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline",
       },
       body: JSON.stringify({
         origin: waypoint(request.pickup),
@@ -37,6 +37,10 @@ export class GoogleRoutesProvider implements MapsProvider {
     const data = (await response.json()) as { routes?: GoogleRoute[] };
     const route = data.routes?.[0];
     if (!route?.distanceMeters || !route.duration) throw new RangeError("Aucun itinéraire trouvé.");
-    return { distanceMeters: route.distanceMeters, durationSeconds: Math.round(Number.parseFloat(route.duration)) };
+    return {
+      distanceMeters: route.distanceMeters,
+      durationSeconds: Math.round(Number.parseFloat(route.duration)),
+      encodedPolyline: route.polyline?.encodedPolyline ?? null,
+    };
   }
 }
