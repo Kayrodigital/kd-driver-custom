@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { emptyAddress, type AddressValue } from "@/domain/booking/address";
+import { defaultBookingDateTime } from "@/domain/booking/booking-defaults";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import type { VehicleSlug } from "@/domain/pricing/vehicle-catalog";
 
@@ -44,10 +45,11 @@ export function useBookingWizard() {
 
   const [step, setStep] = useState<WizardStep>(1);
 
+  const [defaults] = useState(() => defaultBookingDateTime(new Date()));
   const [pickup, setPickup] = useState<AddressValue>(prefill?.pickup ?? emptyAddress);
   const [destination, setDestination] = useState<AddressValue>(prefill?.destination ?? emptyAddress);
-  const [date, setDate] = useState(prefill?.date ?? "");
-  const [time, setTime] = useState(prefill?.time ?? "");
+  const [date, setDate] = useState(prefill?.date ?? defaults.date);
+  const [time, setTime] = useState(prefill?.time ?? defaults.time);
   const [searchBusy, setSearchBusy] = useState(false);
   const [searchError, setSearchError] = useState("");
 
@@ -164,6 +166,7 @@ export function useBookingWizard() {
   return {
     step, setStep,
     pickup, setPickup, destination, setDestination, date, setDate, time, setTime,
+    firstAvailableTime: defaults.time,
     searchBusy, searchError, searchValid, sameAddress, submitSearch,
     route, vehicleOptions, vehicleSlug, selectVehicle, selectedVehicleOption,
     passengers, setPassengers, luggage, setLuggage,

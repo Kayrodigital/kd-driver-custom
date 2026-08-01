@@ -181,6 +181,25 @@ a.kd-btn { color: var(--kd-btn-fg); }
 
 .kd-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--kd-cream); color: var(--kd-gold); border: 1px solid var(--kd-line); }
 
+.kd-time-picker { position: relative; }
+.kd-time-picker-trigger { text-align: left; cursor: pointer; }
+.kd-time-slot-list {
+  list-style: none; margin: 6px 0 0; padding: 8px; position: absolute; z-index: 30; left: 0; right: 0; top: 100%;
+  background: var(--kd-white); border: 1px solid var(--kd-line); border-radius: var(--kd-radius-md);
+  box-shadow: var(--kd-shadow-lg); max-height: 260px; overflow: auto;
+}
+.kd-time-slot-list li { margin: 0; }
+.kd-time-slot-list button {
+  width: 100%; text-align: left; background: transparent; color: var(--kd-ink); border: 0; border-radius: 8px;
+  padding: 9px 12px; min-height: auto; font-weight: 400; font-size: 0.9rem;
+}
+.kd-time-slot-list button:hover, .kd-time-slot-list button.is-highlighted { background: var(--kd-cream-soft); }
+.kd-time-slot-list button.is-selected { font-weight: 700; color: var(--kd-gold); }
+.kd-time-slot-empty { padding: 10px 12px; font-size: 0.85rem; color: var(--kd-muted); }
+.kd-on-dark .kd-time-slot-list { background: var(--kd-black-soft); border-color: var(--kd-line-on-dark); }
+.kd-on-dark .kd-time-slot-list button { color: var(--kd-cream); }
+.kd-on-dark .kd-time-slot-list button:hover, .kd-on-dark .kd-time-slot-list button.is-highlighted { background: rgba(245, 239, 224, 0.08); }
+
 .kd-wizard-progress { display: flex; gap: 6px; margin-bottom: var(--kd-space-4); }
 .kd-wizard-progress span { flex: 1; height: 3px; border-radius: 999px; background: var(--kd-line); }
 .kd-wizard-progress span.is-done, .kd-wizard-progress span.is-active { background: var(--kd-gold); }
@@ -226,19 +245,25 @@ a.kd-btn { color: var(--kd-btn-fg); }
 .kd-preview .address-suggestions button {
   width: 100%; display: flex; align-items: flex-start; gap: 12px; text-align: left;
   background: transparent; color: var(--kd-cream); border: 0; border-radius: 10px;
-  padding: 12px 12px; min-height: auto; font-weight: 400;
+  padding: 12px 12px; min-height: 52px; font-weight: 400;
 }
 .kd-preview .address-suggestions button:hover, .kd-preview .address-suggestions button.is-highlighted { background: rgba(245, 239, 224, 0.08); }
-.kd-preview .suggestion-icon { flex: none; font-size: 1.05rem; margin-top: 1px; opacity: 0.85; }
-.kd-preview .suggestion-text { display: grid; gap: 3px; }
+.kd-preview .address-suggestions button:focus-visible { outline: 2px solid var(--kd-gold); outline-offset: -2px; }
+.kd-preview .suggestion-icon {
+  flex: none; width: 22px; font-size: 1.05rem; margin-top: 1px; opacity: 0.85;
+  display: inline-flex; justify-content: center;
+}
+.kd-preview .suggestion-text { display: grid; gap: 3px; min-width: 0; }
 .kd-preview .suggestion-text b { font-weight: 700; font-size: 0.94rem; color: var(--kd-cream); }
 .kd-preview .suggestion-text small { color: var(--kd-muted-on-dark); font-size: 0.8rem; }
 .kd-preview .address-suggestions-footer { padding: 10px 12px 2px; font-size: 0.7rem; letter-spacing: 0.02em; color: var(--kd-muted-on-dark); border-top: 1px solid var(--kd-line-on-dark); margin-top: 6px; }
+.kd-preview .address-suggestions-heading { padding: 4px 12px 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kd-muted-on-dark); }
 /* Cartes claires (variante B) : suggestions sur fond clair pour rester lisibles. */
 .kd-card:not(.kd-card--dark) .address-suggestions { background: var(--kd-white); border-color: var(--kd-line); }
 .kd-card:not(.kd-card--dark) .suggestion-text b { color: var(--kd-ink); }
 .kd-card:not(.kd-card--dark) .suggestion-text small, .kd-card:not(.kd-card--dark) .address-suggestions-footer { color: var(--kd-muted); }
 .kd-card:not(.kd-card--dark) .address-suggestions-footer { border-top-color: var(--kd-line); }
+.kd-card:not(.kd-card--dark) .address-suggestions-heading { color: var(--kd-muted); }
 .kd-card:not(.kd-card--dark) .address-suggestions button:hover, .kd-card:not(.kd-card--dark) .address-suggestions button.is-highlighted { background: var(--kd-cream-soft); }
 
 /* ---------- cards ---------- */

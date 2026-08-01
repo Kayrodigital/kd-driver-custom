@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { AddressValue } from "@/domain/booking/address";
+import { popularDestinations } from "@/domain/booking/popular-destinations";
 import {
   createAutocompleteSession,
   fetchAddressSuggestions,
@@ -15,7 +16,7 @@ function suggestionIcon(types: string[]): string {
   return "📍";
 }
 
-export function AddressAutocomplete({ label, value, onChange, allowGeolocation = false }: { label: string; value: AddressValue; onChange(value: AddressValue): void; allowGeolocation?: boolean }) {
+export function AddressAutocomplete({ label, value, onChange, allowGeolocation = false, showPopularDestinations = false }: { label: string; value: AddressValue; onChange(value: AddressValue): void; allowGeolocation?: boolean; showPopularDestinations?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const onChangeRef = useRef(onChange);
@@ -68,12 +69,25 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
     onChangeRef.current({ address: place.formattedAddress, latitude: place.location.lat(), longitude: place.location.lng(), placeId: place.id ?? null, source: "autocomplete", accuracyMeters: null });
   }
 
+  function selectPopularDestination(destination: (typeof popularDestinations)[number]) {
+    setOpen(false);
+    setDetected(null);
+    onChangeRef.current(destination.address);
+  }
+
+  const query = value.address.trim();
+  const showingPopular = showPopularDestinations && query.length < 2 && suggestions.length === 0;
+  const activeCount = showingPopular ? popularDestinations.length : suggestions.length;
+
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (!open || suggestions.length === 0) return;
-    if (event.key === "ArrowDown") { event.preventDefault(); setHighlighted((index) => (index + 1) % suggestions.length); }
-    else if (event.key === "ArrowUp") { event.preventDefault(); setHighlighted((index) => (index - 1 + suggestions.length) % suggestions.length); }
-    else if (event.key === "Enter") { event.preventDefault(); void selectSuggestion(suggestions[highlighted]); }
-    else if (event.key === "Escape") { setOpen(false); }
+    if (!open || activeCount === 0) return;
+    if (event.key === "ArrowDown") { event.preventDefault(); setHighlighted((index) => (index + 1) % activeCount); }
+    else if (event.key === "ArrowUp") { event.preventDefault(); setHighlighted((index) => (index - 1 + activeCount) % activeCount); }
+    else if (event.key === "Enter") {
+      event.preventDefault();
+      if (showingPopular) selectPopularDestination(popularDestinations[highlighted]);
+      else void selectSuggestion(suggestions[highlighted]);
+    } else if (event.key === "Escape") { setOpen(false); }
   }
 
   async function locate() {
@@ -101,12 +115,28 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
             if (event.target.value.trim().length < 2) { setOpen(false); setSuggestions([]); }
             onChange({ address: event.target.value, latitude: null, longitude: null, placeId: null, source: "manual", accuracyMeters: null });
           }}
-          onFocus={() => { if (suggestions.length > 0) setOpen(true); }}
+          onFocus={() => { if (suggestions.length > 0 || (showPopularDestinations && query.length < 2)) { setHighlighted(0); setOpen(true); } }}
           onKeyDown={onKeyDown}
         />
         {allowGeolocation && <button type="button" className="locate-icon" onClick={locate} disabled={location.loading} aria-label="Utiliser ma position actuelle">⌖</button>}
       </div>
-      {open && suggestions.length > 0 && (
+      {open && showingPopular && (
+        <ul className="address-suggestions" id={`address-listbox-${label}`} role="listbox">
+          <li className="address-suggestions-heading" aria-hidden="true">Destinations populaires</li>
+          {popularDestinations.map((destination, index) => (
+            <li key={destination.label} role="option" aria-selected={index === highlighted}>
+              <button type="button" className={index === highlighted ? "is-highlighted" : ""} onMouseEnter={() => setHighlighted(index)} onClick={() => selectPopularDestination(destination)}>
+                <span className="suggestion-icon" aria-hidden="true">{destination.icon}</span>
+                <span className="suggestion-text">
+                  <b>{destination.label}</b>
+                  <small>{destination.secondary}</small>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {open && !showingPopular && suggestions.length > 0 && (
         <ul className="address-suggestions" id={`address-listbox-${label}`} role="listbox">
           {suggestions.map((prediction, index) => (
             <li key={prediction.placeId} role="option" aria-selected={index === highlighted}>
