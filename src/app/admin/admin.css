@@ -1,0 +1,63 @@
+/* Styles propres à l'administration KDRIVE : n'ajoute que ce que le design
+   system kd-* (design-preview.css) ne fournit pas déjà — pas de duplication
+   des tokens/composants existants (kd-card, kd-btn, kd-pill, kd-field...). */
+
+.kd-admin-header { border-bottom: 1px solid var(--kd-line-on-dark); }
+.kd-admin-header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; gap: var(--kd-space-4);
+}
+.kd-admin-header-title { font-weight: 700; letter-spacing: 0.02em; opacity: 0.85; }
+
+.kd-admin-main { padding: var(--kd-space-6) 0; min-height: 70vh; }
+
+.kd-admin-filters {
+  display: flex; flex-wrap: wrap; gap: var(--kd-space-3); align-items: end;
+  margin-bottom: var(--kd-space-5);
+}
+.kd-admin-filters .kd-field { min-width: 200px; flex: 1 1 200px; }
+.kd-admin-filters-actions { display: flex; gap: 10px; align-items: center; }
+
+.kd-status-pill {
+  display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; border: 1px solid var(--kd-line); white-space: nowrap;
+}
+.kd-status-pill--new { background: var(--kd-cream); color: var(--kd-ink); }
+.kd-status-pill--contacted { background: #eaf1fb; color: #2c5aa0; border-color: #cfe0f5; }
+.kd-status-pill--confirmed { background: #e9f5ec; color: #2f7a42; border-color: #cfe9d5; }
+.kd-status-pill--completed { background: var(--kd-line); color: var(--kd-muted); }
+.kd-status-pill--cancelled { background: #fbeaea; color: #a13a3a; border-color: #f2d4d4; }
+.kd-status-pill--quote_requested { background: #fbf3e3; color: var(--kd-gold); border-color: var(--kd-gold-soft); }
+
+.kd-admin-table-wrap { overflow-x: auto; border: 1px solid var(--kd-line); border-radius: var(--kd-radius-md); background: var(--kd-white); }
+.kd-admin-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.kd-admin-table th, .kd-admin-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--kd-line); vertical-align: top; }
+.kd-admin-table th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--kd-muted); background: var(--kd-cream-soft); }
+.kd-admin-table tbody tr:last-child td { border-bottom: 0; }
+.kd-admin-table tbody tr:hover { background: var(--kd-cream-soft); }
+.kd-admin-table small { display: block; color: var(--kd-muted); margin-top: 4px; }
+
+.kd-admin-cards { display: none; }
+.kd-admin-card { display: grid; gap: 6px; }
+.kd-admin-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.kd-admin-card-phone { font-weight: 700; }
+.kd-admin-card-route { font-size: 0.86rem; color: var(--kd-muted); }
+.kd-admin-card-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.kd-admin-card-actions a { flex: 1 1 auto; text-align: center; }
+
+@media (max-width: 680px) {
+  .kd-admin-table-wrap { display: none; }
+  .kd-admin-cards { display: grid; gap: 12px; }
+  .kd-admin-filters .kd-field { flex: 1 1 100%; min-width: 0; }
+}
+
+/* ---------- fiche réservation ---------- */
+.kd-admin-fiche { display: grid; gap: var(--kd-space-4); grid-template-columns: minmax(0, 1fr); }
+.kd-admin-fiche-section { display: grid; gap: 10px; }
+.kd-admin-fiche-row { display: flex; justify-content: space-between; gap: 12px; font-size: 0.92rem; }
+.kd-admin-fiche-row span:first-child { color: var(--kd-muted); }
+.kd-admin-back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--kd-gold); margin-bottom: var(--kd-space-4); }
+
+@media (min-width: 900px) {
+  .kd-admin-fiche { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
+}
