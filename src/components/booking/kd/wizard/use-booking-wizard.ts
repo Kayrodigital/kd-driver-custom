@@ -40,16 +40,23 @@ function looksLikeAirport(value: string) { return /a[ée]roport|airport/i.test(v
 function looksLikeStation(value: string) { return /\bgare\b|station/i.test(value); }
 
 export function useBookingWizard() {
-  const [prefill] = useState(() => readPrefill());
+  // /reserver est une page statique (générée une fois au build) : la valeur
+  // initiale de chaque champ doit être identique entre le HTML figé au build
+  // et la première passe d'hydratation côté client, sinon React lève une
+  // erreur d'hydratation (observée en production, #418) et peut désactiver
+  // l'interactivité de la zone concernée. `new Date()` et sessionStorage ne
+  // sont donc jamais lus dans un initializer : tout part d'un état neutre,
+  // et seul un effet post-montage (strictement client) applique le préremplissage
+  // ou la date/heure par défaut.
   const prefillConsumed = useRef(false);
 
   const [step, setStep] = useState<WizardStep>(1);
 
-  const [defaults] = useState(() => defaultBookingDateTime(new Date()));
-  const [pickup, setPickup] = useState<AddressValue>(prefill?.pickup ?? emptyAddress);
-  const [destination, setDestination] = useState<AddressValue>(prefill?.destination ?? emptyAddress);
-  const [date, setDate] = useState(prefill?.date ?? defaults.date);
-  const [time, setTime] = useState(prefill?.time ?? defaults.time);
+  const [firstAvailableTime, setFirstAvailableTime] = useState("");
+  const [pickup, setPickup] = useState<AddressValue>(emptyAddress);
+  const [destination, setDestination] = useState<AddressValue>(emptyAddress);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [searchBusy, setSearchBusy] = useState(false);
   const [searchError, setSearchError] = useState("");
 
@@ -85,14 +92,16 @@ export function useBookingWizard() {
   const sameAddress = pickup.address.trim().toLowerCase() === destination.address.trim().toLowerCase() && pickup.address.trim().length > 0;
   const searchValid = pickup.address.length >= 3 && destination.address.length >= 3 && Boolean(date) && Boolean(time) && !sameAddress;
 
-  async function submitSearch() {
-    if (!searchValid) return;
+  async function submitSearch(overridePickup?: AddressValue, overrideDestination?: AddressValue) {
+    const searchPickup = overridePickup ?? pickup;
+    const searchDestination = overrideDestination ?? destination;
+    if (searchPickup.address.length < 3 || searchDestination.address.length < 3) return;
     setSearchBusy(true); setSearchError("");
     try {
       const response = await fetch("/api/booking/options", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ pickup, destination, isAirportTrip }),
+        body: JSON.stringify({ pickup: searchPickup, destination: searchDestination, isAirportTrip: looksLikeAirport(searchPickup.address) || looksLikeAirport(searchDestination.address) }),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error);
@@ -106,12 +115,33 @@ export function useBookingWizard() {
     }
   }
 
+  // Effet post-montage strictement client : applique le préremplissage venu du
+  // hero (s'il existe) ou, sinon, la date/heure par défaut (jour même,
+  // premier créneau après le délai minimum). Ne s'exécute qu'une fois.
+  // Ces valeurs dépendent de sessionStorage et de new Date(), indisponibles
+  // (ou différentes) au build de cette page statique : elles ne peuvent
+  // donc pas être posées avant le montage sans provoquer une erreur
+  // d'hydratation (cf. commentaire plus haut, #418 constaté en production).
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    if (!prefill || prefillConsumed.current) return;
+    if (prefillConsumed.current) return;
     prefillConsumed.current = true;
-    void submitSearch();
+    const prefill = readPrefill();
+    if (prefill) {
+      setPickup(prefill.pickup);
+      setDestination(prefill.destination);
+      setDate(prefill.date);
+      setTime(prefill.time);
+      void submitSearch(prefill.pickup, prefill.destination);
+      return;
+    }
+    const defaults = defaultBookingDateTime(new Date());
+    setDate(defaults.date);
+    setTime(defaults.time);
+    setFirstAvailableTime(defaults.time);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function selectVehicle(slug: VehicleSlug) {
     setVehicleSlug(slug);
@@ -166,7 +196,7 @@ export function useBookingWizard() {
   return {
     step, setStep,
     pickup, setPickup, destination, setDestination, date, setDate, time, setTime,
-    firstAvailableTime: defaults.time,
+    firstAvailableTime,
     searchBusy, searchError, searchValid, sameAddress, submitSearch,
     route, vehicleOptions, vehicleSlug, selectVehicle, selectedVehicleOption,
     passengers, setPassengers, luggage, setLuggage,

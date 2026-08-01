@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddressAutocomplete } from "../../address-autocomplete";
 import { emptyAddress, type AddressValue } from "@/domain/booking/address";
 import { defaultBookingDateTime, toDateInputValue } from "@/domain/booking/booking-defaults";
@@ -11,15 +11,29 @@ import { storeSearchPrefill } from "./use-booking-wizard";
  * Formulaire de recherche affiché en hero (accueil). Ne réserve pas
  * directement : transmet le trajet à /reserver qui poursuit à l'étape 2
  * (véhicules) sans perte de données, via storeSearchPrefill.
+ *
+ * La page d'accueil est statique (générée une fois au build) : la date/heure
+ * par défaut ne peut donc pas être calculée dans un initializer (elle
+ * dépend de `new Date()`, qui diffère entre le HTML figé au build et
+ * l'hydratation côté client — cause d'une erreur d'hydratation #418
+ * observée en production). Tout part d'un état vide, posé après montage.
  */
 export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
-  const [defaults] = useState(() => defaultBookingDateTime(new Date()));
   const [pickup, setPickup] = useState<AddressValue>(emptyAddress);
   const [destination, setDestination] = useState<AddressValue>(emptyAddress);
-  const [date, setDate] = useState(defaults.date);
-  const [time, setTime] = useState(defaults.time);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [today, setToday] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const today = toDateInputValue(new Date());
+
+  /* eslint-disable react-hooks/set-state-in-effect -- valeur client-only (new Date()), cf. use-booking-wizard.ts */
+  useEffect(() => {
+    const defaults = defaultBookingDateTime(new Date());
+    setDate(defaults.date);
+    setTime(defaults.time);
+    setToday(toDateInputValue(new Date()));
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function openDatePicker() {
     try {

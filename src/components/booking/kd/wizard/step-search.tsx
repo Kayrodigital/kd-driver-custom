@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddressAutocomplete } from "../../address-autocomplete";
 import { toDateInputValue } from "@/domain/booking/booking-defaults";
 import { TimeSlotPicker } from "./time-slot-picker";
@@ -8,7 +8,12 @@ import type { useBookingWizard } from "./use-booking-wizard";
 
 export function StepSearch({ wizard }: { wizard: ReturnType<typeof useBookingWizard> }) {
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const today = toDateInputValue(new Date());
+  // "" au premier rendu (identique au HTML statique généré au build), la
+  // vraie date du jour n'est posée qu'après montage côté client (cf.
+  // commentaire dans use-booking-wizard.ts sur l'erreur d'hydratation #418).
+  const [today, setToday] = useState("");
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- valeur client-only (new Date()), cf. use-booking-wizard.ts
+  useEffect(() => { setToday(toDateInputValue(new Date())); }, []);
 
   function openDatePicker() {
     try {
@@ -43,7 +48,7 @@ export function StepSearch({ wizard }: { wizard: ReturnType<typeof useBookingWiz
           <TimeSlotPicker label="Heure" date={wizard.date} value={wizard.time} onChange={wizard.setTime} />
         </div>
       </div>
-      <p className="kd-field-hint">Réservation possible à partir de {wizard.firstAvailableTime}.</p>
+      {wizard.firstAvailableTime && <p className="kd-field-hint">Réservation possible à partir de {wizard.firstAvailableTime}.</p>}
       {wizard.sameAddress && <p className="kd-field-error" role="alert">Le départ et la destination sont identiques.</p>}
       {wizard.searchError && <p className="kd-field-error" role="alert">{wizard.searchError}</p>}
       <button type="button" className="kd-btn kd-btn--gold kd-btn--block" disabled={!wizard.searchValid || wizard.searchBusy} onClick={() => void wizard.submitSearch()}>
