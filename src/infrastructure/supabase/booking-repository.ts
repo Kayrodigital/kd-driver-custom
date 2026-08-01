@@ -54,11 +54,25 @@ export class SupabaseReservationRepository implements ReservationRepository {
       route_encoded_polyline: record.route.encodedPolyline ?? null,
       route_calculated_at: new Date().toISOString(),
     };
-    const inserted = await supabase.from("reservations").upsert(payload, { onConflict: "idempotency_key", ignoreDuplicates: true }).select("public_reference").maybeSingle();
+    const inserted = await supabase.from("reservations").upsert(payload, { onConflict: "idempotency_key", ignoreDuplicates: true }).select("id,public_reference").maybeSingle();
     if (inserted.error) throw inserted.error;
-    if (inserted.data) return { reference: inserted.data.public_reference, created: true };
-    const existing = await supabase.from("reservations").select("public_reference").eq("idempotency_key", record.request.idempotencyKey).single();
+    if (inserted.data) return { id: inserted.data.id, reference: inserted.data.public_reference, created: true };
+    const existing = await supabase.from("reservations").select("id,public_reference").eq("idempotency_key", record.request.idempotencyKey).single();
     if (existing.error) throw existing.error;
-    return { reference: existing.data.public_reference, created: false };
+    return { id: existing.data.id, reference: existing.data.public_reference, created: false };
+  }
+
+  /**
+   * Lecture-puis-écriture (pas de fonction Postgres atomique — en créer une
+   * serait aussi une migration). Risque de concurrence négligeable : appelé
+   * juste après la création d'une réservation neuve, dont `history` vaut
+   * encore `[]` à ce stade.
+   */
+  async appendHistoryEvent(id: string, entry: Record<string, unknown>) {
+    const supabase = createAdminClient();
+    const current = await supabase.from("reservations").select("history").eq("id", id).maybeSingle();
+    if (current.error || !current.data) return;
+    const history = [...(current.data.history ?? []), { at: new Date().toISOString(), ...entry }];
+    await supabase.from("reservations").update({ history }).eq("id", id);
   }
 }

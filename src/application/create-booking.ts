@@ -2,6 +2,7 @@ import { reservationRequestSchema, type ReservationRequest } from "@/domain/book
 import type { RouteResult } from "@/domain/maps/route";
 import { calculatePrice } from "@/domain/pricing/pricing-engine";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
+import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { MapsProvider } from "@/infrastructure/maps/maps-provider";
 
 export type ReservationStatus = "new" | "quote_requested";
@@ -25,7 +26,8 @@ export type ReservationRecord = {
 };
 
 export interface ReservationRepository {
-  create(record: ReservationRecord): Promise<{ reference: string; created: boolean }>;
+  create(record: ReservationRecord): Promise<{ id: string; reference: string; created: boolean }>;
+  appendHistoryEvent?(id: string, entry: Record<string, unknown>): Promise<void>;
 }
 
 function createReference(now: Date): string {
@@ -64,6 +66,25 @@ export async function createReservation(untrustedInput: unknown, repository: Res
       passengers: request.passengers,
       luggage: request.luggage,
       pricing,
+    },
+    // Réservé à l'orchestration des notifications propriétaire côté Route
+    // Handler (cf. src/app/api/reservations/route.ts) : ne pas renvoyer
+    // ce champ tel quel dans la réponse HTTP au client.
+    notificationContext: {
+      createdAt: now.toISOString(),
+      customerName: request.customer.firstName ?? null,
+      customerEmail: request.customer.email ?? null,
+      pickupAddress: request.pickup.address,
+      destinationAddress: request.destination.address,
+      pickupAt: request.pickupAt,
+      distanceMeters: route.distanceMeters,
+      durationSeconds: route.durationSeconds,
+      vehicleLabel: vehicleCatalog.find((v) => v.slug === request.vehicleSlug)?.label ?? request.vehicleSlug,
+      passengers: request.passengers,
+      luggage: request.luggage,
+      optionsSummary: composedNotes,
+      pricing,
+      status,
     },
   };
 }

@@ -6,9 +6,9 @@ class MemoryRepository implements ReservationRepository {
   records = new Map<string, ReservationRecord>();
   async create(record: ReservationRecord) {
     const existing = this.records.get(record.request.idempotencyKey);
-    if (existing) return { reference: existing.reference, created: false };
+    if (existing) return { id: existing.reference, reference: existing.reference, created: false };
     this.records.set(record.request.idempotencyKey, record);
-    return { reference: record.reference, created: true };
+    return { id: record.reference, reference: record.reference, created: true };
   }
 }
 
@@ -62,5 +62,15 @@ describe("createReservation", () => {
     const record = repository.records.values().next().value;
     expect(record?.pricing.mode).toBe("quote");
     expect(record?.status).toBe("quote_requested");
+  });
+
+  it("expose un notificationContext exploitable pour la notification propriétaire", async () => {
+    const repository = new MemoryRepository();
+    const result = await createReservation({ ...validRequest, idempotencyKey: "9f1b2c3d-4e5f-6789-abcd-ef0123456789" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    expect(result.id).toBeTruthy();
+    expect(result.notificationContext.customerName).toBe("Client");
+    expect(result.notificationContext.vehicleLabel).toBe("Berline");
+    expect(result.notificationContext.pricing.mode).toBe("calculated");
+    expect(result.notificationContext.status).toBe("new");
   });
 });
