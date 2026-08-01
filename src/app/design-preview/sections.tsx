@@ -114,6 +114,7 @@ export function VehiclesSection() {
                 <small>{vehicle.mode}</small>
               </div>
               <p className="kd-body">{vehicle.body}</p>
+              <span className="kd-card-link">En savoir plus <span aria-hidden="true">→</span></span>
             </Link>
           ))}
         </div>
