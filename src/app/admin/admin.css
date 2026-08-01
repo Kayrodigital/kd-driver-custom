@@ -58,6 +58,14 @@
 .kd-admin-fiche-row span:first-child { color: var(--kd-muted); }
 .kd-admin-back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--kd-gold); margin-bottom: var(--kd-space-4); }
 
+/* Actions destructives (refuser / annuler) : séparées visuellement du
+   reste des actions rapides, toujours en bas du panneau. */
+.kd-admin-danger-zone {
+  display: grid; gap: 10px; margin-top: 8px; padding-top: 14px;
+  border-top: 1px solid var(--kd-line);
+}
+.kd-more-toggle--danger { color: #a13a3a; }
+
 @media (min-width: 900px) {
   .kd-admin-fiche { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
 }

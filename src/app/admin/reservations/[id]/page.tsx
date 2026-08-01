@@ -3,15 +3,25 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
+import type { HistoryEntry } from "../../history-entry";
 import { statusLabel, statusPillClassName } from "../../status-labels";
-import { adjustPrice, confirmEstimatedPrice, markContacted, setQuotePrice } from "./actions";
+import {
+  acceptReservation,
+  adjustPrice,
+  cancelConfirmedReservation,
+  completeReservation,
+  confirmEstimatedPrice,
+  declineReservation,
+  markContacted,
+  setQuotePrice,
+} from "./actions";
+import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Fiche réservation | Administration KDRIVE", robots: { index: false, follow: false } };
 
 type Customer = { first_name: string | null; last_name: string | null; phone: string; email: string | null };
 type Vehicle = { label: string; max_passengers: number; max_luggage: number };
-type HistoryEntry = { at: string; action: string; message: string };
 type ReservationDetail = {
   id: string;
   public_reference: string;
@@ -23,6 +33,10 @@ type ReservationDetail = {
   confirmed_price_cents: number | null;
   price_adjustment_reason: string | null;
   price_confirmed_at: string | null;
+  contacted_at: string | null;
+  confirmed_at: string | null;
+  cancelled_at: string | null;
+  completed_at: string | null;
   pricing_mode: string;
   pricing_rule_version: string;
   pricing_snapshot: PricingResult | null;
@@ -55,6 +69,7 @@ const errorMessages: Record<string, string> = {
   reason_required: "Le motif est obligatoire pour ajuster un tarif.",
   invalid_amount: "Le montant saisi est invalide.",
   invalid_transition: "Cette action n’est plus disponible pour l’état actuel de la réservation.",
+  price_not_confirmed: "Confirmez ou définissez d’abord le tarif avant d’accepter cette course.",
   update_failed: "L’enregistrement a échoué. Réessayez.",
   not_found: "Réservation introuvable.",
 };
@@ -64,6 +79,10 @@ const successMessages: Record<string, string> = {
   price_confirmed: "Tarif estimé confirmé.",
   price_adjusted: "Tarif ajusté avec le motif renseigné.",
   price_set: "Tarif défini pour cette demande sur devis.",
+  reservation_confirmed: "Course acceptée.",
+  reservation_declined: "Course refusée.",
+  reservation_cancelled: "Course annulée.",
+  reservation_completed: "Course marquée comme terminée.",
 };
 
 function one<T>(value: T | T[] | null): T | null {
@@ -86,6 +105,10 @@ function whatsappLink(reservation: ReservationDetail, phone: string): string {
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
+function formatDateTime(value: string): string {
+  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
+}
+
 export default async function ReservationDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string; success?: string }> }) {
   const { id } = await params;
   const { error: errorCode, success: successCode } = await searchParams;
@@ -93,7 +116,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
   const { data, error } = await supabase
     .from("reservations")
     .select(
-      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
+      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,contacted_at,confirmed_at,cancelled_at,completed_at,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
     )
     .eq("id", id)
     .maybeSingle();
@@ -107,16 +130,29 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
   const pricing = reservation.pricing_snapshot;
   const history = [...(reservation.history ?? [])].sort((a, b) => b.at.localeCompare(a.at));
 
-  const isOpen = reservation.status !== "completed" && reservation.status !== "cancelled";
-  const canMarkContacted = isOpen && reservation.status !== "contacted";
-  const canConfirmEstimated = isOpen && reservation.pricing_mode === "calculated" && reservation.pricing_status === "estimated";
-  const canAdjust = isOpen && reservation.pricing_status !== "quote_required";
-  const canSetQuotePrice = isOpen && reservation.pricing_mode === "quote" && reservation.pricing_status === "quote_required";
+  const status = reservation.status;
+  const isOpen = status !== "completed" && status !== "cancelled";
+  const pricingContext = { pricingMode: reservation.pricing_mode, pricingStatus: reservation.pricing_status, confirmedPriceCents: reservation.confirmed_price_cents };
+
+  const showMarkContacted = canMarkContacted(status);
+  const showConfirmEstimated = isOpen && reservation.pricing_mode === "calculated" && reservation.pricing_status === "estimated";
+  const showAdjust = isOpen && reservation.pricing_status !== "quote_required";
+  const showSetQuotePrice = isOpen && reservation.pricing_mode === "quote" && reservation.pricing_status === "quote_required";
+  const priceConfirmed = priceIsConfirmed(pricingContext);
+  const showAccept = canAccept(status, pricingContext);
+  const showAcceptBlocked = !showAccept && new Set(["new", "contacted", "quote_requested"]).has(status) && !priceConfirmed;
+  const showDecline = canDecline(status);
+  const showCancelConfirmed = canCancelConfirmed(status);
+  const showComplete = canComplete(status);
 
   const markContactedWithId = markContacted.bind(null, id);
   const confirmEstimatedPriceWithId = confirmEstimatedPrice.bind(null, id);
   const adjustPriceWithId = adjustPrice.bind(null, id);
   const setQuotePriceWithId = setQuotePrice.bind(null, id);
+  const acceptReservationWithId = acceptReservation.bind(null, id);
+  const declineReservationWithId = declineReservation.bind(null, id);
+  const cancelConfirmedReservationWithId = cancelConfirmedReservation.bind(null, id);
+  const completeReservationWithId = completeReservation.bind(null, id);
 
   return (
     <main className="kd-admin-main kd-on-cream">
@@ -128,7 +164,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <p className="kd-eyebrow">Réservation {reservation.public_reference}</p>
             <h1 className="kd-h2">{customer ? [customer.first_name, customer.last_name].filter(Boolean).join(" ") || "Client" : "Client"}</h1>
           </div>
-          <span className={statusPillClassName(reservation.status)}>{statusLabel(reservation.status)}</span>
+          <span className={statusPillClassName(status)}>{statusLabel(status)}</span>
         </div>
 
         {errorCode && <p className="kd-field-error" role="alert">{errorMessages[errorCode] ?? "Une erreur est survenue."}</p>}
@@ -162,7 +198,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <p className="kd-admin-fiche-row"><span>Tarif confirmé</span><span>{reservation.confirmed_price_cents !== null ? formatEuros(reservation.confirmed_price_cents) : "Non confirmé"}</span></p>
             <p className="kd-admin-fiche-row"><span>État tarifaire</span><span>{reservation.pricing_status ? (pricingStatusLabels[reservation.pricing_status] ?? reservation.pricing_status) : "—"}</span></p>
             {reservation.price_adjustment_reason && <p className="kd-admin-fiche-row"><span>Motif d’ajustement</span><span>{reservation.price_adjustment_reason}</span></p>}
-            {reservation.price_confirmed_at && <p className="kd-admin-fiche-row"><span>Confirmé le</span><span>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(reservation.price_confirmed_at))}</span></p>}
+            {reservation.price_confirmed_at && <p className="kd-admin-fiche-row"><span>Confirmé le</span><span>{formatDateTime(reservation.price_confirmed_at)}</span></p>}
             <p className="kd-admin-fiche-row"><span>Règle tarifaire</span><span>{reservation.pricing_rule_version}</span></p>
             {pricing && pricing.mode === "calculated" && (
               <details>
@@ -179,15 +215,26 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Mode de paiement</h2>
             <p className="kd-body" style={{ margin: 0, color: "var(--kd-muted)" }}>Non défini pour l’instant (à venir avec l’intégration du paiement).</p>
 
+            <h2 className="kd-h4" style={{ marginTop: 8 }}>Suivi du statut</h2>
+            {reservation.contacted_at && <p className="kd-admin-fiche-row"><span>Contactée le</span><span>{formatDateTime(reservation.contacted_at)}</span></p>}
+            {reservation.confirmed_at && <p className="kd-admin-fiche-row"><span>Confirmée le</span><span>{formatDateTime(reservation.confirmed_at)}</span></p>}
+            {reservation.completed_at && <p className="kd-admin-fiche-row"><span>Terminée le</span><span>{formatDateTime(reservation.completed_at)}</span></p>}
+            {reservation.cancelled_at && <p className="kd-admin-fiche-row"><span>Annulée le</span><span>{formatDateTime(reservation.cancelled_at)}</span></p>}
+
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Historique</h2>
             {history.length === 0 ? (
               <p className="kd-body" style={{ margin: 0, color: "var(--kd-muted)" }}>Aucun événement enregistré.</p>
             ) : (
               <ul className="kd-price-detail">
                 {history.map((entry, index) => (
-                  <li key={`${entry.at}-${index}`}>
-                    <span>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(entry.at))}</span>
-                    <span>{entry.message}</span>
+                  <li key={`${entry.at}-${index}`} style={{ alignItems: "flex-start" }}>
+                    <span style={{ whiteSpace: "nowrap" }}>{formatDateTime(entry.at)}</span>
+                    <span style={{ textAlign: "right" }}>
+                      {entry.message}
+                      {entry.from_status && entry.to_status && (
+                        <><br /><small style={{ color: "var(--kd-muted)" }}>{statusLabel(entry.from_status)} → {statusLabel(entry.to_status)}</small></>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -200,32 +247,43 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             {customer?.phone && <a className="kd-btn kd-btn--outline kd-btn--block" href={`tel:${customer.phone}`}>Appeler {customer.phone}</a>}
             {customer?.phone && <a className="kd-btn kd-btn--gold kd-btn--block" href={whatsappLink(reservation, customer.phone)} target="_blank" rel="noreferrer">WhatsApp</a>}
 
-            {canMarkContacted && (
+            {showAccept && (
+              <form action={acceptReservationWithId}>
+                <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Accepter la course</button>
+              </form>
+            )}
+            {showAcceptBlocked && (
+              <p className="kd-field-hint" style={{ margin: 0 }}>
+                {reservation.pricing_mode === "quote" ? "Définissez d’abord un tarif pour pouvoir accepter cette course." : "Confirmez ou ajustez d’abord le tarif estimé pour pouvoir accepter cette course."}
+              </p>
+            )}
+
+            {showMarkContacted && (
               <form action={markContactedWithId}>
                 <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Marquer comme contacté</button>
               </form>
             )}
 
-            {canConfirmEstimated && (
+            {showConfirmEstimated && (
               <form action={confirmEstimatedPriceWithId}>
-                <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">
+                <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">
                   Confirmer le tarif estimé ({formatEuros(reservation.estimated_price_cents ?? 0)})
                 </button>
               </form>
             )}
 
-            {canSetQuotePrice && (
-              <form action={setQuotePriceWithId} className="kd-stack" style={{ display: "grid", gap: 10 }}>
+            {showSetQuotePrice && (
+              <form action={setQuotePriceWithId} style={{ display: "grid", gap: 10 }}>
                 <label className="kd-field">
                   <span className="kd-field-label">Définir un tarif (€)</span>
                   <input className="kd-input" type="number" name="amount" min="0" step="0.01" required />
                 </label>
-                <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Définir ce tarif</button>
+                <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Définir ce tarif</button>
               </form>
             )}
 
-            {canAdjust && (
-              <form action={adjustPriceWithId} className="kd-stack" style={{ display: "grid", gap: 10 }}>
+            {showAdjust && (
+              <form action={adjustPriceWithId} style={{ display: "grid", gap: 10 }}>
                 <label className="kd-field">
                   <span className="kd-field-label">Ajuster le tarif (€)</span>
                   <input className="kd-input" type="number" name="amount" min="0" step="0.01" required />
@@ -238,11 +296,51 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
               </form>
             )}
 
-            {!isOpen && <p className="kd-field-hint" style={{ margin: 0 }}>Réservation {statusLabel(reservation.status).toLowerCase()} — aucune action disponible.</p>}
-            <p className="kd-field-hint" style={{ margin: 0 }}>Accepter, refuser et terminer arrivent en Phase 5.2B.</p>
+            {showComplete && (
+              <details>
+                <summary className="kd-more-toggle">Marquer comme terminée</summary>
+                <form action={completeReservationWithId} style={{ marginTop: 10 }}>
+                  <p className="kd-field-hint">Confirmez : la course sera marquée comme terminée.</p>
+                  <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Confirmer — course terminée</button>
+                </form>
+              </details>
+            )}
+
+            {(showDecline || showCancelConfirmed) && (
+              <div className="kd-admin-danger-zone">
+                {showCancelConfirmed && (
+                  <details>
+                    <summary className="kd-more-toggle kd-more-toggle--danger">Annuler la course</summary>
+                    <form action={cancelConfirmedReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                      <p className="kd-field-hint">Cette course est confirmée. L’annulation est définitive ; les données restent conservées.</p>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Motif interne (facultatif)</span>
+                        <input className="kd-input" type="text" name="reason" maxLength={300} />
+                      </label>
+                      <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer l’annulation</button>
+                    </form>
+                  </details>
+                )}
+                {showDecline && (
+                  <details>
+                    <summary className="kd-more-toggle kd-more-toggle--danger">Refuser la course</summary>
+                    <form action={declineReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                      <p className="kd-field-hint">La réservation sera conservée avec le statut « Annulée ».</p>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Motif interne (facultatif)</span>
+                        <input className="kd-input" type="text" name="reason" maxLength={300} />
+                      </label>
+                      <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer le refus</button>
+                    </form>
+                  </details>
+                )}
+              </div>
+            )}
+
+            {!isOpen && <p className="kd-field-hint" style={{ margin: 0 }}>Réservation {statusLabel(status).toLowerCase()} — aucune action de statut disponible.</p>}
 
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Suivi</h2>
-            <p className="kd-admin-fiche-row"><span>Créée le</span><span>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(reservation.created_at))}</span></p>
+            <p className="kd-admin-fiche-row"><span>Créée le</span><span>{formatDateTime(reservation.created_at)}</span></p>
           </div>
         </div>
       </div>
