@@ -32,7 +32,7 @@ function PaymentChoice() {
       <div style={{ display: "grid", gap: 8, marginTop: 10 }}>
         <label className="wf-chip is-active" style={{ display: "flex", justifyContent: "space-between" }}>Payer au chauffeur <span className="wf-pill">Recommandé</span></label>
         <label className="wf-chip" style={{ display: "flex" }}>Payer en ligne (Stripe, facultatif)</label>
-        <label className="wf-chip" style={{ display: "flex" }}>Recevoir d’abord la confirmation KD Driver</label>
+        <label className="wf-chip" style={{ display: "flex" }}>Recevoir d’abord la confirmation KDRIVE</label>
       </div>
     </div>
   );

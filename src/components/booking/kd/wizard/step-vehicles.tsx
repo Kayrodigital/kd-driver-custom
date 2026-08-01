@@ -32,9 +32,9 @@ export function StepVehicles({ wizard }: { wizard: ReturnType<typeof useBookingW
           const option = wizard.vehicleOptions.find((o) => o.category === vehicle.slug);
           const isQuote = option?.pricing.mode === "quote";
           return (
-            <div key={vehicle.slug} className="kd-card kd-card--hover kd-vehicle-card">
-              <SceneImage className="kd-vehicle-card-image" src={vehicle.image} alt={vehicle.label} note="photo à venir" style={{ minHeight: 80, borderRadius: "var(--kd-radius-md)", margin: 0 }} />
-              <div className="kd-vehicle-card-body" style={{ minWidth: 0 }}>
+            <div key={vehicle.slug} className="kd-card kd-card--hover kd-wizard-vehicle-card">
+              <SceneImage className="kd-wizard-vehicle-card-image" src={vehicle.image} alt={vehicle.label} note="photo à venir" style={{ minHeight: 80, borderRadius: "var(--kd-radius-md)", margin: 0 }} />
+              <div className="kd-wizard-vehicle-card-body" style={{ minWidth: 0 }}>
                 <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
                   <b>{vehicle.label}</b>
                   {isQuote ? (
@@ -45,7 +45,7 @@ export function StepVehicles({ wizard }: { wizard: ReturnType<typeof useBookingW
                 </div>
                 <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>{vehicle.body} · {vehicle.passengers} passagers · {vehicle.luggage} bagages</p>
               </div>
-              <button type="button" className="kd-btn kd-btn--outline kd-vehicle-card-action" onClick={() => wizard.selectVehicle(vehicle.slug as VehicleSlug)}>Choisir</button>
+              <button type="button" className="kd-btn kd-btn--outline kd-wizard-vehicle-card-action" onClick={() => wizard.selectVehicle(vehicle.slug as VehicleSlug)}>Choisir</button>
             </div>
           );
         })}

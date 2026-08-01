@@ -5,7 +5,7 @@ function ConfirmationBody() {
     <div className="wf-card" style={{ textAlign: "center" }}>
       <div className="wf-icon-dot" style={{ width: 40, height: 40, fontSize: "1.1rem", background: "var(--wf-success-bg)", color: "var(--wf-success)", margin: "0 auto 10px" }}>✓</div>
       <b>Votre demande a bien été transmise.</b>
-      <p style={{ fontSize: "0.84rem", color: "var(--wf-muted)", margin: "6px 0 14px" }}>KD Driver vous confirme rapidement la disponibilité et le tarif.</p>
+      <p style={{ fontSize: "0.84rem", color: "var(--wf-muted)", margin: "6px 0 14px" }}>KDRIVE vous confirme rapidement la disponibilité et le tarif.</p>
       <p style={{ fontSize: "0.82rem", margin: "0 0 4px" }}>Référence <b>KD-20260820-A1B2C3</b> · <span className="wf-pill">Devis demandé</span></p>
       <p style={{ fontSize: "0.82rem", color: "var(--wf-muted)" }}>Gare Part-Dieu → Aéroport · 20 août, 15:00 · Berline · Payer au chauffeur</p>
       <div className="wf-chip-row" style={{ justifyContent: "center", marginTop: 14 }}>

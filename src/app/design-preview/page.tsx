@@ -192,7 +192,7 @@ function MobilePreview() {
             <div className="kd-mobile-footer">
               <Logo size={22} />
               <span>06 52 21 12 92 · Lyon, France</span>
-              <span>© {new Date().getFullYear()} KD Driver</span>
+              <span>© {new Date().getFullYear()} KDRIVE</span>
             </div>
           </div>
         </div>
@@ -205,7 +205,7 @@ export default function DesignPreviewPage() {
   return (
     <>
       <div className="kd-preview-topbar">
-        <strong>KD Driver — Direction artistique (validation)</strong>
+        <strong>KDRIVE — Direction artistique (validation)</strong>
         <nav className="kd-preview-nav">
           <a href="#design-system">Design system</a>
           <a href="#desktop">Desktop A/B</a>

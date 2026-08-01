@@ -6,7 +6,7 @@ const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", 
 const sans = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--kd-font-sans" });
 
 export const metadata: Metadata = {
-  title: "Direction artistique | KD Driver",
+  title: "Direction artistique | KDRIVE",
   description: "Maquette de validation — design system et variantes de page d’accueil.",
   robots: { index: false, follow: false },
 };

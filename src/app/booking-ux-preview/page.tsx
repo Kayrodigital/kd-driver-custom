@@ -30,7 +30,7 @@ export default function BookingUxPreviewPage() {
   return (
     <>
       <div className="wf-topbar">
-        <strong>KD Driver — UX Preview · Module de réservation (sprint UX, aucun impact production)</strong>
+        <strong>KDRIVE — UX Preview · Module de réservation (sprint UX, aucun impact production)</strong>
         <nav>{navItems.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>
       </div>
 
@@ -39,7 +39,7 @@ export default function BookingUxPreviewPage() {
           <p className="wf-kicker">Sprint UX</p>
           <h1 className="wf-h1">Écrans du module de réservation</h1>
           <p className="wf-lead">
-            Cette page présente l’expérience complète cible du module de réservation KD Driver : parcours client,
+            Cette page présente l’expérience complète cible du module de réservation KDRIVE : parcours client,
             workflow propriétaire, huit écrans (mobile et desktop), user stories et critères d’acceptation. Il s’agit
             de wireframes — structure et hiérarchie, pas de rendu final — volontairement distincts du design de
             production pour ne pas être confondus avec un écran fini.

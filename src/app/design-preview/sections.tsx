@@ -179,7 +179,9 @@ export function ZonesSection() {
           <h2 className="kd-h2">Lyon et sa région</h2>
         </div>
         <div className="kd-zone-list">
-          {zones.map((zone) => <span key={zone} className="kd-zone-chip">{zone}</span>)}
+          {zones.map((zone, index) => (
+            <span key={zone} className={`kd-zone-chip${index === 0 ? " kd-zone-chip--primary" : ""}`}>{zone}</span>
+          ))}
         </div>
       </div>
     </section>

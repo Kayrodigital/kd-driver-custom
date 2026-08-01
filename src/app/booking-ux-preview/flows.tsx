@@ -60,7 +60,7 @@ export function OwnerFlowSection() {
       <div className="wf-container">
         <div className="wf-section-head">
           <p className="wf-kicker">Workflow propriétaire</p>
-          <h2 className="wf-h2">Traitement d’une demande côté KD Driver</h2>
+          <h2 className="wf-h2">Traitement d’une demande côté KDRIVE</h2>
           <p className="wf-lead">De la réception de la demande jusqu’à la course terminée, avec un statut explicite à chaque étape.</p>
         </div>
         <FlowDiagram steps={ownerFlow} />

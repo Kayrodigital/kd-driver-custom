@@ -70,27 +70,27 @@ export const userStories: UserStory[] = [
     criteria: ["La référence de la demande est visible immédiatement.", "Le message distingue « réservation confirmée » de « demande transmise, en attente ».", "Toutes les informations saisies (trajet, véhicule, tarif, contact) sont récapitulées."],
   },
   {
-    role: "visiteur", goal: "appeler ou contacter KD Driver", benefit: "obtenir une réponse rapide en cas de besoin",
-    criteria: ["Un bouton Appeler et un bouton WhatsApp sont visibles sur l’écran de confirmation.", "Le numéro utilisé est celui de KD Driver, jamais celui du client."],
+    role: "visiteur", goal: "appeler ou contacter KDRIVE", benefit: "obtenir une réponse rapide en cas de besoin",
+    criteria: ["Un bouton Appeler et un bouton WhatsApp sont visibles sur l’écran de confirmation.", "Le numéro utilisé est celui de KDRIVE, jamais celui du client."],
   },
   {
-    role: "équipe KD Driver", goal: "voir une nouvelle réservation", benefit: "la traiter sans délai",
+    role: "équipe KDRIVE", goal: "voir une nouvelle réservation", benefit: "la traiter sans délai",
     criteria: ["La demande apparaît dans la liste avec référence, trajet, date, téléphone et statut.", "Le statut initial est « Nouvelle » ou « Devis demandé » selon le cas."],
   },
   {
-    role: "équipe KD Driver", goal: "modifier ou confirmer un tarif", benefit: "ajuster le prix avant paiement",
+    role: "équipe KDRIVE", goal: "modifier ou confirmer un tarif", benefit: "ajuster le prix avant paiement",
     criteria: ["Le tarif final est modifiable depuis la fiche réservation.", "La modification est tracée dans l’historique des événements."],
   },
   {
-    role: "équipe KD Driver", goal: "générer un lien Stripe", benefit: "proposer un paiement en ligne à la demande",
+    role: "équipe KDRIVE", goal: "générer un lien Stripe", benefit: "proposer un paiement en ligne à la demande",
     criteria: ["Le lien est généré à la demande depuis la fiche, jamais automatiquement.", "Le lien généré peut être copié et renvoyé au client."],
   },
   {
-    role: "équipe KD Driver", goal: "mettre à jour le statut", benefit: "refléter l’avancement réel de la course",
+    role: "équipe KDRIVE", goal: "mettre à jour le statut", benefit: "refléter l’avancement réel de la course",
     criteria: ["Les statuts disponibles correspondent à la liste validée (Nouvelle → … → Terminée/Annulée).", "Chaque changement de statut est horodaté dans l’historique."],
   },
   {
-    role: "équipe KD Driver", goal: "terminer ou annuler une réservation", benefit: "clore proprement le dossier",
+    role: "équipe KDRIVE", goal: "terminer ou annuler une réservation", benefit: "clore proprement le dossier",
     criteria: ["L’annulation demande une confirmation explicite avant d’être appliquée.", "Une réservation terminée reste consultable dans l’historique, avec son statut final."],
   },
 ];

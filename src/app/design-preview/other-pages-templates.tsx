@@ -1,5 +1,7 @@
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
+import { pricingConfig } from "@/domain/pricing/pricing-config";
+import { formatEuros } from "@/domain/pricing/money";
 
 function PageShell({ children, framed = true }: { children: React.ReactNode; framed?: boolean }) {
   const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
@@ -62,6 +64,24 @@ export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   );
 }
 
+const tariffLabels: Record<string, string> = { berline: "Berline", confort: "Confort", van: "Van", luxe: "Luxe", monospace: "Monospace" };
+const tariffOrder = ["berline", "confort", "van", "luxe", "monospace"];
+
+const tariffCards = tariffOrder.map((slug) => {
+  const category = pricingConfig.categories[slug];
+  const label = tariffLabels[slug] ?? slug;
+  if (!category || category.mode === "quote") return { label, quote: true, lines: [] as string[] };
+  return {
+    label,
+    quote: false,
+    lines: [
+      `Prise en charge : ${formatEuros(category.baseFee * 100)}`,
+      `${formatEuros(category.pricePerKm * 100)}/km`,
+      `Minimum : ${formatEuros(category.minimumPrice * 100)}`,
+    ],
+  };
+});
+
 const pricingPrinciples = [
   { title: "Calculé avant confirmation", body: "Pour Berline et Confort, le prix est calculé à partir de la distance réelle et affiché avant toute confirmation." },
   { title: "Sur devis pour certains trajets", body: "Luxe, Van, Monospace et les trajets longue distance font l’objet d’un devis personnalisé." },
@@ -83,11 +103,29 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
         </div>
       </section>
       <section className="kd-section kd-on-white">
-        <div className="kd-container" style={{ maxWidth: 640 }}>
-          <p className="kd-eyebrow">Bon à savoir</p>
-          <p className="kd-body" style={{ marginTop: 12 }}>
-            Les montants précis par catégorie de véhicule sont communiqués lors de votre demande de réservation, une fois
-            le trajet renseigné. Cette page sera complétée avec la grille tarifaire dès qu’elle sera validée.
+        <div className="kd-container">
+          <div className="kd-section-head kd-section-head--center">
+            <p className="kd-eyebrow">Grille tarifaire</p>
+            <h2 className="kd-h2">Les tarifs par catégorie</h2>
+          </div>
+          <div className="kd-grid-3">
+            {tariffCards.map((card) => (
+              <div key={card.label} className="kd-card kd-card--flat">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                  <h3 className="kd-h4">{card.label}</h3>
+                  {card.quote && <span className="kd-pill">Sur devis</span>}
+                </div>
+                {!card.quote && (
+                  <ul className="kd-price-detail" style={{ marginTop: 10 }}>
+                    {card.lines.map((line) => <li key={line} style={{ justifyContent: "flex-start" }}><span>{line}</span></li>)}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-4)", maxWidth: 640 }}>
+            Le tarif affiché est une estimation calculée à partir de l’itinéraire réel au moment de la demande ; il peut
+            être ajusté par KDRIVE selon les conditions réelles de la course.
           </p>
         </div>
       </section>
@@ -111,7 +149,7 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
           <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} />
         </div>
       </section>
-      <section className="kd-section kd-on-white">
+      <section className="kd-section kd-section--compact kd-on-white">
         <div className="kd-container" style={{ maxWidth: 640 }}>
           <p className="kd-eyebrow">Notre approche</p>
           <p className="kd-lead" style={{ marginTop: 12 }}>

@@ -27,7 +27,7 @@ export function StepOptions({ wizard }: { wizard: ReturnType<typeof useBookingWi
 
       {capacityExceeded && (
         <p className="kd-field-error" role="alert">
-          {vehicle?.label} : capacité conseillée {vehicle?.passengers} passagers / {vehicle?.luggage} bagages. Vous pouvez continuer, KD Driver confirmera si besoin.
+          {vehicle?.label} : capacité conseillée {vehicle?.passengers} passagers / {vehicle?.luggage} bagages. Vous pouvez continuer, KDRIVE confirmera si besoin.
         </p>
       )}
 

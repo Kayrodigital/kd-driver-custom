@@ -78,7 +78,7 @@ export function Screen2() {
           <StateCard type="empty" label="Aucune catégorie disponible">Message « Aucun véhicule disponible pour ce trajet actuellement » + CTA retour recherche.</StateCard>
           <StateCard type="warning" label="Prix indisponible">Carte affichée avec « Tarif à confirmer » à la place du prix, CTA « Choisir » reste actif.</StateCard>
           <StateCard type="error" label="Erreur de calcul">Bandeau d’erreur au-dessus des cartes + bouton « Réessayer », résumé du trajet conservé.</StateCard>
-          <StateCard type="normal" label="Demande sur devis">Pastille « Sur devis » remplace le prix ; texte d’aide : « Tarif confirmé par KD Driver avant paiement. »</StateCard>
+          <StateCard type="normal" label="Demande sur devis">Pastille « Sur devis » remplace le prix ; texte d’aide : « Tarif confirmé par KDRIVE avant paiement. »</StateCard>
           <StateCard type="warning" label="Dépassement de capacité">Si passagers/bagages saisis à l’écran 1 dépassent la capacité d’une carte, badge d’avertissement sur cette carte plutôt que blocage.</StateCard>
         </>
       }

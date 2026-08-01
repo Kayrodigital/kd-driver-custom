@@ -36,6 +36,7 @@
   --kd-space-8: 112px;
 
   --kd-section-y: clamp(56px, 9vw, 128px);
+  --kd-section-y-compact: clamp(40px, 5vw, 72px);
   --kd-container: min(1200px, 100% - 48px);
 
   --kd-shadow-sm: 0 8px 24px rgba(20, 16, 8, 0.08);
@@ -84,6 +85,9 @@
 /* ---------- layout ---------- */
 .kd-container { width: var(--kd-container); margin: 0 auto; }
 .kd-section { padding: var(--kd-section-y) 0; }
+/* Variante pour les sections à contenu court (texte seul, peu de blocs) :
+   respiration réduite mais volontaire, pas une suppression des marges. */
+.kd-section--compact { padding: var(--kd-section-y-compact) 0; }
 .kd-on-dark { background: var(--kd-black); color: var(--kd-cream); }
 .kd-on-cream { background: var(--kd-cream-soft); }
 .kd-on-white { background: var(--kd-white); }
@@ -377,7 +381,7 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-nav-phone { text-decoration: none; }
 
 /* ---------- hero ---------- */
-.kd-hero { position: relative; overflow: hidden; padding-top: var(--kd-space-6); padding-bottom: var(--kd-space-8); }
+.kd-hero { position: relative; overflow: hidden; padding-top: var(--kd-space-7); padding-bottom: var(--kd-space-8); min-height: 640px; display: flex; align-items: center; }
 .kd-hero-bg {
   position: absolute; inset: 0;
   background:
@@ -394,8 +398,12 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-hero-copy { display: grid; gap: var(--kd-space-4); max-width: 640px; position: relative; z-index: 2; }
 .kd-hero-copy h1 { text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
 .kd-hero-copy p.kd-lead { color: var(--kd-muted-on-dark); text-shadow: 0 1px 12px rgba(0,0,0,0.35); }
-.kd-hero-badges { display: flex; gap: var(--kd-space-5); margin-top: var(--kd-space-3); flex-wrap: wrap; }
-.kd-hero-badge { font-size: 0.82rem; font-weight: 600; color: var(--kd-cream); display: flex; gap: 8px; align-items: center; }
+.kd-hero-badges { display: flex; gap: var(--kd-space-3); margin-top: var(--kd-space-3); flex-wrap: wrap; }
+.kd-hero-badge {
+  font-size: 0.8rem; font-weight: 600; color: var(--kd-cream); display: flex; gap: 8px; align-items: center;
+  padding: 8px 14px; border-radius: var(--kd-radius-pill); background: rgba(11, 10, 9, 0.45);
+  border: 1px solid rgba(245, 239, 224, 0.16); backdrop-filter: blur(2px);
+}
 .kd-hero-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--kd-gold); flex: none; }
 
 /* Variante A — formulaire horizontal sous le hero */
@@ -499,28 +507,37 @@ a.kd-card { display: block; text-decoration: none; color: var(--kd-ink); }
 .kd-card-link span { transition: transform 0.18s var(--kd-ease); }
 a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 
-.kd-advantage { display: flex; gap: var(--kd-space-3); align-items: flex-start; }
-.kd-advantage-num { font-family: var(--kd-font-display); font-size: 1.4rem; color: var(--kd-gold); flex: none; width: 40px; }
+.kd-advantage { display: flex; gap: var(--kd-space-4); align-items: flex-start; }
+.kd-advantage-num {
+  font-family: var(--kd-font-display); font-size: 1.15rem; color: var(--kd-gold); flex: none;
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--kd-gold-soft); border-radius: 50%;
+}
 
-.kd-vehicle-card {
+/* Cartes véhicule du tunnel de réservation (étape 2) : espace de noms
+   distinct de .kd-vehicle-card (page marketing /vehicules, accueil) —
+   les deux composants ont une structure HTML différente et ne doivent
+   jamais partager la même classe (chevauchement texte/image constaté). */
+.kd-wizard-vehicle-card {
   display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px;
 }
 @media (max-width: 480px) {
-  .kd-vehicle-card {
+  .kd-wizard-vehicle-card {
     grid-template-columns: 72px minmax(0, 1fr);
     grid-template-rows: auto auto;
     row-gap: 10px;
   }
-  .kd-vehicle-card-image { grid-column: 1; grid-row: 1; }
-  .kd-vehicle-card-body { grid-column: 2; grid-row: 1; }
-  .kd-vehicle-card-action { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .kd-wizard-vehicle-card-image { grid-column: 1; grid-row: 1; }
+  .kd-wizard-vehicle-card-body { grid-column: 2; grid-row: 1; }
+  .kd-wizard-vehicle-card-action { grid-column: 1 / -1; grid-row: 2; width: 100%; }
 }
 .kd-vehicle-image { aspect-ratio: 4/3; margin: -18px -18px 4px; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
 .kd-vehicle-meta { display: flex; justify-content: space-between; align-items: baseline; }
 .kd-vehicle-meta small { color: var(--kd-muted); }
 
 .kd-zone-list { display: flex; flex-wrap: wrap; gap: var(--kd-space-3); }
-.kd-zone-chip { border: 1px solid var(--kd-line-on-dark); border-radius: var(--kd-radius-pill); padding: 10px 18px; font-size: 0.85rem; color: var(--kd-cream); }
+.kd-zone-chip { border: 1px solid var(--kd-line-on-dark); border-radius: var(--kd-radius-pill); padding: 10px 18px; font-size: 0.85rem; color: var(--kd-cream); font-weight: 600; }
+.kd-zone-chip--primary { background: var(--kd-gold); border-color: var(--kd-gold); color: var(--kd-black); font-weight: 700; }
 
 .kd-cta { text-align: center; display: grid; gap: var(--kd-space-4); justify-items: center; }
 

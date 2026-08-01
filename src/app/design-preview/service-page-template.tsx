@@ -95,7 +95,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
         </div>
       </section>
 
-      <section className="kd-section kd-on-cream">
+      <section className="kd-section kd-section--compact kd-on-cream">
         <div className="kd-container" style={{ maxWidth: 640 }}>
           <p className="kd-eyebrow">Informations utiles</p>
           <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0 }}>
@@ -108,7 +108,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
         </div>
       </section>
 
-      <section className="kd-section kd-on-dark">
+      <section className="kd-section kd-section--compact kd-on-dark">
         <div className="kd-container kd-section-head--center kd-stack">
           <p className="kd-eyebrow">Réassurance</p>
           <h2 className="kd-h2">{content.reassuranceTitle}</h2>

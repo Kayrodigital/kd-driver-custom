@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 function unauthorized() {
-  return new NextResponse("Authentification requise", { status: 401, headers: { "WWW-Authenticate": 'Basic realm="KD Driver Admin", charset="UTF-8"' } });
+  return new NextResponse("Authentification requise", { status: 401, headers: { "WWW-Authenticate": 'Basic realm="KDRIVE Admin", charset="UTF-8"' } });
 }
 
 export function proxy(request: NextRequest) {
