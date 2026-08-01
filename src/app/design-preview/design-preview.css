@@ -176,6 +176,14 @@ a.kd-btn { color: var(--kd-btn-fg); }
 
 .kd-radio { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
 .kd-radio input { width: 17px; height: 17px; accent-color: var(--kd-gold); }
+.kd-checkbox-row { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+.kd-checkbox-row input { width: 17px; height: 17px; accent-color: var(--kd-gold); flex: none; }
+
+.kd-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--kd-cream); color: var(--kd-gold); border: 1px solid var(--kd-line); }
+
+.kd-wizard-progress { display: flex; gap: 6px; margin-bottom: var(--kd-space-4); }
+.kd-wizard-progress span { flex: 1; height: 3px; border-radius: 999px; background: var(--kd-line); }
+.kd-wizard-progress span.is-done, .kd-wizard-progress span.is-active { background: var(--kd-gold); }
 
 /* ---------- overrides pour le moteur de réservation réutilisé
    (AddressAutocomplete, etc.) : même logique, habillage kd-*. ---------- */

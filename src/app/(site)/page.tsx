@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookingFormCard } from "@/components/booking/kd/booking-form-card";
+import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { SceneImage } from "@/app/design-preview/scene-image";
 import {
   AdvantagesSection,
@@ -37,7 +37,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="kd-hero-form-card">
-            <BookingFormCard tone="dark" />
+            <HeroSearchForm tone="dark" />
           </div>
         </div>
       </section>

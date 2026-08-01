@@ -13,16 +13,36 @@ class MemoryRepository implements ReservationRepository {
 }
 
 const address = { address: "10 rue de Lyon, 69000 Lyon", latitude: 45.75, longitude: 4.85, placeId: "place-1", source: "autocomplete" as const, accuracyMeters: null };
-const validRequest = { idempotencyKey: "cdb9b788-e9ed-4eeb-a6b0-7604e1206b7d", pickup: address, destination: { ...address, address: "Aéroport Lyon Saint-Exupéry", placeId: "place-2" }, pickupAt: "2030-01-02T10:00:00+01:00", requestType: "estimate" as const, passengers: 2, luggage: 1, customer: { firstName: "Client", phone: "+33600000000" }, notes: "" };
+const validRequest = { idempotencyKey: "cdb9b788-e9ed-4eeb-a6b0-7604e1206b7d", pickup: address, destination: { ...address, address: "Aéroport Lyon Saint-Exupéry", placeId: "place-2" }, pickupAt: "2030-01-02T10:00:00+01:00", vehicleSlug: "berline" as const, passengers: 2, luggage: 1, customer: { firstName: "Client", phone: "+33600000000" }, notes: "" };
 
 describe("createReservation", () => {
-  it("recalcule route et prix côté serveur, sans véhicule ni e-mail obligatoires", async () => {
+  it("recalcule route et prix côté serveur, véhicule par défaut sans e-mail obligatoire", async () => {
     const repository = new MemoryRepository();
-    await createReservation({ ...validRequest, distanceMeters: 1, totalCents: 1, vehicleSlug: "luxe" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    const withoutVehicle = { ...validRequest };
+    Reflect.deleteProperty(withoutVehicle, "vehicleSlug");
+    await createReservation(withoutVehicle, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
     const record = repository.records.values().next().value;
     expect(record?.route.distanceMeters).toBe(10_000);
+    expect(record?.request.vehicleSlug).toBe("berline");
     expect(record?.pricing.totalCents).toBe(2_750);
     expect(record?.status).toBe("new");
+  });
+
+  it("calcule le tarif pour le véhicule choisi et passe sur devis pour une catégorie sur devis", async () => {
+    const repository = new MemoryRepository();
+    await createReservation({ ...validRequest, vehicleSlug: "luxe" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    const record = repository.records.values().next().value;
+    expect(record?.pricing.mode).toBe("quote");
+    expect(record?.status).toBe("quote_requested");
+  });
+
+  it("compose les notes à partir des options facultatives", async () => {
+    const repository = new MemoryRepository();
+    await createReservation({ ...validRequest, childSeat: true, flightNumber: "AF1234" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    const record = repository.records.values().next().value;
+    expect(record?.composedNotes).toContain("Siège enfant");
+    expect(record?.composedNotes).toContain("AF1234");
+    expect(record?.isAirportTrip).toBe(true);
   });
 
   it("reste idempotent", async () => {

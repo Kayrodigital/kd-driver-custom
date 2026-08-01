@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookingFormCard } from "@/components/booking/kd/booking-form-card";
+import { BookingWizard } from "@/components/booking/kd/wizard/booking-wizard";
 import { SiteNav } from "@/app/design-preview/sections";
 
 export const metadata: Metadata = { title: "Réserver | KDRIVE", robots: { index: false, follow: false } };
@@ -14,7 +14,7 @@ export default function BookingPage() {
             <p className="kd-eyebrow">Réservation</p>
             <h1 className="kd-h2">Demander une course</h1>
           </div>
-          <BookingFormCard />
+          <BookingWizard />
         </div>
       </main>
     </>
