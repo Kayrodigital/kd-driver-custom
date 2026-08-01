@@ -48,6 +48,11 @@ export class SupabaseReservationRepository implements ReservationRepository {
       pricing_rule_version: record.pricing.ruleVersion,
       pricing_snapshot: record.pricing,
       notes: record.composedNotes || null,
+      estimated_price_cents: record.pricing.totalCents,
+      pricing_status: record.pricingStatus,
+      route_provider: "google_routes",
+      route_encoded_polyline: record.route.encodedPolyline ?? null,
+      route_calculated_at: new Date().toISOString(),
     };
     const inserted = await supabase.from("reservations").upsert(payload, { onConflict: "idempotency_key", ignoreDuplicates: true }).select("public_reference").maybeSingle();
     if (inserted.error) throw inserted.error;
