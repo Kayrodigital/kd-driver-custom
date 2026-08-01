@@ -1,6 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
+
+const serviceNavItems = [
+  { label: "Transfert aéroport", href: "/transfert-aeroport" },
+  { label: "Transfert gare", href: "/transfert-gare" },
+  { label: "Chauffeur privé entreprise", href: "/chauffeur-entreprise" },
+  { label: "Mise à disposition", href: "/mise-a-disposition" },
+  { label: "Longues distances", href: "/longues-distances" },
+];
+
+const aboutNavItems = [
+  { label: "À propos", href: "/a-propos" },
+  { label: "Contact", href: "/contact" },
+  { label: "FAQ", href: "/faq" },
+];
 
 const services = [
   { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
@@ -37,10 +52,10 @@ export function SiteNav() {
     <div className="kd-container kd-nav">
       <Link href="/" aria-label="KDRIVE, accueil"><Logo /></Link>
       <ul className="kd-nav-links">
-        <li><Link href="/#services">Services</Link></li>
+        <li><NavDropdown label="Services" items={serviceNavItems} /></li>
         <li><Link href="/vehicules">Véhicules</Link></li>
-        <li><Link href="/chauffeur-entreprise">Entreprise</Link></li>
-        <li><Link href="/#zones">Zones desservies</Link></li>
+        <li><Link href="/tarifs">Tarifs</Link></li>
+        <li><NavDropdown label="À propos" items={aboutNavItems} /></li>
       </ul>
       <div className="kd-nav-actions">
         <a className="kd-nav-phone" href="tel:+33652211292">06 52 21 12 92</a>
