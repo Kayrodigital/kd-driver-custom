@@ -11,7 +11,7 @@ function TrajetMobile() {
         <div className="wf-field"><span className="wf-field-label">Date</span><div className="wf-input">08/02/2026</div></div>
         <div className="wf-field"><span className="wf-field-label">Heure</span><div className="wf-input">13:45</div></div>
       </div>
-      <p className="wf-note">Réservation possible à partir de 15 minutes suivant l’heure actuelle.</p>
+      <p className="wf-note">Réservation possible à partir de 15 minutes suivant l’heure actuelle.</p>
       <div className="wf-card"><p style={{ margin: 0, fontSize: "0.82rem" }}>Distance estimée : 28 km · Durée estimée : ≈ 32 min</p></div>
       <button className="wf-btn wf-btn--primary wf-btn--block">Voir les véhicules et les tarifs</button>
     </>
@@ -27,7 +27,7 @@ function TrajetDesktop() {
         <div className="wf-field" style={{ flex: 1, minWidth: 110 }}><span className="wf-field-label">Heure</span><div className="wf-input">13:45</div></div>
         <button className="wf-btn wf-btn--primary" style={{ flex: "none" }}>Voir les véhicules et les tarifs</button>
       </div>
-      <div className="wf-media-block" style={{ marginTop: 16 }}>Carte — aperçu de l’itinéraire (28 km · ≈ 32 min)</div>
+      <div className="wf-media-block" style={{ marginTop: 16 }}>Carte — aperçu de l’itinéraire (28 km · ≈ 32 min)</div>
     </div>
   );
 }
@@ -35,7 +35,7 @@ export function ScreenTrajet() {
   return (
     <ScreenShell
       id="screen-c1" kicker="Écran client 1" title="Recherche du trajet"
-      lead="Délai minimum de réservation validé : 15 minutes (et non 30). Suggestions de lieux, carte, distance et durée affichées dès que possible."
+      lead="Délai minimum de réservation validé : 15 minutes (et non 30). Suggestions de lieux, carte, distance et durée affichées dès que possible. Le type de trajet (course standard de moins de 10 km, de 10 km ou plus, ou transfert aéroport/longue distance) est détecté automatiquement à partir de la distance et de la destination."
       mobile={<TrajetMobile />} desktop={<TrajetDesktop />}
       states={
         <>
@@ -43,8 +43,8 @@ export function ScreenTrajet() {
           <StateCard type="loading" label="Itinéraire en calcul">Distance/durée en cours de calcul via Google Routes.</StateCard>
           <StateCard type="success" label="Itinéraire calculé">Distance, durée et tarif estimé affichés.</StateCard>
           <StateCard type="error" label="Erreur Google Maps">Message générique, CTA reste actif pour réessayer.</StateCard>
-          <StateCard type="warning" label="Trajet sur devis">Distance hors zone calculée automatiquement — mention « devis personnalisé » plutôt qu’un tarif chiffré.</StateCard>
-          <StateCard type="warning" label="Heure trop proche">Message si l’heure demandée est à moins de 15 minutes de l’heure actuelle.</StateCard>
+          <StateCard type="warning" label="Trajet sur devis">Distance hors zone calculée automatiquement — mention « devis personnalisé » plutôt qu’un tarif chiffré.</StateCard>
+          <StateCard type="warning" label="Heure trop proche">Message si l’heure demandée est à moins de 15 minutes de l’heure actuelle.</StateCard>
         </>
       }
     />
@@ -53,11 +53,11 @@ export function ScreenTrajet() {
 
 /* ---------- Écran client 2 — Catégorie ---------- */
 const categories = [
-  { name: "Confort", mode: "Prix calculé", passengers: "4 passagers", luggage: "2 bagages", usage: "Trajets du quotidien" },
-  { name: "Berline", mode: "Prix calculé", passengers: "4 passagers", luggage: "2 bagages", usage: "Trajets individuels ou en petit groupe" },
-  { name: "Luxe", mode: "Sur devis", passengers: "4 passagers", luggage: "2 bagages", usage: "Prestation haut de gamme" },
-  { name: "Van", mode: "Sur devis", passengers: "7 passagers", luggage: "Bagages nombreux", usage: "Groupes et transferts aéroport" },
-  { name: "Monospace", mode: "Sur devis", passengers: "6 passagers", luggage: "Bagages limités", usage: "Familles, petits groupes" },
+  { name: "Confort", mode: "Prix calculé", minimum: "", passengers: "4 passagers", luggage: "2 bagages", usage: "Trajets du quotidien" },
+  { name: "Berline", mode: "Prix calculé", minimum: "", passengers: "4 passagers", luggage: "2 bagages", usage: "Trajets individuels ou en petit groupe" },
+  { name: "Luxe", mode: "Prix calculé", minimum: "Minimum 40 €", passengers: "4 passagers", luggage: "2 bagages", usage: "Prestation haut de gamme" },
+  { name: "Van", mode: "Sur devis", minimum: "", passengers: "7 passagers", luggage: "Bagages nombreux", usage: "Groupes et transferts aéroport" },
+  { name: "Monospace", mode: "Sur devis", minimum: "", passengers: "6 passagers", luggage: "Bagages limités", usage: "Familles, petits groupes" },
 ];
 function CategorieMobile() {
   return (
@@ -67,9 +67,10 @@ function CategorieMobile() {
           <div className="wf-row" style={{ justifyContent: "space-between" }}><b>{c.name}</b><span className="wf-pill">{c.mode}</span></div>
           <p style={{ margin: "6px 0 0", fontSize: "0.82rem", color: "var(--wf-muted)" }}>{c.passengers} · {c.luggage}</p>
           <p style={{ margin: "2px 0 0", fontSize: "0.8rem" }}>{c.usage}</p>
+          {c.minimum && <p style={{ margin: "4px 0 0", fontSize: "0.76rem", color: "var(--wf-warning)" }}>{c.minimum}</p>}
         </div>
       ))}
-      <p className="wf-note">Aucune marque n’est présentée comme systématiquement garantie tant qu’elle n’est pas contractuellement confirmée (ex. Berline associée à une Tesla, Luxe à une Mercedes premium dans la flotte actuellement présentée).</p>
+      <p className="wf-note">Aucune marque n’est présentée comme systématiquement garantie tant qu’elle n’est pas contractuellement confirmée (ex. Berline associée à une Tesla, Luxe à une Mercedes premium dans la flotte actuellement présentée).</p>
     </>
   );
 }
@@ -81,6 +82,7 @@ function CategorieDesktop() {
           <div className="wf-row" style={{ justifyContent: "space-between" }}><b>{c.name}</b><span className="wf-pill">{c.mode}</span></div>
           <p style={{ margin: "6px 0 0", fontSize: "0.82rem", color: "var(--wf-muted)" }}>{c.passengers} · {c.luggage}</p>
           <p style={{ margin: "2px 0 0", fontSize: "0.8rem" }}>{c.usage}</p>
+          {c.minimum && <p style={{ margin: "4px 0 0", fontSize: "0.76rem", color: "var(--wf-warning)" }}>{c.minimum}</p>}
         </div>
       ))}
     </div>
@@ -90,11 +92,11 @@ export function ScreenCategorie() {
   return (
     <ScreenShell
       id="screen-c2" kicker="Écran client 2" title="Choix de la catégorie"
-      lead="Estimation ou mention « sur devis », nombre de passagers, capacité bagages indicative et usage recommandé pour chaque catégorie."
+      lead="Tarif estimé, type de calcul, minimum éventuel et mention « sur devis » — aucune formule mathématique affichée sur les cartes, le détail complet du calcul reste réservé au récapitulatif."
       mobile={<CategorieMobile />} desktop={<CategorieDesktop />}
       states={
         <>
-          <StateCard type="normal" label="Catégories disponibles">Berline et Confort affichent un prix calculé ; Luxe, Van, Monospace affichent « Sur devis ».</StateCard>
+          <StateCard type="normal" label="Catégories disponibles">Confort, Berline et Luxe affichent un prix calculé (Luxe avec un minimum de 40 €) ; Van et Monospace affichent « Sur devis ».</StateCard>
           <StateCard type="warning" label="Capacité dépassée">Message si le nombre de passagers dépasse la capacité de la catégorie choisie.</StateCard>
         </>
       }
@@ -174,10 +176,18 @@ function RecapMobile() {
       <div className="wf-media-block">Carte — trajet Lyon Perrache → Aéroport Lyon-Saint-Exupéry</div>
       <div className="wf-card">
         <p style={{ margin: 0, fontSize: "0.82rem" }}>08/02/2026 · 13:45 · Berline · 2 passagers · 2 bagages · Fauteuil roulant pliable</p>
+        <span className="wf-pill wf-pill--accent" style={{ marginTop: 6 }}>Transfert aéroport / longue distance</span>
       </div>
       <div className="wf-card">
         <b>Tarif estimé : 45 €</b>
-        <p style={{ margin: "6px 0 0", fontSize: "0.8rem", color: "var(--wf-muted)" }}>Prise en charge + distance parcourue, détail disponible avant envoi.</p>
+        <details style={{ marginTop: 8 }}>
+          <summary style={{ fontSize: "0.8rem", color: "var(--wf-accent)", cursor: "pointer" }}>Détail du tarif</summary>
+          <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: "0.8rem" }}>
+            <li>Distance : 17,8 km × 2,25 €/km ≈ 40 €</li>
+            <li>Prise en charge transfert : 5 €</li>
+            <li>Aucune facturation à la minute pour ce type de trajet (transfert aéroport)</li>
+          </ul>
+        </details>
       </div>
       <div className="wf-card" style={{ background: "var(--wf-accent-soft)" }}>
         <p style={{ margin: 0, fontSize: "0.82rem" }}>Votre demande sera vérifiée par KDRIVE. Le tarif et la disponibilité doivent être confirmés avant que la course soit définitivement réservée.</p>
@@ -191,7 +201,7 @@ export function ScreenRecap() {
   return (
     <ScreenShell
       id="screen-c5" kicker="Écran client 5" title="Récapitulatif"
-      lead="Dernière vérification avant envoi. La mention de confirmation humaine et l’absence de paiement en ligne doivent être visibles sans avoir à faire défiler."
+      lead="Dernière vérification avant envoi. La mention de confirmation humaine et l’absence de paiement en ligne doivent être visibles sans avoir à faire défiler."
       mobile={<RecapMobile />} desktop={<div style={{ maxWidth: 600, margin: "0 auto" }}><RecapMobile /></div>}
       states={<StateCard type="normal" label="Avant envoi">Toutes les informations sont modifiables en revenant aux écrans précédents.</StateCard>}
     />
@@ -207,7 +217,7 @@ function DemandeRecueMobile() {
         <p style={{ margin: "10px 0 0", fontWeight: 700 }}>Référence KD-2026-00842</p>
       </div>
       <div className="wf-card">
-        <p style={{ margin: 0, fontSize: "0.82rem" }}>Votre demande a bien été enregistrée. KDRIVE vérifie actuellement la disponibilité et le tarif. Vous recevrez une confirmation dès qu’un chauffeur aura été attribué.</p>
+        <p style={{ margin: 0, fontSize: "0.82rem" }}>Votre demande a bien été enregistrée. KDRIVE vérifie actuellement la disponibilité et le tarif. Vous recevrez une confirmation dès qu’un chauffeur aura été attribué.</p>
       </div>
       <button className="wf-btn wf-btn--secondary wf-btn--block">Appeler KDRIVE</button>
       <button className="wf-btn wf-btn--ghost wf-btn--block">WhatsApp (manuel)</button>
@@ -223,7 +233,7 @@ export function ScreenDemandeRecue() {
       states={
         <>
           <StateCard type="normal" label="Demande reçue">Référence, résumé, téléphone KDRIVE, bouton Appeler, bouton WhatsApp manuel.</StateCard>
-          <StateCard type="warning" label="Recherche prolongée">Message adapté si le traitement prend plus de temps que d’habitude, sans jamais annoncer un échec.</StateCard>
+          <StateCard type="warning" label="Recherche prolongée">Message adapté si le traitement prend plus de temps que d’habitude, sans jamais annoncer un échec.</StateCard>
         </>
       }
     />

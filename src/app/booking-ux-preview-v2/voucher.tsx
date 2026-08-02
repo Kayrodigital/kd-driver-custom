@@ -16,14 +16,21 @@ export function VoucherPreview({ variant, compact = false }: { variant: "client"
           <tr><td>Départ</td><td>{variant === "client" ? "Secteur Lyon Perrache" : "12 quai Perrache, 69002 Lyon"}</td></tr>
           <tr><td>Destination</td><td>Aéroport Lyon-Saint-Exupéry</td></tr>
           <tr><td>Catégorie</td><td>Berline</td></tr>
+          <tr><td>Type de trajet</td><td>Transfert aéroport / longue distance</td></tr>
           <tr><td>Options</td><td>2 passagers · 2 bagages · Fauteuil roulant pliable</td></tr>
           <tr><td>Chauffeur</td><td>Karim B. · 06 11 22 33 44</td></tr>
           <tr><td>Véhicule / plaque</td><td>Berline noire · AA-123-BB</td></tr>
-          <tr><td>Tarif client</td><td><b>45 €</b></td></tr>
+          {variant === "internal" && <tr><td>Distance / durée</td><td>17,8 km · 28 min</td></tr>}
+          {variant === "internal" && <tr><td>Règle appliquée</td><td>Distance × tarif/km + prise en charge transfert (5 €), pas de facturation à la minute</td></tr>}
+          {variant === "internal" && <tr><td>Tarif kilométrique</td><td>2,25 €/km</td></tr>}
+          {variant === "internal" && <tr><td>Prise en charge</td><td>5 €</td></tr>}
+          {variant === "internal" && <tr><td>Minimum de catégorie</td><td>Non applicable (Berline)</td></tr>}
+          {variant === "internal" && <tr><td>Prix estimé</td><td>45 €</td></tr>}
+          <tr><td>{variant === "client" ? "Tarif client" : "Prix confirmé"}</td><td><b>45 €</b></td></tr>
           {variant === "internal" && <tr><td>Commission KDRIVE</td><td>5 €</td></tr>}
           {variant === "internal" && <tr><td>Net chauffeur</td><td>40 €</td></tr>}
           <tr><td>Paiement</td><td>Au chauffeur (généralement par TPE)</td></tr>
-          {variant === "internal" && <tr><td>Statut d’envoi</td><td>Envoyé au client à 13:52</td></tr>}
+          {variant === "internal" && <tr><td>Statut d’envoi</td><td>Envoyé au client à 13:52</td></tr>}
         </tbody>
       </table>
 
@@ -38,7 +45,7 @@ export function VoucherPreview({ variant, compact = false }: { variant: "client"
       </p>
       {variant === "client" && (
         <p className="wf-note" style={{ marginTop: 4, fontStyle: "italic" }}>
-          Aucune commission ni net chauffeur n’apparaît sur cette version.
+          Aucune commission ni net chauffeur n’apparaît sur cette version.
         </p>
       )}
     </div>

@@ -20,8 +20,8 @@ export function ConfidentialityMatrixSection() {
           <p className="wf-kicker">Confidentialité</p>
           <h2 className="wf-h2">Qui voit quoi</h2>
           <p className="wf-lead">
-            Deux niveaux d’adresse à distinguer partout dans le produit : l’adresse « groupe » (secteur uniquement,
-            aucune donnée identifiante) et l’adresse « chauffeur attribué » (complète, transmise uniquement en privé
+            Deux niveaux d’adresse à distinguer partout dans le produit : l’adresse « groupe » (secteur uniquement,
+            aucune donnée identifiante) et l’adresse « chauffeur attribué » (complète, transmise uniquement en privé
             après affectation).
           </p>
         </div>
@@ -65,7 +65,7 @@ export function ConfidentialityMatrixSection() {
         </div>
         <p className="wf-note" style={{ marginTop: 12 }}>
           Le client ne voit jamais la commission ni le net chauffeur. Le groupe WhatsApp ne reçoit jamais de donnée
-          permettant d’identifier ou de contacter directement le client.
+          permettant d’identifier ou de contacter directement le client.
         </p>
       </div>
     </section>

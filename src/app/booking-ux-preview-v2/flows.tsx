@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 const clientFlow = [
   { title: "Recherche du trajet", body: "Départ, destination, date, heure." },
-  { title: "Calcul de l’itinéraire", body: "Distance et durée via Google Routes." },
+  { title: "Calcul de l’itinéraire", body: "Distance et durée via Google Routes." },
   { title: "Tarif estimé", body: "Affiché avant tout engagement." },
   { title: "Choix de la catégorie", body: "Confort, Berline, Luxe, Van, Monospace." },
   { title: "Options", body: "Passagers, bagages, siège enfant, animal, arrêt supplémentaire…" },
@@ -21,7 +21,7 @@ const ownerFlow = [
   { title: "Contact client si nécessaire", body: "Appel ou WhatsApp depuis la fiche." },
   { title: "Confirmation ou ajustement du tarif", body: "Tarif client validé ou modifié." },
   { title: "Commission et net chauffeur", body: "Calculés automatiquement à partir du tarif confirmé." },
-  { title: "Préparation de l’annonce groupe", body: "Message anonymisé généré automatiquement." },
+  { title: "Préparation de l’annonce groupe", body: "Message anonymisé généré automatiquement." },
   { title: "Partage dans WhatsApp", body: "Seule tâche manuelle : choisir le groupe et envoyer." },
   { title: "Recherche de chauffeur", body: "Attente des réponses en privé." },
   { title: "Affectation", body: "Choix du chauffeur retenu." },
@@ -74,7 +74,7 @@ export function ClientFlowSection() {
           <p className="wf-kicker">Parcours client</p>
           <h2 className="wf-h2">Du trajet recherché au paiement du chauffeur</h2>
           <p className="wf-lead">
-            Le client ne doit jamais croire que la course est confirmée immédiatement après l’envoi de la demande.
+            Le client ne doit jamais croire que la course est confirmée immédiatement après l’envoi de la demande.
             Cinq statuts distincts jalonnent le parcours : demande enregistrée, en cours de traitement, tarif
             confirmé, chauffeur attribué, course confirmée.
           </p>
@@ -94,7 +94,7 @@ export function OwnerFlowSection() {
           <h2 className="wf-h2">De la demande à la confirmation client</h2>
           <p className="wf-lead">
             La course ne passe jamais directement à « confirmée » après la simple confirmation du tarif. Elle ne
-            devient confirmée que lorsque le tarif est confirmé, qu’un chauffeur est attribué, que les informations
+            devient confirmée que lorsque le tarif est confirmé, qu’un chauffeur est attribué, que les informations
             utiles ont été préparées, et que la confirmation client peut être envoyée.
           </p>
         </div>
@@ -111,7 +111,7 @@ export function OwnerFlowSection() {
                 ))}
                 <tr>
                   <td><code style={{ background: "var(--wf-bg-alt)", padding: "2px 6px", borderRadius: 4 }}>driver_search_delayed</code></td>
-                  <td>Recherche prolongée <span className="wf-pill" style={{ marginLeft: 8 }}>État visuel uniquement — non persistant, non ajouté en base pour l’instant</span></td>
+                  <td>Recherche prolongée <span className="wf-pill" style={{ marginLeft: 8 }}>État visuel uniquement — non persistant, non ajouté en base pour l’instant</span></td>
                 </tr>
               </tbody>
             </table>
@@ -132,9 +132,9 @@ export function DriverFlowSection() {
       <div className="wf-container">
         <div className="wf-section-head">
           <p className="wf-kicker">Parcours chauffeur</p>
-          <h2 className="wf-h2">De l’affectation à la course terminée</h2>
+          <h2 className="wf-h2">De l’affectation à la course terminée</h2>
           <p className="wf-lead">
-            Le chauffeur ne reçoit les coordonnées complètes du client qu’en message privé, jamais dans le groupe
+            Le chauffeur ne reçoit les coordonnées complètes du client qu’en message privé, jamais dans le groupe
             WhatsApp public.
           </p>
         </div>
