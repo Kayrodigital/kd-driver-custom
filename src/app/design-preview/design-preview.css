@@ -11,6 +11,11 @@
   --kd-white: #ffffff;
   --kd-gold: #b08d4f;
   --kd-gold-soft: #d9c495;
+  /* Variante plus foncée réservée aux textes/focus dorés sur fond clair
+     (blanc/crème) : --kd-gold seul ne passe pas le contraste AA (2.87-3.1:1)
+     à ces tailles ; --kd-gold-ink passe 5.3-5.7:1 sans changer le doré sur
+     fond sombre, les bordures ou les aplats déjà conformes. */
+  --kd-gold-ink: #82602b;
   --kd-ink: #1b1812;
   --kd-muted: #746c60;
   --kd-muted-strong: #58513f;
@@ -77,6 +82,16 @@
   font-weight: 700; color: var(--kd-gold);
 }
 .kd-eyebrow::before { content: ""; width: 18px; height: 1px; background: var(--kd-gold); }
+
+/* Contraste AA sur fond clair : le doré de marque (--kd-gold) reste utilisé
+   sur fond sombre et pour les bordures/aplats déjà conformes ; ces éléments
+   textuels/de focus passent à --kd-gold-ink uniquement quand le fond est
+   blanc ou crème (cf. audit axe-core, Phase SEO 2C). */
+.kd-on-white .kd-eyebrow, .kd-on-cream .kd-eyebrow { color: var(--kd-gold-ink); }
+.kd-on-white .kd-eyebrow::before, .kd-on-cream .kd-eyebrow::before { background: var(--kd-gold-ink); }
+.kd-on-white .kd-card-link, .kd-on-cream .kd-card-link { color: var(--kd-gold-ink); }
+.kd-on-white .kd-advantage-num, .kd-on-cream .kd-advantage-num { color: var(--kd-gold-ink); border-color: var(--kd-gold-ink); }
+.kd-on-white .kd-btn:focus-visible, .kd-on-cream .kd-btn:focus-visible { outline-color: var(--kd-gold-ink); }
 
 .kd-lead { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--kd-muted); line-height: 1.6; max-width: 52ch; }
 .kd-on-dark .kd-lead { color: var(--kd-muted-on-dark); }
@@ -177,13 +192,14 @@ a.kd-btn { color: var(--kd-btn-fg); }
 .kd-field--error .kd-input { border-color: var(--kd-error); background: var(--kd-error-bg); }
 .kd-field-error { color: var(--kd-error); font-size: 0.78rem; font-weight: 600; margin: 0; }
 .kd-field-hint { color: var(--kd-muted); font-size: 0.78rem; font-weight: 400; margin: 0; }
+.kd-on-dark .kd-field-hint { color: var(--kd-muted-on-dark); }
 
 .kd-radio { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
 .kd-radio input { width: 17px; height: 17px; accent-color: var(--kd-gold); }
 .kd-checkbox-row { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
 .kd-checkbox-row input { width: 17px; height: 17px; accent-color: var(--kd-gold); flex: none; }
 
-.kd-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--kd-cream); color: var(--kd-gold); border: 1px solid var(--kd-line); }
+.kd-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--kd-cream); color: var(--kd-gold-ink); border: 1px solid var(--kd-line); }
 
 .kd-time-picker { position: relative; }
 .kd-time-picker-trigger { text-align: left; cursor: pointer; }
@@ -269,6 +285,7 @@ a.kd-btn { color: var(--kd-btn-fg); }
 .kd-card:not(.kd-card--dark) .address-suggestions-footer { border-top-color: var(--kd-line); }
 .kd-card:not(.kd-card--dark) .address-suggestions-heading { color: var(--kd-muted); }
 .kd-card:not(.kd-card--dark) .address-suggestions button:hover, .kd-card:not(.kd-card--dark) .address-suggestions button.is-highlighted { background: var(--kd-cream-soft); }
+.kd-card:not(.kd-card--dark) .address-suggestions button:focus-visible { outline-color: var(--kd-gold-ink); }
 
 /* ---------- cards ---------- */
 .kd-card {
@@ -455,7 +472,7 @@ a:has(> .kd-logo) { text-decoration: none; }
   content: "+"; flex: none; font-size: 1.2rem; color: var(--kd-gold); font-weight: 400; line-height: 1;
 }
 .kd-faq-item[open] summary::after { content: "−"; }
-.kd-faq-item summary:focus-visible { outline: 2px solid var(--kd-gold); outline-offset: 3px; }
+.kd-faq-item summary:focus-visible { outline: 2px solid var(--kd-gold-ink); outline-offset: 3px; }
 .kd-faq-item p { margin-top: 10px; }
 
 /* ---------- hero ---------- */

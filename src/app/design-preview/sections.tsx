@@ -78,7 +78,7 @@ export function ServicesSection() {
         <div className="kd-grid-3">
           {services.map((service) => (
             <Link key={service.title} href={service.href} className="kd-card kd-card--hover kd-card--flat kd-service-card">
-              <SceneImage src={service.image} alt={service.title} className="kd-service-image" />
+              <SceneImage src={service.image} alt={service.title} className="kd-service-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               <h3 className="kd-h4">{service.title}</h3>
               <p className="kd-body">{service.body}</p>
               <span className="kd-card-link">Découvrir <span aria-hidden="true">→</span></span>
@@ -129,7 +129,7 @@ export function VehiclesSection() {
         <div className="kd-grid-3">
           {vehicles.map((vehicle) => (
             <Link key={vehicle.name} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
-              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" />
+              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
                 <small>{vehicle.mode}</small>
@@ -151,7 +151,7 @@ export function AirportSection() {
   return (
     <section className="kd-section kd-on-white">
       <div className="kd-container kd-grid-2" style={{ alignItems: "center" }}>
-        <SceneImage src="/images/airport-transfer.jpg" alt="Transfert aéroport" note="photo à venir" className="kd-scene--tall" />
+        <SceneImage src="/images/airport-transfer.jpg" alt="Transfert aéroport" note="photo à venir" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
         <div className="kd-stack">
           <p className="kd-eyebrow">Aéroport &amp; gares</p>
           <h2 className="kd-h2">Votre chauffeur, prêt pour votre vol ou votre train</h2>
@@ -173,7 +173,7 @@ export function CorporateSection() {
           <p className="kd-lead">Facturation centralisée, chauffeurs dédiés, disponibilité étendue : une offre pensée pour les équipes qui se déplacent souvent.</p>
           <Link className="kd-btn kd-btn--outline" href="/chauffeur-entreprise">En savoir plus</Link>
         </div>
-        <SceneImage src="/images/corporate.jpg" alt="Déplacements professionnels" note="photo à venir" className="kd-scene--tall" />
+        <SceneImage src="/images/corporate.jpg" alt="Déplacements professionnels" note="photo à venir" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
       </div>
     </section>
   );

@@ -58,7 +58,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
       <section className="kd-hero kd-hero--a kd-on-dark">
-        <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" />
+        <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner" style={{ gridTemplateColumns: "1fr" }}>
           <div className="kd-hero-copy">
             <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Services" }, { label: content.navLabel }]} />
@@ -95,7 +95,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
 
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
-          <SceneImage src={content.visualImage} alt="" className="kd-scene--tall" style={{ minHeight: 420 }} />
+          <SceneImage src={content.visualImage} alt="" className="kd-scene--tall" style={{ minHeight: 420 }} sizes="100vw" />
         </div>
       </section>
 

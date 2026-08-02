@@ -26,7 +26,7 @@ export default function HomePage() {
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" priority />
+        <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner">
           <div className="kd-hero-copy">
             <p className="kd-eyebrow">Chauffeur privé · Lyon</p>

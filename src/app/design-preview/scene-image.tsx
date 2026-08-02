@@ -20,6 +20,7 @@ export function SceneImage({ src, alt, note, className = "", style, priority = f
           fill
           sizes={sizes}
           priority={priority}
+          fetchPriority={priority ? "high" : undefined}
           className="kd-scene-photo"
           onError={() => setBroken(true)}
         />

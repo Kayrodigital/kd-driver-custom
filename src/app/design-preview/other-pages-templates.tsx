@@ -70,7 +70,7 @@ export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
         <div className="kd-container kd-grid-3">
           {allVehicles.map((vehicle) => (
             <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
-              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" />
+              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
                 <small>{vehicle.mode}</small>
@@ -191,7 +191,7 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
       />
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
-          <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} />
+          <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} sizes="100vw" />
         </div>
       </section>
       <section className="kd-section kd-section--compact kd-on-white">

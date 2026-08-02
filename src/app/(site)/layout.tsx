@@ -2,7 +2,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { MobileActionBar } from "@/components/booking/kd/mobile-action-bar";
 import "../design-preview/design-preview.css";
 
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], style: ["normal", "italic"], variable: "--kd-font-display" });
+const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500"], style: ["normal"], variable: "--kd-font-display" });
 const sans = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--kd-font-sans" });
 
 export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
