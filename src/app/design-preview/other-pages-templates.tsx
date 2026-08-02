@@ -49,10 +49,10 @@ function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title
 }
 
 const allVehicles = [
-  { name: "Berline", mode: "Prix calculé", body: "Adaptée aux déplacements individuels ou en petit groupe.", image: "/images/vehicle-berline.jpg" },
   { name: "Confort", mode: "Prix calculé", body: "Une catégorie polyvalente pour les trajets du quotidien, professionnels ou privés.", image: "/images/vehicle-confort.jpg" },
+  { name: "Berline", mode: "Prix calculé", body: "Adaptée aux déplacements individuels ou en petit groupe.", image: "/images/vehicle-berline.jpg" },
+  { name: "Luxe", mode: "Prix calculé", body: "Une catégorie premium avec un tarif calculé (minimum de course appliqué) pour les demandes nécessitant un niveau de prestation supérieur.", image: "/images/vehicle-luxe.jpg" },
   { name: "Van", mode: "Sur devis", body: "Une solution adaptée aux groupes et aux trajets avec davantage de bagages, sur devis.", image: "/images/vehicle-van.jpg" },
-  { name: "Luxe", mode: "Sur devis", body: "Une catégorie premium proposée sur devis pour les demandes nécessitant un niveau de prestation supérieur.", image: "/images/vehicle-luxe.jpg" },
   { name: "Monospace", mode: "Sur devis", body: "Une solution modulable pour les familles et les petits groupes, sur devis.", image: "/images/vehicle-monospace.jpg" },
 ];
 
@@ -65,7 +65,7 @@ const vehiclesRelatedLinks = [
 export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Nos véhicules" title="Une flotte adaptée à chaque trajet" lead="Les catégories Berline et Confort affichent un prix calculé avant confirmation. Luxe, Van et Monospace font l’objet d’un devis." />
+      <PageHero eyebrow="Nos véhicules" title="Une flotte adaptée à chaque trajet" lead="Confort, Berline et Luxe affichent un prix calculé avant confirmation. Van et Monospace font l’objet d’un devis." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
           {allVehicles.map((vehicle) => (
@@ -275,7 +275,7 @@ const faqItems: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: "Le tarif affiché est-il définitif ?",
-    a: "Pour les catégories à prix calculé (Berline, Confort), le montant est déterminé avant confirmation. Pour les trajets sur devis (Luxe, Van, Monospace, longues distances), un tarif vous est communiqué avant tout engagement.",
+    a: "Pour les catégories à prix calculé (Confort, Berline, Luxe), le montant est déterminé avant confirmation, y compris pour un transfert aéroport ou une longue distance. Pour Van et Monospace, un devis personnalisé vous est communiqué avant tout engagement.",
     link: { href: "/tarifs", label: "Voir la grille tarifaire" },
   },
   {
@@ -285,7 +285,7 @@ const faqItems: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: "Puis-je réserver un Van, une catégorie Luxe ou un Monospace ?",
-    a: "Oui. Ces catégories font l’objet d’un devis personnalisé plutôt que d’un tarif calculé automatiquement.",
+    a: "Oui. Luxe affiche un tarif calculé (avec un minimum de course) comme Confort et Berline. Van et Monospace font l’objet d’un devis personnalisé.",
     link: { href: "/vehicules", label: "Voir les véhicules disponibles" },
   },
   {

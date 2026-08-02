@@ -116,7 +116,7 @@
   --kd-btn-fg: var(--kd-cream);
   --kd-btn-border: var(--kd-black);
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  border-radius: 7px;
+  border-radius: var(--kd-radius-sm);
   border: 1px solid var(--kd-btn-border);
   background: var(--kd-btn-bg);
   color: var(--kd-btn-fg);
