@@ -31,16 +31,18 @@ export default function HomePage() {
           <div className="kd-hero-copy">
             <p className="kd-eyebrow">Chauffeur privé · Lyon</p>
             <h1 className="kd-h1">Votre trajet, réservé en toute sérénité.</h1>
-            <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
-            <div className="kd-hero-badges">
-              <span className="kd-hero-badge">Tarif annoncé avant confirmation</span>
-              <span className="kd-hero-badge">Chauffeur dédié</span>
-              <span className="kd-hero-badge">Réservation en quelques secondes</span>
-            </div>
+            <p className="kd-lead">Réservez votre trajet à Lyon en quelques instants. KDRIVE confirme ensuite la disponibilité et le tarif.</p>
           </div>
           <div className="kd-hero-form-card">
             <HeroSearchForm tone="dark" />
           </div>
+          <p className="kd-hero-reassurance">
+            <span>Tarif estimé</span>
+            <span aria-hidden="true">·</span>
+            <span>Confirmation humaine</span>
+            <span aria-hidden="true">·</span>
+            <span>Contact direct</span>
+          </p>
         </div>
       </section>
 

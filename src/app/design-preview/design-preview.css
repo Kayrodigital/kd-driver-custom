@@ -380,6 +380,60 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-nav-actions { display: flex; align-items: center; gap: var(--kd-space-4); font-size: 0.86rem; font-weight: 700; }
 .kd-nav-phone { text-decoration: none; }
 
+/* ---------- menu mobile (hamburger + panneau) ---------- */
+.kd-mobile-menu-trigger {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0;
+  background: transparent; border: 1px solid rgba(245, 239, 224, 0.24); border-radius: var(--kd-radius-sm);
+  cursor: pointer;
+}
+.kd-mobile-menu-trigger:focus-visible { outline: 2px solid var(--kd-gold); outline-offset: 2px; }
+.kd-mobile-menu-icon { position: relative; display: inline-block; width: 20px; height: 14px; }
+.kd-mobile-menu-icon span {
+  position: absolute; left: 0; width: 100%; height: 2px; background: var(--kd-cream); border-radius: 2px;
+  transition: transform 0.2s var(--kd-ease), opacity 0.2s var(--kd-ease);
+}
+.kd-mobile-menu-icon span:nth-child(1) { top: 0; }
+.kd-mobile-menu-icon span:nth-child(2) { top: 6px; }
+.kd-mobile-menu-icon span:nth-child(3) { top: 12px; }
+.kd-mobile-menu-icon.is-open span:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.kd-mobile-menu-icon.is-open span:nth-child(2) { opacity: 0; }
+.kd-mobile-menu-icon.is-open span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+.kd-mobile-menu-panel {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--kd-black);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: calc(72px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+.kd-mobile-menu-links { list-style: none; margin: 0; padding: 0; display: grid; }
+.kd-mobile-menu-links li { border-bottom: 1px solid var(--kd-line-on-dark); }
+.kd-mobile-menu-links a {
+  display: block; padding: 16px 4px; font-size: 1.05rem; font-weight: 600; color: var(--kd-cream); text-decoration: none;
+}
+.kd-mobile-menu-actions { display: grid; gap: 10px; padding-top: 20px; }
+
+@media (max-width: 680px) {
+  .kd-nav-actions { display: none; }
+  .kd-mobile-menu-trigger { display: inline-flex; }
+}
+
+/* ---------- barre d'actions basse (mobile uniquement) ---------- */
+.kd-mobile-action-bar { display: none; }
+@media (max-width: 680px) {
+  .kd-mobile-action-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    display: flex; gap: 10px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--kd-black);
+    border-top: 1px solid var(--kd-line-on-dark);
+  }
+  .kd-mobile-action-bar .kd-btn { flex: 1; min-height: 46px; }
+  .kd-footer { padding-bottom: calc(var(--kd-space-5) + 64px); }
+}
+
 /* ---------- hero ---------- */
 .kd-hero { position: relative; overflow: hidden; padding-top: var(--kd-space-7); padding-bottom: var(--kd-space-8); min-height: 640px; display: flex; align-items: center; }
 .kd-hero-bg {
@@ -425,6 +479,25 @@ a:has(> .kd-logo) { text-decoration: none; }
 /* Variante B — carte verticale à droite */
 .kd-hero--b .kd-hero-inner { grid-template-columns: minmax(0, 1fr) minmax(320px, 420px); align-items: center; }
 .kd-hero-form-card { position: relative; }
+
+/* Réassurance compacte sous le formulaire (remplace les 3 grands badges
+   avant le formulaire sur mobile) : une seule ligne, discrète, qui s'étend
+   sur toute la largeur de la grille hero (desktop comme mobile). */
+.kd-hero-reassurance {
+  grid-column: 1 / -1;
+  margin: var(--kd-space-4) 0 0;
+  display: flex; flex-wrap: wrap; gap: 8px 14px;
+  font-size: 0.82rem; font-weight: 600; color: var(--kd-muted-on-dark);
+}
+.kd-hero-reassurance span[aria-hidden] { color: var(--kd-gold); }
+
+/* Ligne Date / Heure du formulaire hero : empilée sur mobile (jamais deux
+   colonnes qui se chevauchent, cf. bug de débordement horizontal constaté),
+   deux colonnes seulement à partir de 768px où le contenu tient réellement. */
+.kd-datetime-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--kd-space-3); }
+@media (min-width: 768px) {
+  .kd-datetime-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--kd-space-4); }
+}
 
 /* ---------- form (card / mobile shared shell) ---------- */
 .kd-booking-card { display: grid; gap: var(--kd-space-4); }
@@ -608,7 +681,7 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 @media (max-width: 1080px) {
   .kd-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kd-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .kd-hero--b .kd-hero-inner { grid-template-columns: 1fr; }
+  .kd-hero--b .kd-hero-inner { grid-template-columns: minmax(0, 1fr); }
   .kd-form-inline { grid-template-columns: repeat(2, 1fr); }
   .kd-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -619,4 +692,12 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
   .kd-form-inline { grid-template-columns: 1fr; }
   .kd-footer-grid { grid-template-columns: minmax(0, 1fr); }
   .kd-preview-topbar { flex-direction: column; align-items: flex-start; padding: 14px 16px; }
+
+  /* Hero mobile : réduit le poids visuel avant le formulaire (promesse
+     courte, pas de grand vide) et resserre la carte de réservation. */
+  .kd-hero { min-height: 0; padding-top: var(--kd-space-6); padding-bottom: var(--kd-space-6); }
+  .kd-hero--b .kd-hero-inner { gap: var(--kd-space-5); }
+  .kd-hero-photo .kd-scene-photo { object-position: 68% 25%; }
+  .kd-hero-form-card .kd-card { padding: 20px 18px; }
+  .kd-hero-form-card .kd-booking-card { gap: var(--kd-space-3); }
 }

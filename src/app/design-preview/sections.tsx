@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
 
@@ -61,6 +62,7 @@ export function SiteNav() {
         <a className="kd-nav-phone" href="tel:+33652211292">06 52 21 12 92</a>
         <Link className="kd-btn kd-btn--sm kd-btn--gold" href="/reserver">Réserver</Link>
       </div>
+      <MobileNavTrigger />
     </div>
   );
 }

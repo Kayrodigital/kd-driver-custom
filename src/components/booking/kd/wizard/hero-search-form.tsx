@@ -59,13 +59,13 @@ export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
     >
       <div>
         <p className="kd-eyebrow">Réservation</p>
-        <h3 className="kd-h3" style={{ marginTop: 8 }}>Votre trajet en quelques secondes</h3>
+        <h3 className="kd-h3" style={{ marginTop: 8 }}>Réserver votre trajet</h3>
       </div>
 
       <div className="kd-fields">
         <AddressAutocomplete label="Départ" value={pickup} onChange={setPickup} allowGeolocation />
         <AddressAutocomplete label="Destination" value={destination} onChange={setDestination} showPopularDestinations />
-        <div className="kd-fields" style={{ gridTemplateColumns: "1fr 1fr", display: "grid" }}>
+        <div className="kd-datetime-grid">
           <label className="kd-field" onClick={openDatePicker}>
             <span className="kd-field-label">Date</span>
             <input
