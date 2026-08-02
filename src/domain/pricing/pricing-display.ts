@@ -1,5 +1,15 @@
 import { formatEuros } from "./money";
-import type { PricingResult } from "./pricing-types";
+import type { PricingResult, TripType } from "./pricing-types";
+
+const TRIP_TYPE_LABELS: Record<TripType, string> = {
+  standard_short: "Course standard de moins de 10 km",
+  standard_long: "Course standard de 10 km ou plus",
+  transfer_or_long_distance: "Transfert aéroport ou longue distance",
+};
+
+export function tripTypeLabel(tripType: TripType | null): string | null {
+  return tripType ? TRIP_TYPE_LABELS[tripType] : null;
+}
 
 export const PRICING_TRANSPARENCY_NOTE =
   "Estimation basée sur l’itinéraire Google au moment de la réservation. Le tarif définitif est confirmé par KDRIVE selon les conditions réelles du trajet et les options choisies.";

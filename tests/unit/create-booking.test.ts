@@ -24,13 +24,13 @@ describe("createReservation", () => {
     const record = repository.records.values().next().value;
     expect(record?.route.distanceMeters).toBe(10_000);
     expect(record?.request.vehicleSlug).toBe("berline");
-    expect(record?.pricing.totalCents).toBe(2_750);
+    expect(record?.pricing.totalCents).toBe(3_250);
     expect(record?.status).toBe("new");
   });
 
   it("calcule le tarif pour le véhicule choisi et passe sur devis pour une catégorie sur devis", async () => {
     const repository = new MemoryRepository();
-    await createReservation({ ...validRequest, vehicleSlug: "luxe" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    await createReservation({ ...validRequest, vehicleSlug: "van" }, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
     const record = repository.records.values().next().value;
     expect(record?.pricing.mode).toBe("quote");
     expect(record?.status).toBe("quote_requested");
@@ -56,12 +56,13 @@ describe("createReservation", () => {
     await expect(createReservation(validRequest, new MemoryRepository(), new FakeMapsProvider({ distanceMeters: 1, durationSeconds: 1 }), new Date("2031-01-01"))).rejects.toThrow("futur");
   });
 
-  it("marque la demande sur devis au-delà du seuil longue distance", async () => {
+  it("calcule un tarif (sans devis) au-delà du seuil longue distance", async () => {
     const repository = new MemoryRepository();
     await createReservation({ ...validRequest, idempotencyKey: "3d6f3b0a-7a8a-4d3a-9d2a-1a2b3c4d5e6f" }, repository, new FakeMapsProvider({ distanceMeters: 200_000, durationSeconds: 7_200 }), new Date("2029-01-01"));
     const record = repository.records.values().next().value;
-    expect(record?.pricing.mode).toBe("quote");
-    expect(record?.status).toBe("quote_requested");
+    expect(record?.pricing.mode).toBe("calculated");
+    expect(record?.pricing.tripType).toBe("transfer_or_long_distance");
+    expect(record?.status).toBe("new");
   });
 
   it("expose un notificationContext exploitable pour la notification propriétaire", async () => {

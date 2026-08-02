@@ -6,6 +6,7 @@ import { pricingConfig } from "@/domain/pricing/pricing-config";
 const schema = z.object({
   category: z.string(),
   distanceMeters: z.number().int().min(0).max(2_000_000),
+  durationSeconds: z.number().int().min(0).max(500_000),
   isAirportTrip: z.boolean().optional(),
 });
 

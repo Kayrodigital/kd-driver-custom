@@ -93,27 +93,24 @@ export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   );
 }
 
-const tariffLabels: Record<string, string> = { berline: "Berline", confort: "Confort", van: "Van", luxe: "Luxe", monospace: "Monospace" };
-const tariffOrder = ["berline", "confort", "van", "luxe", "monospace"];
+const tariffLabels: Record<string, string> = { confort: "Confort", berline: "Berline", luxe: "Luxe", van: "Van", monospace: "Monospace" };
+const tariffOrder = ["confort", "berline", "luxe", "van", "monospace"];
 
 const tariffCards = tariffOrder.map((slug) => {
   const category = pricingConfig.categories[slug];
   const label = tariffLabels[slug] ?? slug;
   if (!category || category.mode === "quote") return { label, quote: true, lines: [] as string[] };
-  return {
-    label,
-    quote: false,
-    lines: [
-      `Prise en charge : ${formatEuros(category.baseFee * 100)}`,
-      `${formatEuros(category.pricePerKm * 100)}/km`,
-      `Minimum : ${formatEuros(category.minimumPrice * 100)}`,
-    ],
-  };
+  const lines = [
+    `${formatEuros(category.pricePerKm * 100)}/km`,
+    `Prise en charge : ${formatEuros(pricingConfig.standardBaseFee * 100)} (course standard) ou ${formatEuros(pricingConfig.transferBaseFee * 100)} (transfert aéroport / longue distance)`,
+  ];
+  if (category.minimumPrice != null) lines.push(`Minimum : ${formatEuros(category.minimumPrice * 100)} (course standard)`);
+  return { label, quote: false, lines };
 });
 
 const pricingPrinciples = [
-  { title: "Calculé avant confirmation", body: "Pour Berline et Confort, le prix est calculé à partir de la distance réelle et affiché avant toute confirmation." },
-  { title: "Sur devis pour certains trajets", body: "Luxe, Van, Monospace et les trajets longue distance font l’objet d’un devis personnalisé." },
+  { title: "Calculé avant confirmation", body: `Pour Confort, Berline et Luxe, le prix est calculé à partir de la distance réelle. Pour les courses de moins de 10 km, les ${pricingConfig.includedMinutes} premières minutes sont incluses, puis ${formatEuros(pricingConfig.extraMinutePrice * 100)}/minute.` },
+  { title: "Sur devis pour certains véhicules", body: "Van et Monospace font l’objet d’un devis personnalisé." },
   { title: "Aucune surprise à l’arrivée", body: "Le montant annoncé au moment de la confirmation est celui qui s’applique." },
 ];
 

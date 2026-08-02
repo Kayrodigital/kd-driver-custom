@@ -3,26 +3,26 @@ import { z } from "zod";
 
 const calculatedCategorySchema = z.object({
   mode: z.literal("calculated"),
-  baseFee: z.number().nonnegative(),
   pricePerKm: z.number().nonnegative(),
-  minimumPrice: z.number().nonnegative(),
+  minimumPrice: z.number().nonnegative().nullable(),
 });
 
 const quoteCategorySchema = z.object({ mode: z.literal("quote") });
 
 export const pricingConfigSchema = z.object({
-  version: z.string().min(1).default("provisional-2026-07"),
+  version: z.string().min(1),
   currency: z.literal("EUR"),
   distanceUnit: z.literal("km"),
   categories: z.record(
     z.string().min(1),
     z.discriminatedUnion("mode", [calculatedCategorySchema, quoteCategorySchema]),
   ),
-  longDistance: z.object({
-    thresholdKm: z.number().positive(),
-    mode: z.literal("quote"),
-    airportException: z.boolean(),
-  }),
+  standardBaseFee: z.number().nonnegative(),
+  transferBaseFee: z.number().nonnegative(),
+  standardShortDistanceThresholdKm: z.number().positive(),
+  longDistanceThresholdKm: z.number().positive(),
+  includedMinutes: z.number().nonnegative(),
+  extraMinutePrice: z.number().nonnegative(),
 });
 
 export type PricingConfig = z.infer<typeof pricingConfigSchema>;

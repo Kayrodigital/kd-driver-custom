@@ -1,27 +1,30 @@
 {
-  "version": "provisional-2026-07",
+  "version": "2026-08-kdrive-v2",
   "currency": "EUR",
   "distanceUnit": "km",
   "categories": {
-    "berline": {
-      "mode": "calculated",
-      "baseFee": 5,
-      "pricePerKm": 2.25,
-      "minimumPrice": 25
-    },
     "confort": {
       "mode": "calculated",
-      "baseFee": 5,
       "pricePerKm": 2,
-      "minimumPrice": 20
+      "minimumPrice": null
     },
-    "luxe": { "mode": "quote" },
+    "berline": {
+      "mode": "calculated",
+      "pricePerKm": 2.25,
+      "minimumPrice": null
+    },
+    "luxe": {
+      "mode": "calculated",
+      "pricePerKm": 3,
+      "minimumPrice": 40
+    },
     "van": { "mode": "quote" },
     "monospace": { "mode": "quote" }
   },
-  "longDistance": {
-    "thresholdKm": 30,
-    "mode": "quote",
-    "airportException": true
-  }
+  "standardBaseFee": 10,
+  "transferBaseFee": 5,
+  "standardShortDistanceThresholdKm": 10,
+  "longDistanceThresholdKm": 30,
+  "includedMinutes": 15,
+  "extraMinutePrice": 1
 }

@@ -50,7 +50,7 @@ export async function createReservation(untrustedInput: unknown, repository: Res
   if (new Date(request.pickupAt).getTime() <= now.getTime()) throw new RangeError("La date de prise en charge doit être dans le futur.");
   const route = await maps.calculateRoute({ pickup: request.pickup, destination: request.destination });
   const isAirportTrip = Boolean(request.flightNumber);
-  const pricing = calculatePrice({ category: request.vehicleSlug, distanceMeters: route.distanceMeters, isAirportTrip }, pricingConfig);
+  const pricing = calculatePrice({ category: request.vehicleSlug, distanceMeters: route.distanceMeters, durationSeconds: route.durationSeconds, isAirportTrip }, pricingConfig);
   const status: ReservationStatus = pricing.mode === "quote" ? "quote_requested" : "new";
   const pricingStatus: PricingStatus = pricing.mode === "quote" ? "quote_required" : "estimated";
   const composedNotes = composeNotes(request);

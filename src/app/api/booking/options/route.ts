@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const route = await new GoogleRoutesProvider().calculateRoute(input);
     const options = Object.keys(pricingConfig.categories).map((category) => ({
       category,
-      pricing: calculatePrice({ category, distanceMeters: route.distanceMeters, isAirportTrip: input.isAirportTrip }, pricingConfig),
+      pricing: calculatePrice({ category, distanceMeters: route.distanceMeters, durationSeconds: route.durationSeconds, isAirportTrip: input.isAirportTrip }, pricingConfig),
     }));
     return NextResponse.json({ route, options });
   } catch (error) {
