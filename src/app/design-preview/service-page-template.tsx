@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Breadcrumb } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 
@@ -60,6 +61,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" />
         <div className="kd-container kd-hero-inner" style={{ gridTemplateColumns: "1fr" }}>
           <div className="kd-hero-copy">
+            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Services" }, { label: content.navLabel }]} />
             <p className="kd-eyebrow">{content.eyebrow}</p>
             <h1 className="kd-h1">{content.title}</h1>
             <p className="kd-lead">{content.lead}</p>

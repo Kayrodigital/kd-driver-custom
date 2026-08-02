@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
@@ -34,10 +35,11 @@ function PageShell({ children, framed = true }: { children: React.ReactNode; fra
   );
 }
 
-function PageHero({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
+function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title: string; lead: string; breadcrumb?: BreadcrumbItem[] }) {
   return (
     <section className="kd-section kd-on-dark" style={{ paddingBottom: "var(--kd-space-6)" }}>
       <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        {breadcrumb && <Breadcrumb items={breadcrumb} />}
         <p className="kd-eyebrow">{eyebrow}</p>
         <h1 className="kd-h1">{title}</h1>
         <p className="kd-lead">{lead}</p>
@@ -181,7 +183,12 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
 export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="À propos" title="Une entreprise locale, à Lyon" lead="KDRIVE propose un service de chauffeur privé pensé pour les habitants, les entreprises et les visiteurs de Lyon et sa région." />
+      <PageHero
+        eyebrow="À propos"
+        title="Une entreprise locale, à Lyon"
+        lead="KDRIVE propose un service de chauffeur privé pensé pour les habitants, les entreprises et les visiteurs de Lyon et sa région."
+        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "À propos" }]}
+      />
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
           <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} />
@@ -195,8 +202,20 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
             vérification, pas d’intermédiaire. L’objectif est simple — un trajet confirmé, un tarif clair, un chauffeur
             ponctuel.
           </p>
+          <p className="kd-body" style={{ marginTop: 16 }}>
+            KDRIVE accompagne aussi bien les déplacements privés que professionnels à Lyon : une estimation est
+            calculée dès la demande, puis confirmée par l’équipe avant le trajet.
+          </p>
         </div>
       </section>
+      <RelatedLinks
+        title="En savoir plus"
+        links={[
+          { href: "/vehicules", label: "Voir les véhicules disponibles" },
+          { href: "/tarifs", label: "Consulter la grille tarifaire" },
+          { href: "/contact", label: "Nous contacter" },
+        ]}
+      />
       <section id="reserver" className="kd-section kd-on-cream">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -211,13 +230,18 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
 export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Contact" title="Nous contacter" lead="Pour une demande de réservation, le formulaire reste le moyen le plus rapide. Pour toute autre question, contactez-nous directement." />
+      <PageHero
+        eyebrow="Contact"
+        title="Nous contacter"
+        lead="Pour une demande de réservation, le formulaire reste le moyen le plus rapide. Pour toute autre question, contactez-nous directement."
+        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Contact" }]}
+      />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-2" style={{ alignItems: "start" }}>
           <div className="kd-card">
             <p className="kd-eyebrow">Téléphone</p>
             <h3 className="kd-h3" style={{ margin: "10px 0" }}><a href="tel:+33652211292" style={{ textDecoration: "none", color: "inherit" }}>06 52 21 12 92</a></h3>
-            <p className="kd-body">Disponible pour vos questions et demandes urgentes.</p>
+            <p className="kd-body">Pour vos questions ou pour préparer une demande particulière, contactez KDRIVE directement.</p>
           </div>
           <div className="kd-card">
             <p className="kd-eyebrow">Zone d’intervention</p>
@@ -226,6 +250,15 @@ export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
           </div>
         </div>
       </section>
+      <RelatedLinks
+        title="Aller plus loin"
+        links={[
+          { href: "/faq", label: "Consulter la FAQ" },
+          { href: "/tarifs", label: "Consulter la grille tarifaire" },
+          { href: "/vehicules", label: "Voir les véhicules disponibles" },
+          { href: "/reserver", label: "Réserver en ligne" },
+        ]}
+      />
       <section id="reserver" className="kd-section kd-on-white">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -237,25 +270,88 @@ export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
   );
 }
 
-const faqItems = [
-  { q: "Comment réserver un trajet ?", a: "Renseignez le départ, la destination, la date, l’heure et votre téléphone dans le formulaire de réservation. KDRIVE vous confirme rapidement la disponibilité et le tarif." },
-  { q: "Le paiement se fait-il en ligne ?", a: "Non, il n’y a pas de paiement en ligne pour le moment. Le règlement se fait directement avec votre chauffeur." },
-  { q: "Le prix annoncé peut-il changer ?", a: "Pour les catégories à prix calculé, le montant est déterminé avant confirmation et ne change pas. Pour les trajets sur devis, un tarif vous est communiqué avant tout engagement." },
-  { q: "Puis-je réserver pour un trajet longue distance ?", a: "Oui. Au-delà d’un certain rayon autour de Lyon, un devis personnalisé est établi avant confirmation." },
-  { q: "Puis-je demander à être rappelé plutôt que de recevoir une estimation ?", a: "Oui, le formulaire propose les deux options : demander une estimation ou être rappelé par l’équipe KDRIVE." },
+const faqItems: { q: string; a: string; link?: { href: string; label: string } }[] = [
+  {
+    q: "Comment réserver une course avec KDRIVE ?",
+    a: "Renseignez le départ, la destination, la date, l’heure et votre téléphone dans le formulaire de réservation. KDRIVE vous confirme rapidement la disponibilité et le tarif.",
+    link: { href: "/reserver", label: "Faire une demande de réservation" },
+  },
+  {
+    q: "Le tarif affiché est-il définitif ?",
+    a: "Pour les catégories à prix calculé (Berline, Confort), le montant est déterminé avant confirmation. Pour les trajets sur devis (Luxe, Van, Monospace, longues distances), un tarif vous est communiqué avant tout engagement.",
+    link: { href: "/tarifs", label: "Voir la grille tarifaire" },
+  },
+  {
+    q: "Comment le prix est-il calculé ?",
+    a: "Le tarif est estimé à partir de l’itinéraire réel au moment de la demande, puis confirmé ou ajusté par KDRIVE selon les conditions du trajet.",
+    link: { href: "/tarifs", label: "Voir la grille tarifaire" },
+  },
+  {
+    q: "Puis-je réserver un Van, une catégorie Luxe ou un Monospace ?",
+    a: "Oui. Ces catégories font l’objet d’un devis personnalisé plutôt que d’un tarif calculé automatiquement.",
+    link: { href: "/vehicules", label: "Voir les véhicules disponibles" },
+  },
+  {
+    q: "Puis-je réserver pour une autre personne ?",
+    a: "Oui. Vous pouvez effectuer une demande pour une autre personne en renseignant les informations utiles dans le formulaire et dans le champ de commentaire ; KDRIVE confirme ensuite les détails de la prise en charge.",
+  },
+  {
+    q: "Comment réserver un transfert vers l’aéroport Lyon-Saint-Exupéry ?",
+    a: "Indiquez votre trajet et, si besoin, votre numéro de vol dans le formulaire. KDRIVE prépare votre prise en charge et reste joignable en cas de changement.",
+    link: { href: "/transfert-aeroport", label: "Transfert aéroport" },
+  },
+  {
+    q: "KDRIVE dessert-il les gares Part-Dieu et Perrache ?",
+    a: "Oui, KDRIVE assure des prises en charge sur réservation aux principales gares de Lyon, notamment Part-Dieu et Perrache.",
+    link: { href: "/transfert-gare", label: "Transfert gare" },
+  },
+  {
+    q: "Puis-je payer directement au chauffeur ?",
+    a: "Il n’y a pas de paiement en ligne pour le moment ; le règlement se fait directement avec votre chauffeur, selon les modalités confirmées par KDRIVE.",
+  },
+  {
+    q: "Comment modifier ou annuler une demande ?",
+    a: "Contactez KDRIVE directement par téléphone pour modifier ou annuler une demande de réservation.",
+    link: { href: "/contact", label: "Contacter KDRIVE" },
+  },
+  {
+    q: "Comment contacter KDRIVE ?",
+    a: "Par téléphone ou via le formulaire de réservation ; la page Contact réunit tous les moyens disponibles.",
+    link: { href: "/contact", label: "Voir la page Contact" },
+  },
 ];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
 
 export function FaqPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="FAQ" title="Questions fréquentes" lead="Les réponses aux questions les plus courantes sur la réservation et le déroulement d’un trajet avec KDRIVE." />
+      <PageHero
+        eyebrow="FAQ"
+        title="Questions fréquentes"
+        lead="Les réponses aux questions les plus courantes sur la réservation et le déroulement d’un trajet avec KDRIVE."
+        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "FAQ" }]}
+      />
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container" style={{ maxWidth: 720 }}>
           {faqItems.map((item) => (
-            <div key={item.q} className="kd-card kd-card--flat">
-              <h3 className="kd-h4">{item.q}</h3>
-              <p className="kd-body" style={{ marginTop: 8 }}>{item.a}</p>
-            </div>
+            <details key={item.q} className="kd-faq-item">
+              <summary className="kd-h4">{item.q}</summary>
+              <p className="kd-body">{item.a}</p>
+              {item.link && (
+                <Link className="kd-card-link" href={item.link.href}>
+                  {item.link.label} <span aria-hidden="true">→</span>
+                </Link>
+              )}
+            </details>
           ))}
         </div>
       </section>
@@ -266,6 +362,7 @@ export function FaqPage({ framed = true }: { framed?: boolean } = {}) {
           <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     </PageShell>
   );
 }

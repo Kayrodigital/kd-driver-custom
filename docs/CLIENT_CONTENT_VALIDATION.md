@@ -36,3 +36,38 @@ ces validations.
    de façon volontairement générale (catégorie premium sur devis, solution
    adaptée aux groupes, solution modulable) en l'absence de détails confirmés
    sur le contenu exact de ces prestations.
+10. **WhatsApp public** — aucun bouton WhatsApp public n'a été ajouté au menu
+    mobile ni à la barre d'actions basse tant que les points suivants ne sont
+    pas confirmés :
+    - numéro WhatsApp public à confirmer (ne pas réutiliser automatiquement
+      un numéro interne ou propriétaire déjà utilisé pour les notifications
+      de réservation) ;
+    - consentement du propriétaire à exposer ce numéro publiquement ;
+    - message prérempli à valider avant intégration ;
+    - horaires ou disponibilité à ne pas promettre en l'absence de
+      confirmation.
+11. **Siège enfant** — évoqué dans le brief initial du sprint SEO, jamais
+    confirmé comme service réellement proposé ; non ajouté à la FAQ ni aux
+    pages tant que ce n'est pas confirmé.
+12. **Réservation pour une autre personne** — le site indique qu'une demande
+    peut être faite pour un tiers en renseignant ses coordonnées dans le
+    formulaire et le champ commentaire ; il n'existe pas de fonction dédiée
+    (compte, profil tiers) — à confirmer que cette formulation reste
+    suffisante ou si une fonction spécifique doit être développée.
+13. **E-mail public** — aucune adresse e-mail de contact n'est affichée sur le
+    site ; à fournir si un e-mail destiné aux visiteurs doit être publié.
+14. **Conditions d'annulation** — la FAQ indique de contacter KDRIVE par
+    téléphone pour modifier ou annuler une demande ; aucune condition
+    (délai, frais éventuels) n'est affirmée tant qu'elle n'est pas confirmée.
+15. **Justificatifs** (factures, reçus) — non mentionnés sur le site ; à
+    confirmer si KDRIVE peut en fournir avant d'ajouter cette information.
+16. **Péages et arrêts inclus** (longues distances) — aucune mention de
+    péages ou d'arrêts inclus/gratuits n'est faite ; à confirmer avant tout
+    ajout de ce type de précision.
+17. **Mise à disposition** — durée minimale, tarif horaire ou conditions
+    précises non affichés ; le site indique que la disponibilité et le tarif
+    sont confirmés au cas par cas par KDRIVE.
+18. **Zones longues distances** — aucune destination précise n'est citée ;
+    le site indique uniquement que les trajets hors zone Lyon et
+    agglomération font l'objet d'un devis, sans lister de villes tant
+    qu'elles ne sont pas confirmées.

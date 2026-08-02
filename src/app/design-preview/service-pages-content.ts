@@ -90,7 +90,7 @@ export const servicePages: ServicePageContent[] = [
     benefits: [
       { title: "Discrétion professionnelle", body: "Un service sobre, adapté aux échanges confidentiels." },
       { title: "Ponctualité", body: "Un chauffeur en avance sur le point de rendez-vous convenu." },
-      { title: "Facturation simplifiée", body: "Une seule interlocutrice pour l’ensemble de vos trajets." },
+      { title: "Contact direct", body: "Un contact direct pour organiser vos trajets professionnels." },
     ],
     visualImage: "/images/corporate.jpg",
     steps: [
@@ -99,12 +99,12 @@ export const servicePages: ServicePageContent[] = [
       { title: "Votre chauffeur intervient", body: "Selon le calendrier et les points de rendez-vous convenus." },
     ],
     usefulInfo: [
-      "Trajets ponctuels ou récurrents",
-      "Accueil de visiteurs et délégations",
-      "Interlocuteur dédié pour les entreprises",
+      "Rendez-vous professionnels et transferts de collaborateurs",
+      "Trajets vers la gare ou l’aéroport, à la demande",
+      "Réservation possible pour une autre personne (coordonnées à indiquer dans le formulaire)",
     ],
-    reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande professionnelle est traitée par un échange direct avec l’équipe.",
+    reassuranceTitle: "Vos déplacements professionnels, cadrés avec vous",
+    reassuranceBody: "Rendez-vous, transferts de collaborateurs, gare ou aéroport : chaque demande professionnelle est confirmée par un échange direct, y compris lorsqu’elle concerne une autre personne.",
     ctaFinalTitle: "Parlons de vos déplacements professionnels",
     relatedLinksTitle: "Services complémentaires",
     relatedLinks: [
@@ -112,6 +112,7 @@ export const servicePages: ServicePageContent[] = [
       { href: "/transfert-aeroport", label: "Transfert aéroport" },
       { href: "/transfert-gare", label: "Transfert gare" },
       { href: "/vehicules", label: "Voir les véhicules disponibles" },
+      { href: "/contact", label: "Nous contacter" },
     ],
   },
   {
@@ -141,14 +142,15 @@ export const servicePages: ServicePageContent[] = [
       "Adaptée aux événements privés ou professionnels",
       "Programme ajustable en cours de prestation",
     ],
-    reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque demande est confirmée par un échange direct, sans réservation automatique non vérifiée.",
+    reassuranceTitle: "Un programme confirmé avant le départ",
+    reassuranceBody: "La mise à disposition est étudiée selon la durée, les horaires, le véhicule et le programme prévu. KDRIVE confirme ensuite la disponibilité et le tarif.",
     ctaFinalTitle: "Votre mise à disposition, en quelques secondes",
     relatedLinksTitle: "Services complémentaires",
     relatedLinks: [
       { href: "/chauffeur-entreprise", label: "Déplacements professionnels" },
       { href: "/longues-distances", label: "Trajet longue distance" },
       { href: "/vehicules", label: "Voir les véhicules disponibles" },
+      { href: "/contact", label: "Nous contacter" },
     ],
   },
   {
@@ -164,7 +166,7 @@ export const servicePages: ServicePageContent[] = [
     presentationBody: "Au-delà d’un certain rayon autour de Lyon, chaque trajet longue distance fait l’objet d’un devis personnalisé plutôt que d’un tarif calculé automatiquement, pour tenir compte de la durée et des conditions réelles du trajet.",
     benefits: [
       { title: "Devis personnalisé", body: "Un tarif établi selon la distance réelle et les conditions du trajet." },
-      { title: "Un seul chauffeur", body: "Pas de changement de véhicule en cours de route." },
+      { title: "Une organisation confirmée avant le départ", body: "KDRIVE confirme le véhicule, la disponibilité et le tarif avant la course." },
       { title: "Échange direct", body: "Votre demande est confirmée par KDRIVE avant tout engagement." },
     ],
     visualImage: "/images/about-lyon.jpg",
@@ -178,14 +180,15 @@ export const servicePages: ServicePageContent[] = [
       "Trajets hors zone Lyon et agglomération",
       "Aller simple ou aller-retour",
     ],
-    reassuranceTitle: "Une équipe locale, un service pensé pour durer",
-    reassuranceBody: "KDRIVE est une entreprise locale à Lyon. Chaque trajet longue distance est cadré par un échange direct avant confirmation.",
+    reassuranceTitle: "Une organisation confirmée avant le départ",
+    reassuranceBody: "Les longues distances sont étudiées au cas par cas. KDRIVE confirme le véhicule, la disponibilité et le tarif avant la course.",
     ctaFinalTitle: "Demandez votre devis longue distance",
     relatedLinksTitle: "Services complémentaires",
     relatedLinks: [
       { href: "/vehicules", label: "Voir les véhicules disponibles" },
       { href: "/tarifs", label: "Consulter la grille tarifaire" },
       { href: "/mise-a-disposition", label: "Mise à disposition" },
+      { href: "/contact", label: "Nous contacter" },
     ],
   },
 ];
