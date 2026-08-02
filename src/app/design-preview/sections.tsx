@@ -83,6 +83,10 @@ export function ServicesSection() {
             </Link>
           ))}
         </div>
+        <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
+          Vous partez plus loin ? Découvrez nos <Link href="/longues-distances">trajets longue distance</Link> ou
+          réservez un <Link href="/transfert-gare">transfert gare</Link>.
+        </p>
       </div>
     </section>
   );
@@ -133,6 +137,9 @@ export function VehiclesSection() {
             </Link>
           ))}
         </div>
+        <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
+          Retrouvez le détail des <Link href="/tarifs">tarifs par catégorie</Link>.
+        </p>
       </div>
     </section>
   );
@@ -145,8 +152,8 @@ export function AirportSection() {
         <SceneImage src="/images/airport-transfer.jpg" alt="Transfert aéroport" note="photo à venir" className="kd-scene--tall" />
         <div className="kd-stack">
           <p className="kd-eyebrow">Aéroport &amp; gares</p>
-          <h2 className="kd-h2">Votre vol ou votre train suivi, votre chauffeur à l’heure</h2>
-          <p className="kd-lead">Le trajet est ajusté en fonction des horaires réels : votre chauffeur vous attend, pas l’inverse.</p>
+          <h2 className="kd-h2">Votre chauffeur, prêt pour votre vol ou votre train</h2>
+          <p className="kd-lead">Renseignez votre numéro de vol ou l’heure de votre train : KDRIVE prépare votre prise en charge et reste joignable en cas de changement.</p>
           <Link className="kd-btn kd-btn--outline" href="/transfert-aeroport">Réserver un transfert</Link>
         </div>
       </div>
@@ -196,6 +203,10 @@ export function CtaSection() {
         <h2 className="kd-h2">Votre chauffeur, en quelques secondes</h2>
         <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
         <Link className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation</Link>
+        <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>
+          Après votre demande, KDRIVE vérifie la disponibilité et confirme le tarif de la course. Une question ?
+          Consultez notre <Link href="/faq">FAQ</Link>.
+        </p>
       </div>
     </section>
   );

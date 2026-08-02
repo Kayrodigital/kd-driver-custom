@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 
@@ -19,7 +20,28 @@ export type ServicePageContent = {
   reassuranceTitle: string;
   reassuranceBody: string;
   ctaFinalTitle: string;
+  relatedLinksTitle: string;
+  relatedLinks: { href: string; label: string }[];
 };
+
+function RelatedLinksSection({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+  return (
+    <section className="kd-section kd-section--compact kd-on-cream">
+      <div className="kd-container" style={{ maxWidth: 720 }}>
+        <p className="kd-eyebrow">{title}</p>
+        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link className="kd-card-link" href={link.href}>
+                {link.label} <span aria-hidden="true">→</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 /**
  * Template de page service générique — appliqué à Transfert aéroport,
@@ -107,6 +129,8 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
           </ul>
         </div>
       </section>
+
+      <RelatedLinksSection title={content.relatedLinksTitle} links={content.relatedLinks} />
 
       <section className="kd-section kd-section--compact kd-on-dark">
         <div className="kd-container kd-section-head--center kd-stack">

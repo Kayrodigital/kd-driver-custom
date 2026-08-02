@@ -1,7 +1,27 @@
+import Link from "next/link";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
 import { formatEuros } from "@/domain/pricing/money";
+
+function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+  return (
+    <section className="kd-section kd-section--compact kd-on-cream">
+      <div className="kd-container" style={{ maxWidth: 720 }}>
+        <p className="kd-eyebrow">{title}</p>
+        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link className="kd-card-link" href={link.href}>
+                {link.label} <span aria-hidden="true">→</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 function PageShell({ children, framed = true }: { children: React.ReactNode; framed?: boolean }) {
   const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
@@ -27,11 +47,17 @@ function PageHero({ eyebrow, title, lead }: { eyebrow: string; title: string; le
 }
 
 const allVehicles = [
-  { name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien.", image: "/images/vehicle-berline.jpg" },
-  { name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes.", image: "/images/vehicle-confort.jpg" },
-  { name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
-  { name: "Luxe", mode: "Sur devis", body: "Pour les trajets où le véhicule fait partie de l’expérience.", image: "/images/vehicle-luxe.jpg" },
-  { name: "Monospace", mode: "Sur devis", body: "Pour les groupes avec davantage de bagages.", image: "/images/vehicle-monospace.jpg" },
+  { name: "Berline", mode: "Prix calculé", body: "Adaptée aux déplacements individuels ou en petit groupe.", image: "/images/vehicle-berline.jpg" },
+  { name: "Confort", mode: "Prix calculé", body: "Une catégorie polyvalente pour les trajets du quotidien, professionnels ou privés.", image: "/images/vehicle-confort.jpg" },
+  { name: "Van", mode: "Sur devis", body: "Une solution adaptée aux groupes et aux trajets avec davantage de bagages, sur devis.", image: "/images/vehicle-van.jpg" },
+  { name: "Luxe", mode: "Sur devis", body: "Une catégorie premium proposée sur devis pour les demandes nécessitant un niveau de prestation supérieur.", image: "/images/vehicle-luxe.jpg" },
+  { name: "Monospace", mode: "Sur devis", body: "Une solution modulable pour les familles et les petits groupes, sur devis.", image: "/images/vehicle-monospace.jpg" },
+];
+
+const vehiclesRelatedLinks = [
+  { href: "/tarifs", label: "Consulter la grille tarifaire" },
+  { href: "/transfert-aeroport", label: "Transfert aéroport" },
+  { href: "/chauffeur-entreprise", label: "Déplacements professionnels" },
 ];
 
 export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
@@ -53,6 +79,7 @@ export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
           ))}
         </div>
       </section>
+      <RelatedLinks title="Poursuivre votre réservation" links={vehiclesRelatedLinks} />
       <section id="reserver" className="kd-section kd-on-white">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -124,11 +151,22 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
             ))}
           </div>
           <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-4)", maxWidth: 640 }}>
-            Le tarif affiché est une estimation calculée à partir de l’itinéraire réel au moment de la demande ; il peut
-            être ajusté par KDRIVE selon les conditions réelles de la course.
+            Le tarif est estimé à partir de l’itinéraire calculé au moment de la demande. Il peut être confirmé ou
+            ajusté par KDRIVE selon les conditions réelles du trajet et les options sélectionnées.
+          </p>
+          <p className="kd-field-hint" style={{ marginTop: 8, maxWidth: 640 }}>
+            Les modalités de règlement sont confirmées avec KDRIVE lors de la prise en charge de la réservation.
           </p>
         </div>
       </section>
+      <RelatedLinks
+        title="Poursuivre votre réservation"
+        links={[
+          { href: "/vehicules", label: "Voir les véhicules disponibles" },
+          { href: "/faq", label: "Consulter la FAQ" },
+          { href: "/contact", label: "Nous contacter" },
+        ]}
+      />
       <section id="reserver" className="kd-section kd-on-dark">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
