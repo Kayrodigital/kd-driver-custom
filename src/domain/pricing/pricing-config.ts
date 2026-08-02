@@ -2,6 +2,12 @@ import rawConfig from "../../../config/tarifs.example.json";
 import { z } from "zod";
 
 /**
+ * Tarif Berline : 2,50 €/km. Confirmé par la dernière consigne explicite du
+ * projet ("Petite modif : Confort 2€/km, Berline 2,50€/km, Luxe 3€/km"),
+ * donc conservé tel quel — ce n'est pas un point resté ouvert.
+ */
+
+/**
  * Minimum de catégorie explicitement décomposé par type de trajet : seule
  * la valeur "standard" est définitivement validée (40 € pour Luxe).
  * "airport" et "longDistance" restent à confirmer avec le client — laissés

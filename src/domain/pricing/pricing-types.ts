@@ -34,12 +34,10 @@ export type PricingInput = {
   distanceMeters: number;
   durationSeconds: number;
   /**
-   * Signal actuel (fragile, documenté) : dérivé côté appelant de la
-   * présence d'un numéro de vol (cf. create-booking.ts). Ne détecte ni un
-   * départ depuis l'aéroport sans vol renseigné, ni une prise en charge
-   * indirecte avec vol renseigné. À remplacer par un champ métier explicite
-   * (trip_type saisi ou confirmé côté propriétaire) dès qu'il existera dans
-   * le tunnel — cf. docs/CLIENT_CONTENT_VALIDATION.md.
+   * Calculé côté appelant par `detectAirportTrip` (cf. airport-detection.ts) :
+   * place_id/alias reconnu en priorité, numéro de vol en dernier recours
+   * uniquement. Reste imparfait tant qu'aucun champ trip_type explicite
+   * n'existe dans le tunnel — cf. docs/CLIENT_CONTENT_VALIDATION.md.
    */
   isAirportTrip?: boolean;
 };

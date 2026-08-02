@@ -1,3 +1,4 @@
+import { detectAirportTrip } from "@/domain/booking/airport-detection";
 import { reservationRequestSchema, type ReservationRequest } from "@/domain/booking/booking-schema";
 import type { RouteResult } from "@/domain/maps/route";
 import { calculatePrice } from "@/domain/pricing/pricing-engine";
@@ -49,12 +50,11 @@ export async function createReservation(untrustedInput: unknown, repository: Res
   const request = reservationRequestSchema.parse(untrustedInput);
   if (new Date(request.pickupAt).getTime() <= now.getTime()) throw new RangeError("La date de prise en charge doit être dans le futur.");
   const route = await maps.calculateRoute({ pickup: request.pickup, destination: request.destination });
-  // Détection provisoire et fragile : aucun champ trip_type explicite n'existe encore
-  // dans le tunnel. Un client peut aller à l'aéroport sans numéro de vol (aucune
-  // détection) ou renseigner un vol pour une prise en charge indirecte (faux
-  // positif). Le tarif reste toujours vérifiable et ajustable par le propriétaire
-  // dans l'admin — cf. docs/CLIENT_CONTENT_VALIDATION.md.
-  const isAirportTrip = Boolean(request.flightNumber);
+  // Détection par place_id/alias en priorité (cf. airport-detection.ts) ;
+  // le numéro de vol ne reste qu'un signal complémentaire de dernier
+  // recours. Le tarif reste toujours vérifiable et ajustable par le
+  // propriétaire dans l'admin — cf. docs/CLIENT_CONTENT_VALIDATION.md.
+  const isAirportTrip = detectAirportTrip({ pickup: request.pickup, destination: request.destination, flightNumber: request.flightNumber });
   const pricing = calculatePrice({ category: request.vehicleSlug, distanceMeters: route.distanceMeters, durationSeconds: route.durationSeconds, isAirportTrip }, pricingConfig);
   const status: ReservationStatus = pricing.mode === "quote" ? "quote_requested" : "new";
   const pricingStatus: PricingStatus = pricing.mode === "quote" ? "quote_required" : "estimated";
