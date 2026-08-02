@@ -2,14 +2,19 @@
 
 Ce document couvre l'audit et la priorisation des communes de l'agglomération
 lyonnaise, la page pilote recommandée, la philosophie et la structure du
-template ville, ainsi que la stratégie anti-duplication. **Aucune donnée
-Semrush, Search Console ou Google Ads n'est disponible à ce stade : la
-priorisation ci-dessous est qualitative**, fondée sur la proximité
-géographique, le profil socio-économique probable et la cohérence avec le
-contenu déjà publié sur le site (notamment la section « Zones desservies »
-de l'accueil, qui cite déjà Lyon, Villeurbanne, l'aéroport Lyon-Saint
-Exupéry, les gares Part-Dieu et Perrache, Écully, Caluire-et-Cuire et
-Vénissieux).
+template ville, ainsi que la stratégie anti-duplication.
+
+**La priorisation combine la cohérence géographique, les zones actuellement
+annoncées comme desservies et les volumes Semrush France relevés en août
+2026. Les volumes restent des estimations et devront être complétés par
+Search Console, Google Ads, les appels reçus et les réservations réelles.**
+
+Méthodologie des volumes cités dans ce document : base Semrush France,
+volume mensuel estimé, recherche effectuée en août 2026 — donnée indicative,
+non équivalente à une garantie de trafic ou de conversion. Un volume à 0
+dans la base interrogée ne doit pas être interprété comme une absence
+certaine de demande (couverture de mots-clés Semrush incomplète, variantes
+non testées, recherches locales mal captées par les outils génériques).
 
 ## 1. Audit par commune
 
@@ -20,6 +25,7 @@ nécessaires, contenu à obtenir du client, risque de contenu dupliqué,
 priorité recommandée.
 
 ### Villeurbanne
+- Données Semrush (France, août 2026) : « vtc villeurbanne » — volume 50/mois, difficulté SEO 12, CPC 0,99 € ; « chauffeur privé villeurbanne » — volume 10/mois
 - Requête principale : « chauffeur VTC Villeurbanne »
 - Intentions secondaires : trajet vers Part-Dieu, trajet vers l'aéroport, déplacement professionnel
 - Besoins probables : résidentiel, étudiant (campus doua/INSA à proximité), professionnel
@@ -32,9 +38,10 @@ priorité recommandée.
 - Preuves locales nécessaires : aucune promesse chiffrée de délai ; s'appuyer sur la proximité déjà connue de Part-Dieu
 - Contenu à obtenir du client : aucun indispensable (commune déjà citée comme desservie)
 - Risque de duplication : faible si le contenu reste spécifique (quartiers, Part-Dieu)
-- **Priorité : 1**
+- **Priorité : 1 — page pilote, mot-clé principal « vtc villeurbanne », mot-clé secondaire « chauffeur privé villeurbanne »**
 
 ### Vénissieux
+- Données Semrush (France, août 2026) : « vtc vénissieux » — volume 0 dans la base interrogée (à ne pas interpréter comme une absence certaine de demande)
 - Requête principale : « VTC Vénissieux »
 - Intentions secondaires : trajet vers Lyon, trajet vers aéroport (axe sud-est)
 - Besoins probables : résidentiel et industriel, population importante
@@ -47,7 +54,7 @@ priorité recommandée.
 - Preuves locales nécessaires : aucune
 - Contenu à obtenir du client : aucun indispensable (déjà cité comme desservi)
 - Risque de duplication : moyen — éviter de reproduire le contenu de Villeurbanne à l'identique
-- **Priorité : 1**
+- **Priorité : 2** — géographiquement pertinente et déjà annoncée comme desservie, mais le volume Semrush mesuré (0 sur la requête testée) n'a pas dépassé celui des communes de la nouvelle Priorité 1 ; à remonter après analyse Search Console/appels/réservations/Ads
 
 ### Écully
 - Requête principale : « chauffeur privé Écully »
@@ -62,9 +69,10 @@ priorité recommandée.
 - Preuves locales nécessaires : angle entreprise à confirmer (aucune clientèle nommée)
 - Contenu à obtenir du client : aucun indispensable (déjà cité comme desservi)
 - Risque de duplication : moyen — angle "entreprise" à ne pas dupliquer avec `/chauffeur-entreprise`
-- **Priorité : 1**
+- **Priorité : 2** — géographiquement pertinente et déjà annoncée comme desservie, mais aucune requête testée n'a révélé de volume supérieur aux communes de la nouvelle Priorité 1 ; à remonter après analyse Search Console/appels/réservations/Ads
 
 ### Caluire-et-Cuire
+- Données Semrush (France, août 2026) : « vtc caluire » — volume 20/mois
 - Requête principale : « VTC Caluire »
 - Intentions secondaires : trajet vers Lyon centre, trajet vers gare
 - Besoins probables : résidentiel aisé, nord lyonnais
@@ -80,6 +88,7 @@ priorité recommandée.
 - **Priorité : 1**
 
 ### Bron
+- Données Semrush (France, août 2026) : « vtc bron » — volume 20/mois, CPC 0,89 € ; « chauffeur privé bron » — volume 10/mois
 - Requête principale : « VTC Bron »
 - Intentions secondaires : trajet professionnel, aéroport d'affaires local (Lyon-Bron), CHU
 - Besoins probables : professionnel, médical (CHU Lyon Sud n'est pas à Bron mais Bron a un hôpital/clinique notable), aviation d'affaires
@@ -92,9 +101,10 @@ priorité recommandée.
 - Preuves locales nécessaires : zone non encore citée comme desservie sur le site — **validation client requise avant publication**
 - Contenu à obtenir du client : confirmation explicite que Bron est desservi
 - Risque de duplication : faible (angle aviation d'affaires distinctif)
-- **Priorité : 2**
+- **Priorité : 1** — volume Semrush mesuré, zone à confirmer explicitement par le client avant publication (non encore citée dans les zones desservies actuelles)
 
 ### Saint-Priest
+- Données Semrush (France, août 2026) : « vtc saint priest » — volume 20/mois, CPC 0,84 €
 - Requête principale : « VTC Saint-Priest »
 - Intentions secondaires : déplacement professionnel, proximité Eurexpo
 - Besoins probables : zone d'affaires (sièges d'entreprises), événementiel (Eurexpo)
@@ -107,7 +117,7 @@ priorité recommandée.
 - Preuves locales nécessaires : zone non encore citée comme desservie — **validation client requise**
 - Contenu à obtenir du client : confirmation de la desserte, éventuel partenariat Eurexpo (ne pas inventer)
 - Risque de duplication : faible (angle Eurexpo/affaires distinctif)
-- **Priorité : 2**
+- **Priorité : 1** — volume Semrush mesuré, zone à confirmer explicitement par le client avant publication (non encore citée dans les zones desservies actuelles)
 
 ### Décines-Charpieu
 - Requête principale : « VTC Décines » / « chauffeur privé Groupama Stadium »
@@ -140,6 +150,7 @@ priorité recommandée.
 - **Priorité : 2**
 
 ### Oullins-Pierre-Bénite
+- Données Semrush (France, août 2026) : « vtc oullins » — volume 20/mois
 - Requête principale : « VTC Oullins »
 - Intentions secondaires : trajet vers Lyon centre, zone industrielle
 - Besoins probables : résidentiel et industriel, sud-ouest
@@ -152,7 +163,7 @@ priorité recommandée.
 - Preuves locales nécessaires : zone non encore citée — **validation client requise**
 - Contenu à obtenir du client : confirmation de la desserte
 - Risque de duplication : moyen à élevé
-- **Priorité : 2**
+- **Priorité : 1** — volume Semrush mesuré, zone à confirmer explicitement par le client avant publication (non encore citée dans les zones desservies actuelles)
 
 ### Vaulx-en-Velin
 - Requête principale : « VTC Vaulx-en-Velin »
@@ -167,7 +178,7 @@ priorité recommandée.
 - Preuves locales nécessaires : zone non encore citée — **validation client requise**
 - Contenu à obtenir du client : confirmation de la desserte
 - Risque de duplication : élevé (profil proche de Villeurbanne)
-- **Priorité : 3**
+- **Priorité : 2**
 
 ### Meyzieu
 - Requête principale : « VTC Meyzieu »
@@ -182,7 +193,7 @@ priorité recommandée.
 - Preuves locales nécessaires : zone non encore citée — **validation client requise**
 - Contenu à obtenir du client : confirmation de la desserte
 - Risque de duplication : moyen
-- **Priorité : 3**
+- **Priorité : 2**
 
 ### Chassieu
 - Requête principale : « VTC Chassieu »
@@ -244,24 +255,84 @@ priorité recommandée.
 - Risque de duplication : élevé (profil proche de Caluire-et-Cuire)
 - **Priorité : 3**
 
-## 2. Classement en trois groupes
+## 2. Classement en trois groupes (mis à jour après recherche Semrush, août 2026)
 
-**Priorité 1** (première vague, 4 communes — déjà citées comme desservies sur le site, aucune nouvelle promesse de zone à valider) :
-Villeurbanne, Vénissieux, Écully, Caluire-et-Cuire.
+**Priorité 1 — première vague SEO** (volume Semrush mesuré, intention transactionnelle, proximité de Lyon, potentiel de réservation, contenu local réellement distinct possible) :
+1. Villeurbanne — page pilote
+2. Bron
+3. Saint-Priest
+4. Caluire-et-Cuire
+5. Oullins-Pierre-Bénite
 
-**Priorité 2** (pertinentes, angle différenciant réel, mais nécessitent une confirmation explicite du client que la zone est desservie avant toute publication) :
-Bron, Saint-Priest, Décines-Charpieu, Tassin-la-Demi-Lune, Oullins-Pierre-Bénite.
+Bron, Saint-Priest et Oullins-Pierre-Bénite ne sont pas encore citées comme
+zones desservies sur le site actuel : **une confirmation explicite du client
+reste nécessaire avant toute publication de page les concernant**, malgré
+leur volume Semrush mesuré.
+
+**Priorité 2** (pertinentes géographiquement, certaines déjà annoncées comme
+desservies, mais dont les requêtes testées n'ont pas révélé de volume
+supérieur aux communes de la nouvelle Priorité 1) :
+Vénissieux, Écully, Décines-Charpieu, Tassin-la-Demi-Lune, Vaulx-en-Velin, Meyzieu.
+
+Vénissieux et Écully restent géographiquement pertinentes et sont déjà
+annoncées comme desservies sur le site ; elles pourront être remontées en
+Priorité 1 après analyse des données Search Console, des appels entrants,
+des réservations réelles, des campagnes Google Ads, ou de variantes de
+mots-clés complémentaires non couvertes par la recherche Semrush initiale.
 
 **Priorité 3** (à tester uniquement une fois des données Search Console/Google Ads disponibles ; profils proches de communes déjà couvertes, risque de duplication plus élevé) :
-Vaulx-en-Velin, Meyzieu, Chassieu, Genas, Saint-Genis-Laval, Rillieux-la-Pape.
+Chassieu, Genas, Saint-Genis-Laval, Rillieux-la-Pape.
 
 ## 3. Page pilote recommandée
 
 **`/vtc-villeurbanne`**, confirmée après vérification des alternatives du groupe 1 :
-- Plus grande population du groupe, donc potentiel de recherche qualitativement le plus élevé.
+- Volume Semrush mesuré le plus élevé du groupe parmi les communes déjà
+  annoncées comme desservies (« vtc villeurbanne » : 50/mois, difficulté SEO
+  12 — la plus accessible du lot ; « chauffeur privé villeurbanne » : 10/mois).
 - Déjà citée comme zone desservie sur l'accueil — zéro nouvelle promesse à valider avant publication.
 - Contiguë à Lyon et à la gare Part-Dieu — permet un contenu « trajets fréquents » et « transfert gare » vérifiable sans invention.
 - Profil mixte (résidentiel, étudiant, affaires) qui permet de couvrir plusieurs sections du template (entreprise, gare, aéroport) sans contenu forcé.
+
+Mot-clé principal retenu pour la page pilote : **« vtc villeurbanne »**.
+Mot-clé secondaire : **« chauffeur privé villeurbanne »**. Aucune expression
+sans volume mesuré ne doit être forcée dans le title ou les paragraphes de
+la page pilote.
+
+## 3 bis. Opportunités SEO parallèles aux pages villes
+
+Ces requêtes ne correspondent pas à des communes de l'agglomération mais à
+des trajets ou catégories de véhicule ; **elles peuvent être plus rentables
+que certaines pages villes** et doivent être intégrées à la feuille de route
+après la page pilote Villeurbanne. Aucune de ces pages n'est créée dans la
+Phase 3A.
+
+| Requête | Volume Semrush (France, août 2026) | Difficulté SEO | CPC |
+|---|---|---|---|
+| vtc lyon part dieu | 170/mois | 8 | — |
+| vtc lyon grenoble | 90/mois | 6 | — |
+| vtc lyon genève | 50/mois | — | — |
+| vtc van lyon | 30/mois | — | — |
+| vtc lyon annecy | 30/mois | — | — |
+| minibus avec chauffeur lyon | 20/mois | — | 2,53 € |
+
+« vtc lyon part dieu » et « vtc lyon grenoble » présentent à la fois un
+volume supérieur à toutes les communes étudiées et une difficulté SEO plus
+faible — un renforcement du contenu existant (`/transfert-gare`) et une page
+ou un contenu dédié Lyon–Grenoble méritent d'être évalués en priorité juste
+après la page pilote.
+
+## 3 ter. Ordre de production recommandé (provisoire, à valider avec le client et les données métier)
+
+1. Page pilote VTC Villeurbanne
+2. Renforcement de la page VTC Lyon Part-Dieu (contenu existant, `/transfert-gare`)
+3. Page ou contenu dédié Lyon–Grenoble
+4. VTC Bron
+5. VTC Saint-Priest
+6. VTC Caluire
+7. VTC Oullins
+8. Lyon–Genève
+9. Lyon–Annecy
+10. Autres communes, après données Search Console
 
 ## 4. Philosophie et structure du template
 
