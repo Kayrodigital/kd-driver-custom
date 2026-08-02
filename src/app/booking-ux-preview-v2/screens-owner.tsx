@@ -175,16 +175,23 @@ export function ScreenRechercheChauffeur() {
       id="screen-o5" kicker="Écran propriétaire 5" title="Recherche de chauffeur"
       lead="Rappel visuel si aucune affectation après quelques minutes. Pas de relance WhatsApp automatisée dans cette première version."
       mobile={<RechercheChauffeurMobile />} desktop={<div style={{ maxWidth: 420 }}><RechercheChauffeurMobile /></div>}
+      states={<StateCard type="warning" label="En recherche">Délai écoulé affiché, actions de relance disponibles.</StateCard>}
+    />
+  );
+}
+
+/* ---------- Écran propriétaire 6 — Aucun chauffeur trouvé ---------- */
+export function ScreenAucunChauffeur() {
+  return (
+    <ScreenShell
+      id="screen-o6" kicker="Écran propriétaire 6" title="Aucun chauffeur trouvé"
+      lead="État explicite après un délai sans réponse dans le groupe : la réservation ne reste jamais dans un état indéfini. Le client reçoit un message adapté, jamais une fausse confirmation."
+      mobile={<RechercheChauffeurMobile empty />} desktop={<div style={{ maxWidth: 420 }}><RechercheChauffeurMobile empty /></div>}
       states={
-        <>
-          <StateCard type="warning" label="En recherche">Délai écoulé affiché, actions de relance disponibles.</StateCard>
-          <StateCard type="error" label="Aucun chauffeur disponible pour le moment">
-            Actions proposées : relancer le groupe, modifier le net chauffeur, modifier la catégorie, contacter le
-            client, proposer un autre horaire, refuser la demande. Message client : « KDRIVE recherche actuellement
-            un chauffeur disponible. La course n’est pas encore confirmée. Nous revenons vers vous dès que
-            possible. »
-          </StateCard>
-        </>
+        <StateCard type="error" label="Message client correspondant">
+          « KDRIVE recherche actuellement un chauffeur disponible. La course n’est pas encore confirmée. Nous
+          revenons vers vous dès que possible. »
+        </StateCard>
       }
     />
   );
@@ -208,7 +215,7 @@ function AffectationMobile() {
 export function ScreenAffectation() {
   return (
     <ScreenShell
-      id="screen-o6" kicker="Écran propriétaire 6" title="Affectation chauffeur"
+      id="screen-o7" kicker="Écran propriétaire 7" title="Affectation chauffeur"
       lead="Version V1 : saisie manuelle. Version future (non développée dans cette phase) : sélection dans une base de chauffeurs avec favoris, disponibilité, historique et notation interne."
       mobile={<AffectationMobile />} desktop={<div style={{ maxWidth: 420 }}><AffectationMobile /></div>}
       states={
@@ -242,7 +249,7 @@ function MessagePriveMobile() {
 export function ScreenMessagePrive() {
   return (
     <ScreenShell
-      id="screen-o7" kicker="Écran propriétaire 7" title="Message privé chauffeur"
+      id="screen-o8" kicker="Écran propriétaire 8" title="Message privé chauffeur"
       lead="Généré automatiquement après affectation. Adresse complète, nom et téléphone du client — réservés exclusivement à ce message privé."
       mobile={<MessagePriveMobile />} desktop={<div style={{ maxWidth: 480 }}><MessagePriveMobile /></div>}
       states={<StateCard type="normal" label="Envoyé">Statut « Marqué comme envoyé » horodaté dans l’historique de la course.</StateCard>}
@@ -254,7 +261,7 @@ export function ScreenMessagePrive() {
 export function ScreenGenerationBon() {
   return (
     <ScreenShell
-      id="screen-o8" kicker="Écran propriétaire 8" title="Génération du bon"
+      id="screen-o9" kicker="Écran propriétaire 9" title="Génération du bon"
       lead="Deux versions nettement distinctes : la version interne ajoute commission, net chauffeur, chauffeur attribué, statut d’envoi et notes internes — jamais visibles sur la version client."
       mobile={<VoucherPreview variant="internal" compact />} desktop={<VoucherPreview variant="internal" />}
       states={<StateCard type="normal" label="Deux versions générées">Version client envoyée au client, version interne conservée par KDRIVE.</StateCard>}
@@ -280,7 +287,7 @@ function ConfirmationClientMobile() {
 export function ScreenConfirmationClient() {
   return (
     <ScreenShell
-      id="screen-o9" kicker="Écran propriétaire 9" title="Confirmation au client"
+      id="screen-o10" kicker="Écran propriétaire 10" title="Confirmation au client"
       lead="Dernière étape automatique une fois l’affectation faite : génération et envoi groupés, sans ressaisie."
       mobile={<ConfirmationClientMobile />} desktop={<div style={{ maxWidth: 480 }}><ConfirmationClientMobile /></div>}
       states={<StateCard type="success" label="Course confirmée">Statut final atteint uniquement après tarif confirmé + chauffeur attribué + informations préparées + envoi effectué.</StateCard>}
@@ -310,7 +317,7 @@ function HistoriqueMobile() {
 export function ScreenHistorique() {
   return (
     <ScreenShell
-      id="screen-o10" kicker="Écran propriétaire 10" title="Historique de la course"
+      id="screen-o11" kicker="Écran propriétaire 11" title="Historique de la course"
       lead="Chaque changement de statut horodaté, pour garder une trace claire sans ressaisie manuelle."
       mobile={<HistoriqueMobile />} desktop={<div style={{ maxWidth: 480 }}><HistoriqueMobile /></div>}
       states={<StateCard type="normal" label="Historique complet">Consultable à tout moment depuis la fiche course, y compris après la course terminée.</StateCard>}

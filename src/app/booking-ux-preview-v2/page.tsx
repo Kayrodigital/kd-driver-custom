@@ -8,7 +8,7 @@ import {
 } from "./screens-client";
 import {
   ScreenListeDemandes, ScreenNouvelleDemande, ScreenTarifCommission, ScreenAnnonceGroupe,
-  ScreenRechercheChauffeur, ScreenAffectation, ScreenMessagePrive, ScreenGenerationBon,
+  ScreenRechercheChauffeur, ScreenAucunChauffeur, ScreenAffectation, ScreenMessagePrive, ScreenGenerationBon,
   ScreenConfirmationClient, ScreenHistorique,
 } from "./screens-owner";
 
@@ -31,11 +31,12 @@ const navItems = [
   { href: "#screen-o3", label: "P3. Tarif/commission" },
   { href: "#screen-o4", label: "P4. Annonce groupe" },
   { href: "#screen-o5", label: "P5. Recherche chauffeur" },
-  { href: "#screen-o6", label: "P6. Affectation" },
-  { href: "#screen-o7", label: "P7. Message privé" },
-  { href: "#screen-o8", label: "P8. Bon (interne)" },
-  { href: "#screen-o9", label: "P9. Confirmation client" },
-  { href: "#screen-o10", label: "P10. Historique" },
+  { href: "#screen-o6", label: "P6. Aucun chauffeur" },
+  { href: "#screen-o7", label: "P7. Affectation" },
+  { href: "#screen-o8", label: "P8. Message privé" },
+  { href: "#screen-o9", label: "P9. Bon (interne)" },
+  { href: "#screen-o10", label: "P10. Confirmation client" },
+  { href: "#screen-o11", label: "P11. Historique" },
   { href: "#confidentiality", label: "Confidentialité" },
   { href: "#automations", label: "Automatisations" },
 ];
@@ -87,6 +88,7 @@ export default function BookingUxPreviewV2Page() {
       <ScreenTarifCommission />
       <ScreenAnnonceGroupe />
       <ScreenRechercheChauffeur />
+      <ScreenAucunChauffeur />
       <ScreenAffectation />
       <ScreenMessagePrive />
       <ScreenGenerationBon />
