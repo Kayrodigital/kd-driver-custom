@@ -24,7 +24,7 @@ describe("createReservation", () => {
     const record = repository.records.values().next().value;
     expect(record?.route.distanceMeters).toBe(10_000);
     expect(record?.request.vehicleSlug).toBe("berline");
-    expect(record?.pricing.totalCents).toBe(3_250);
+    expect(record?.pricing.totalCents).toBe(3_500);
     expect(record?.status).toBe("new");
   });
 
@@ -61,7 +61,7 @@ describe("createReservation", () => {
     await createReservation({ ...validRequest, idempotencyKey: "3d6f3b0a-7a8a-4d3a-9d2a-1a2b3c4d5e6f" }, repository, new FakeMapsProvider({ distanceMeters: 200_000, durationSeconds: 7_200 }), new Date("2029-01-01"));
     const record = repository.records.values().next().value;
     expect(record?.pricing.mode).toBe("calculated");
-    expect(record?.pricing.tripType).toBe("transfer_or_long_distance");
+    expect(record?.pricing.tripType).toBe("long_distance");
     expect(record?.status).toBe("new");
   });
 

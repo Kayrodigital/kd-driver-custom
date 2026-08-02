@@ -1,10 +1,23 @@
 import rawConfig from "../../../config/tarifs.example.json";
 import { z } from "zod";
 
+/**
+ * Minimum de catégorie explicitement décomposé par type de trajet : seule
+ * la valeur "standard" est définitivement validée (40 € pour Luxe).
+ * "airport" et "longDistance" restent à confirmer avec le client — laissés
+ * à `null` (aucun minimum appliqué) tant qu'aucune décision n'est prise,
+ * jamais silencieusement copiés depuis "standard".
+ */
+const minimumByTripTypeSchema = z.object({
+  standard: z.number().nonnegative().nullable(),
+  airport: z.number().nonnegative().nullable(),
+  longDistance: z.number().nonnegative().nullable(),
+});
+
 const calculatedCategorySchema = z.object({
   mode: z.literal("calculated"),
   pricePerKm: z.number().nonnegative(),
-  minimumPrice: z.number().nonnegative().nullable(),
+  minimumByTripType: minimumByTripTypeSchema,
 });
 
 const quoteCategorySchema = z.object({ mode: z.literal("quote") });

@@ -4,7 +4,8 @@ import type { PricingResult, TripType } from "./pricing-types";
 const TRIP_TYPE_LABELS: Record<TripType, string> = {
   standard_short: "Course standard de moins de 10 km",
   standard_long: "Course standard de 10 km ou plus",
-  transfer_or_long_distance: "Transfert aéroport ou longue distance",
+  airport: "Transfert aéroport",
+  long_distance: "Longue distance",
 };
 
 export function tripTypeLabel(tripType: TripType | null): string | null {

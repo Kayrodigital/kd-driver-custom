@@ -7,7 +7,7 @@ describe("pricing-display", () => {
   it("affiche le tarif estimé pour une course standard ≥ 10 km (Berline, aucun minimum)", () => {
     const pricing = calculatePrice({ category: "berline", distanceMeters: 10_000, durationSeconds: 1_200 }, pricingConfig);
     expect(minimumApplied(pricing)).toBe(false);
-    expect(priceHeadline(pricing)).toMatch(/^Tarif estimé : 32,50\s€$/);
+    expect(priceHeadline(pricing)).toMatch(/^Tarif estimé : 35,00\s€$/);
   });
 
   it("affiche la mention minimum de course quand le calcul est sous le minimum (Luxe)", () => {
@@ -31,7 +31,8 @@ describe("pricing-display", () => {
   it("fournit un libellé de type de trajet cohérent", () => {
     expect(tripTypeLabel("standard_short")).toBe("Course standard de moins de 10 km");
     expect(tripTypeLabel("standard_long")).toBe("Course standard de 10 km ou plus");
-    expect(tripTypeLabel("transfer_or_long_distance")).toBe("Transfert aéroport ou longue distance");
+    expect(tripTypeLabel("airport")).toBe("Transfert aéroport");
+    expect(tripTypeLabel("long_distance")).toBe("Longue distance");
     expect(tripTypeLabel(null)).toBeNull();
   });
 });

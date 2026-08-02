@@ -104,7 +104,7 @@ const tariffCards = tariffOrder.map((slug) => {
     `${formatEuros(category.pricePerKm * 100)}/km`,
     `Prise en charge : ${formatEuros(pricingConfig.standardBaseFee * 100)} (course standard) ou ${formatEuros(pricingConfig.transferBaseFee * 100)} (transfert aéroport / longue distance)`,
   ];
-  if (category.minimumPrice != null) lines.push(`Minimum : ${formatEuros(category.minimumPrice * 100)} (course standard)`);
+  if (category.minimumByTripType.standard != null) lines.push(`Minimum : ${formatEuros(category.minimumByTripType.standard * 100)} (course standard)`);
   return { label, quote: false, lines };
 });
 

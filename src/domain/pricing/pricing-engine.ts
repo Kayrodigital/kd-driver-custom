@@ -3,20 +3,29 @@ import type { PricingConfig } from "./pricing-config";
 import type { PriceLine, PricingInput, PricingResult, TripType } from "./pricing-types";
 
 /**
- * Trois types de trajet, chacun avec sa propre règle (grille validée
- * août 2026) : course standard courte (< seuil, facturation à la minute
- * au-delà des minutes incluses), course standard longue (pas de facturation
- * à la minute), transfert aéroport ou longue distance (prise en charge
- * réduite, jamais de facturation à la minute). Le minimum de catégorie ne
- * s'applique qu'aux courses standard — point explicitement laissé ouvert
- * pour les transferts aéroport/longue distance tant qu'il n'est pas confirmé
- * par le client (cf. docs/CLIENT_CONTENT_VALIDATION.md).
+ * Ordre de priorité strict (validé) : un trajet aéroport applique toujours
+ * la règle aéroport, quelle que soit sa distance — jamais évalué comme
+ * longue distance ni comme course standard. La longue distance n'est
+ * évaluée qu'ensuite, sur le seuil de distance métier. Le seuil des 10 km
+ * ne s'applique qu'au reste (course standard).
  */
 function detectTripType(input: PricingInput, config: PricingConfig): TripType {
+  if (input.isAirportTrip) return "airport";
   const km = input.distanceMeters / 1_000;
-  if (input.isAirportTrip || km >= config.longDistanceThresholdKm) return "transfer_or_long_distance";
+  if (km >= config.longDistanceThresholdKm) return "long_distance";
   if (km >= config.standardShortDistanceThresholdKm) return "standard_long";
   return "standard_short";
+}
+
+function minimumCentsForTripType(
+  category: Extract<PricingConfig["categories"][string], { mode: "calculated" }>,
+  tripType: TripType,
+): number {
+  const euros =
+    tripType === "airport" ? category.minimumByTripType.airport
+    : tripType === "long_distance" ? category.minimumByTripType.longDistance
+    : category.minimumByTripType.standard;
+  return euros == null ? 0 : eurosToCents(euros);
 }
 
 export function calculatePrice(
@@ -55,11 +64,12 @@ export function calculatePrice(
   }
 
   const tripType = detectTripType(input, config);
-  const isTransfer = tripType === "transfer_or_long_distance";
+  const isTimedRule = tripType === "standard_short";
+  const isTransferRule = tripType === "airport" || tripType === "long_distance";
 
   const pricePerKmCents = eurosToCents(category.pricePerKm);
   const distanceCents = Math.round((pricePerKmCents * input.distanceMeters) / 1_000);
-  const baseFeeCents = eurosToCents(isTransfer ? config.transferBaseFee : config.standardBaseFee);
+  const baseFeeCents = eurosToCents(isTransferRule ? config.transferBaseFee : config.standardBaseFee);
 
   const lines: PriceLine[] = [
     { code: "base_fee", label: "Prise en charge", amountCents: baseFeeCents },
@@ -67,7 +77,7 @@ export function calculatePrice(
   ];
 
   let extraMinutesCents = 0;
-  if (tripType === "standard_short") {
+  if (isTimedRule) {
     const minutes = Math.round(input.durationSeconds / 60);
     const extraMinutes = Math.max(0, minutes - config.includedMinutes);
     if (extraMinutes > 0) {
@@ -78,8 +88,7 @@ export function calculatePrice(
 
   const subtotalCents = baseFeeCents + distanceCents + extraMinutesCents;
 
-  // Le minimum de catégorie ne s'applique qu'aux courses standard.
-  const minimumCents = !isTransfer && category.minimumPrice != null ? eurosToCents(category.minimumPrice) : 0;
+  const minimumCents = minimumCentsForTripType(category, tripType);
   const minimumAdjustmentCents = Math.max(0, minimumCents - subtotalCents);
   if (minimumAdjustmentCents > 0) {
     lines.push({ code: "minimum_adjustment", label: "Ajustement au minimum", amountCents: minimumAdjustmentCents });

@@ -1,22 +1,22 @@
 {
-  "version": "2026-08-kdrive-v2",
+  "version": "2026-08-kdrive-v2b",
   "currency": "EUR",
   "distanceUnit": "km",
   "categories": {
     "confort": {
       "mode": "calculated",
       "pricePerKm": 2,
-      "minimumPrice": null
+      "minimumByTripType": { "standard": null, "airport": null, "longDistance": null }
     },
     "berline": {
       "mode": "calculated",
-      "pricePerKm": 2.25,
-      "minimumPrice": null
+      "pricePerKm": 2.5,
+      "minimumByTripType": { "standard": null, "airport": null, "longDistance": null }
     },
     "luxe": {
       "mode": "calculated",
       "pricePerKm": 3,
-      "minimumPrice": 40
+      "minimumByTripType": { "standard": 40, "airport": null, "longDistance": null }
     },
     "van": { "mode": "quote" },
     "monospace": { "mode": "quote" }

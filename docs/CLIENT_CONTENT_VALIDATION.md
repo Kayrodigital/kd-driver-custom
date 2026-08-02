@@ -71,3 +71,27 @@ ces validations.
     le site indique uniquement que les trajets hors zone Lyon et
     agglomération font l'objet d'un devis, sans lister de villes tant
     qu'elles ne sont pas confirmées.
+19. **Détection du trajet aéroport (moteur tarifaire)** — aucun champ
+    `trip_type` explicite n'existe encore dans le tunnel de réservation. La
+    détection actuelle (`isAirportTrip`, dans `create-booking.ts`) repose
+    uniquement sur la présence d'un numéro de vol renseigné par le client :
+    - un client se rendant à l'aéroport sans indiquer de numéro de vol ne
+      sera pas détecté comme trajet aéroport ;
+    - un client indiquant un numéro de vol pour une prise en charge
+      indirecte (pas à l'aéroport) sera détecté à tort comme trajet
+      aéroport.
+    Ce mécanisme reste volontairement documenté comme fragile plutôt que
+    présenté comme fiable. Le tarif reste vérifiable et ajustable par le
+    propriétaire dans l'admin quel que soit le résultat de cette détection.
+    Une piste d'amélioration (non développée) : détection assistée par
+    `place_id`/catégorie Google du lieu de départ ou de destination, utilisée
+    uniquement comme aide, avec confirmation ou correction manuelle côté
+    propriétaire.
+20. **Minimum Luxe pour transfert aéroport et longue distance** — seule la
+    valeur pour une course standard (40 €) est définitivement validée. Le
+    minimum applicable à un transfert aéroport ou à une longue distance
+    reste à confirmer ; en attendant, la configuration
+    (`config/tarifs.example.json`, champ `minimumByTripType`) fixe
+    explicitement `airport: null` et `longDistance: null` (aucun minimum
+    appliqué) comme règle provisoire clairement documentée, jamais comme une
+    valeur confirmée.
