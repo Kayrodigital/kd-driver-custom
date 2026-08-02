@@ -334,6 +334,13 @@ après la page pilote.
 9. Lyon–Annecy
 10. Autres communes, après données Search Console
 
+**Vérification (sprint autonomie août 2026)** : les données Semrush et
+l'ordre de priorité listés ci-dessus (points 3 bis et 3 ter) ont été
+recontrôlés et sont déjà complets et conformes à la dernière liste
+consolidée transmise — aucune donnée manquante, aucun réordonnancement
+nécessaire. Aucune nouvelle page locale n'a été créée à cette occasion,
+conformément à la consigne de ce sprint.
+
 ## 4. Philosophie et structure du template
 
 Premium, minimaliste, orienté réservation, mobile-first — même identité que
