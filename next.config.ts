@@ -1,7 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "kdrive-vtc-lyon.fr" }],
+        destination: "https://www.kdrive-vtc-lyon.fr/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

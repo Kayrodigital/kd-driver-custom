@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { SceneImage } from "@/app/design-preview/scene-image";
 import {
@@ -13,10 +12,13 @@ import {
   ZonesSection,
 } from "@/app/design-preview/sections";
 
-export const metadata: Metadata = {
+import { buildMetadata } from "@/lib/seo/page-metadata";
+
+export const metadata = buildMetadata({
   title: "KDRIVE — Chauffeur privé à Lyon",
   description: "Réservation de chauffeur privé premium à Lyon : transferts aéroport et gare, entreprise, mise à disposition.",
-};
+  path: "/",
+});
 
 export default function HomePage() {
   return (
