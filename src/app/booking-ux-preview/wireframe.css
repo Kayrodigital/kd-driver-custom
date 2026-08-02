@@ -101,6 +101,11 @@
 
 .wf-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--wf-bg-alt); color: var(--wf-muted); }
 .wf-pill--accent { background: var(--wf-accent-soft); color: var(--wf-accent); }
+.wf-pill--auto { background: var(--wf-success-bg); color: var(--wf-success); }
+.wf-pill--semi { background: var(--wf-warning-bg); color: var(--wf-warning); }
+.wf-pill--manual { background: var(--wf-error-bg); color: var(--wf-error); }
+.wf-pill--group { background: #eef2ff; color: #4338ca; }
+.wf-pill--driver { background: var(--wf-success-bg); color: var(--wf-success); }
 
 .wf-chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .wf-chip { border: 1px solid var(--wf-line-strong); border-radius: 999px; padding: 6px 12px; font-size: 0.78rem; color: var(--wf-muted); }
