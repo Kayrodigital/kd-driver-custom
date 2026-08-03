@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
+import { pricingConfig } from "@/domain/pricing/pricing-config";
+import { formatEuros } from "@/domain/pricing/money";
 
 const serviceNavItems = [
   { label: "Transfert aéroport", href: "/transfert-aeroport" },
@@ -32,9 +34,9 @@ const advantages = [
 ];
 
 const vehicles = [
-  { name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · la solution simple et économique pour le quotidien.", image: "/images/vehicle-confort.jpg" },
-  { name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus, pour le standing des rendez-vous professionnels.", image: "/images/vehicle-berline.jpg" },
-  { name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
+  { slug: "confort", name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · la solution simple et économique pour le quotidien.", image: "/images/vehicle-confort.jpg" },
+  { slug: "berline", name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus, pour le standing des rendez-vous professionnels.", image: "/images/vehicle-berline.jpg" },
+  { slug: "van", name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
 ];
 
 const zones = ["Lyon", "Villeurbanne", "Aéroport Lyon-Saint Exupéry", "Gare Part-Dieu", "Gare Perrache", "Écully", "Caluire-et-Cuire", "Vénissieux"];
@@ -127,17 +129,24 @@ export function VehiclesSection() {
           <h2 className="kd-h2">Une flotte adaptée à chaque trajet</h2>
         </div>
         <div className="kd-grid-3">
-          {vehicles.map((vehicle) => (
-            <Link key={vehicle.name} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
-              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
-              <div className="kd-vehicle-meta">
-                <h3 className="kd-h4">{vehicle.name}</h3>
-                <small>{vehicle.mode}</small>
-              </div>
-              <p className="kd-body">{vehicle.body}</p>
-              <span className="kd-card-link">En savoir plus <span aria-hidden="true">→</span></span>
-            </Link>
-          ))}
+          {vehicles.map((vehicle) => {
+            const category = pricingConfig.categories[vehicle.slug];
+            const fromPrice = category?.mode === "calculated" && category.minimumByTripType.standard != null
+              ? formatEuros(category.minimumByTripType.standard * 100)
+              : null;
+            return (
+              <Link key={vehicle.name} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
+                <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+                <div className="kd-vehicle-meta">
+                  <h3 className="kd-h4">{vehicle.name}</h3>
+                  <small>{vehicle.mode}</small>
+                </div>
+                {fromPrice && <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {fromPrice}</p>}
+                <p className="kd-body">{vehicle.body}</p>
+                <span className="kd-card-link">En savoir plus <span aria-hidden="true">→</span></span>
+              </Link>
+            );
+          })}
         </div>
         <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
           Retrouvez le détail des <Link href="/tarifs">tarifs par catégorie</Link>.

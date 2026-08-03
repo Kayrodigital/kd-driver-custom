@@ -50,27 +50,27 @@ function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title
 
 const allVehicles = [
   {
-    name: "Confort", tagline: "Entrée de gamme", mode: "Prix calculé",
+    slug: "confort", name: "Confort", tagline: "Entrée de gamme", mode: "Prix calculé",
     body: "La solution essentielle pour vos déplacements du quotidien. Une catégorie simple, confortable et économique pour voyager seul ou en petit groupe.",
     image: "/images/vehicle-confort.jpg",
   },
   {
-    name: "Berline", tagline: "Catégorie supérieure", mode: "Prix calculé",
+    slug: "berline", name: "Berline", tagline: "Catégorie supérieure", mode: "Prix calculé",
     body: "Une catégorie supérieure pour profiter d’un véhicule plus spacieux et plus valorisant. Adaptée aux rendez-vous professionnels, aux transferts et aux trajets nécessitant davantage de standing.",
     image: "/images/vehicle-berline.jpg",
   },
   {
-    name: "Luxe", tagline: "Premium", mode: "Prix calculé",
+    slug: "luxe", name: "Luxe", tagline: "Premium", mode: "Prix calculé",
     body: "Une prestation haut de gamme pour les déplacements où le confort, la discrétion et la qualité du véhicule occupent une place centrale.",
     image: "/images/vehicle-luxe.jpg",
   },
   {
-    name: "Van", tagline: "Groupes et bagages", mode: "Sur devis",
+    slug: "van", name: "Van", tagline: "Groupes et bagages", mode: "Sur devis",
     body: "La solution recommandée pour les groupes, les familles et les transferts avec plusieurs valises. Le Van offre davantage de capacité de chargement et un coffre adapté aux bagages volumineux.",
     image: "/images/vehicle-van.jpg",
   },
   {
-    name: "Monospace", tagline: "Nombreux passagers", mode: "Sur devis",
+    slug: "monospace", name: "Monospace", tagline: "Nombreux passagers", mode: "Sur devis",
     body: "Une solution modulable pour transporter plusieurs passagers. Le Monospace offre de nombreuses places assises, mais son coffre reste plus limité que celui d’un Van.",
     image: "/images/vehicle-monospace.jpg",
     note: "Pour plusieurs passagers avec de nombreux bagages, privilégiez le Van.",
@@ -78,8 +78,8 @@ const allVehicles = [
 ];
 
 const comparisonRows = [
-  { name: "Confort", points: ["Économique", "Trajets quotidiens", "Tarif calculé"] },
-  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé"] },
+  { name: "Confort", points: ["Économique", "Trajets quotidiens", "Tarif calculé, minimum 20 €"] },
+  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé, minimum 25 €"] },
   { name: "Luxe", points: ["Premium", "Mercedes haut de gamme", "Tarif calculé, minimum 40 €"] },
   { name: "Van", points: ["Groupes + bagages", "Grand coffre", "Sur devis"] },
   { name: "Monospace", points: ["Nombreux passagers", "Coffre limité", "Sur devis"] },
@@ -97,19 +97,26 @@ export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
       <PageHero eyebrow="Nos véhicules" title="Une gamme claire, du quotidien au premium" lead="De Confort à Luxe, chaque catégorie représente une montée en gamme. Van et Monospace répondent à des besoins de capacité, sur devis." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
-          {allVehicles.map((vehicle) => (
-            <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
-              <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
-              <p className="kd-vehicle-tagline">{vehicle.tagline}</p>
-              <div className="kd-vehicle-meta">
-                <h3 className="kd-h4">{vehicle.name}</h3>
-                <small>{vehicle.mode}</small>
+          {allVehicles.map((vehicle) => {
+            const category = pricingConfig.categories[vehicle.slug];
+            const fromPrice = category?.mode === "calculated" && category.minimumByTripType.standard != null
+              ? formatEuros(category.minimumByTripType.standard * 100)
+              : null;
+            return (
+              <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
+                <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+                <p className="kd-vehicle-tagline">{vehicle.tagline}</p>
+                <div className="kd-vehicle-meta">
+                  <h3 className="kd-h4">{vehicle.name}</h3>
+                  <small>{vehicle.mode}</small>
+                </div>
+                {fromPrice && <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {fromPrice}</p>}
+                <p className="kd-body">{vehicle.body}</p>
+                {vehicle.note && <p className="kd-body" style={{ fontWeight: 700, color: "var(--kd-gold-ink)" }}>{vehicle.note}</p>}
+                <a className="kd-card-link" href="/reserver">{vehicle.mode === "Prix calculé" ? "Choisir ce véhicule" : "Demander un devis"} <span aria-hidden="true">→</span></a>
               </div>
-              <p className="kd-body">{vehicle.body}</p>
-              {vehicle.note && <p className="kd-body" style={{ fontWeight: 700, color: "var(--kd-gold-ink)" }}>{vehicle.note}</p>}
-              <a className="kd-card-link" href="/reserver">{vehicle.mode === "Prix calculé" ? "Choisir ce véhicule" : "Demander un devis"} <span aria-hidden="true">→</span></a>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
       <section className="kd-section kd-on-white">
@@ -153,7 +160,18 @@ const tariffCards = tariffOrder.map((slug) => {
     `${formatEuros(category.pricePerKm * 100)}/km`,
     `Prise en charge : ${formatEuros(pricingConfig.standardBaseFee * 100)} (course standard) ou ${formatEuros(pricingConfig.transferBaseFee * 100)} (transfert aéroport / longue distance)`,
   ];
-  if (category.minimumByTripType.standard != null) lines.push(`Minimum : ${formatEuros(category.minimumByTripType.standard * 100)} (course standard)`);
+  const { standard, airport, longDistance } = category.minimumByTripType;
+  if (standard != null) {
+    // Portée du minimum lue depuis la config, jamais supposée par catégorie :
+    // si les trois types partagent la même valeur, le minimum s'applique
+    // partout ; sinon (cas Luxe actuel) il ne s'applique qu'à la course
+    // standard, et le libellé doit rester honnête sur cette différence.
+    const appliesEverywhere = airport === standard && longDistance === standard;
+    const scopeLabel = appliesEverywhere
+      ? "course standard, transfert aéroport et longue distance"
+      : "course standard uniquement";
+    lines.push(`Minimum de course : ${formatEuros(standard * 100)} (${scopeLabel})`);
+  }
   return { label, quote: false, lines };
 });
 

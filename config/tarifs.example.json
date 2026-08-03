@@ -6,12 +6,12 @@
     "confort": {
       "mode": "calculated",
       "pricePerKm": 2,
-      "minimumByTripType": { "standard": null, "airport": null, "longDistance": null }
+      "minimumByTripType": { "standard": 20, "airport": 20, "longDistance": 20 }
     },
     "berline": {
       "mode": "calculated",
       "pricePerKm": 2.5,
-      "minimumByTripType": { "standard": null, "airport": null, "longDistance": null }
+      "minimumByTripType": { "standard": 25, "airport": 25, "longDistance": 25 }
     },
     "luxe": {
       "mode": "calculated",

@@ -91,7 +91,7 @@ export function calculatePrice(
   const minimumCents = minimumCentsForTripType(category, tripType);
   const minimumAdjustmentCents = Math.max(0, minimumCents - subtotalCents);
   if (minimumAdjustmentCents > 0) {
-    lines.push({ code: "minimum_adjustment", label: "Ajustement au minimum", amountCents: minimumAdjustmentCents });
+    lines.push({ code: "minimum_adjustment", label: "Ajustement au minimum de course", amountCents: minimumAdjustmentCents });
   }
 
   return {

@@ -8,11 +8,16 @@ import { z } from "zod";
  */
 
 /**
- * Minimum de catégorie explicitement décomposé par type de trajet : seule
- * la valeur "standard" est définitivement validée (40 € pour Luxe).
- * "airport" et "longDistance" restent à confirmer avec le client — laissés
- * à `null` (aucun minimum appliqué) tant qu'aucune décision n'est prise,
- * jamais silencieusement copiés depuis "standard".
+ * Minimum de catégorie explicitement décomposé par type de trajet.
+ * Confort (20 €) et Berline (25 €) : minimum confirmé pour les trois types
+ * de trajet calculés (standard, aéroport, longue distance) — portée
+ * explicitement validée par le client, jamais copiée silencieusement d'un
+ * type à l'autre, chaque valeur est répétée dans la config à dessein.
+ * Luxe (40 €) : seule la valeur "standard" est définitivement validée ;
+ * "airport" et "longDistance" restent à confirmer et sont laissés à `null`
+ * (aucun minimum appliqué) tant qu'aucune décision n'est prise pour cette
+ * catégorie — portée volontairement différente de Confort/Berline, à ne
+ * pas aligner sans nouvelle confirmation explicite.
  */
 const minimumByTripTypeSchema = z.object({
   standard: z.number().nonnegative().nullable(),
