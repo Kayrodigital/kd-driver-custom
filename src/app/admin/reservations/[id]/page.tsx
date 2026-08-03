@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
-import { buildWhatsappLink } from "@/domain/booking/whatsapp";
+import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import type { HistoryEntry } from "../../history-entry";
@@ -102,7 +102,7 @@ function whatsappLink(reservation: ReservationDetail, phone: string): string | n
   if (reservation.confirmed_price_cents !== null) {
     message += ` Le tarif confirmé est de ${formatEuros(reservation.confirmed_price_cents)}.`;
   }
-  return buildWhatsappLink(phone, message);
+  return buildWhatsAppContactUrl({ phone, message });
 }
 
 function formatDateTime(value: string): string {

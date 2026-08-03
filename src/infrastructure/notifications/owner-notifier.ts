@@ -1,5 +1,5 @@
 import "server-only";
-import { buildWhatsappLink } from "@/domain/booking/whatsapp";
+import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
 
 const BREVO_TIMEOUT_MS = 5_000;
 
@@ -52,7 +52,7 @@ function formatDateTime(iso: string): string {
 
 function whatsappLink(payload: NewBookingEmailPayload): string | null {
   const message = `Bonjour, votre demande KDRIVE ${payload.reference} pour le trajet ${payload.pickupAddress} → ${payload.destinationAddress} le ${formatDateTime(payload.pickupAt)} a bien été reçue.`;
-  return buildWhatsappLink(payload.customerPhone, message);
+  return buildWhatsAppContactUrl({ phone: payload.customerPhone, message });
 }
 
 function adminUrl(payload: NewBookingEmailPayload): string {
