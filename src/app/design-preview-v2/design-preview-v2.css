@@ -41,6 +41,17 @@
 .kdv2 * { box-sizing: border-box; }
 .kdv2 img { max-width: 100%; display: block; }
 .kdv2 a { color: inherit; text-decoration: none; }
+/* .kdv2 a {color:inherit} a la même spécificité que .v2-btn seul et gagne
+   dessus, rendant le texte du bouton illisible (texte noir sur fond noir
+   sur le CTA final) — même bug déjà corrigé dans design-preview.css pour
+   .kd-btn, reproduit ici faute d'avoir porté le correctif. */
+a.v2-btn { color: var(--v2-btn-fg); }
+
+/* SceneImage (kd-scene-photo) n'a aucun style par défaut dans cette route
+   isolée (design-preview.css n'est jamais importé ici) : sans object-fit,
+   le fill de next/image s'étire pour remplir le conteneur au lieu de le
+   couvrir en conservant les proportions — cause des photos "étirées". */
+.kd-scene-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 .kdv2 h1, .kdv2 h2, .kdv2 h3 {
   font-family: var(--v2-font-display), Georgia, serif;
@@ -51,7 +62,7 @@
 .v2-display-xl { font-size: clamp(2.6rem, 5.4vw, 4.8rem); line-height: 1.08; }
 .v2-h1 { font-size: clamp(2.6rem, 5.2vw, 4.6rem); }
 .v2-h2 { font-size: clamp(2rem, 3.6vw, 3rem); }
-.v2-h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 600; }
+.v2-h3 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 600; }
 .v2-quote { font-family: var(--v2-font-display), Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.35; }
 
 .v2-kicker {

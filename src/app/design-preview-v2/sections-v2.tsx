@@ -1,9 +1,9 @@
 import { SceneImage } from "@/app/design-preview/scene-image";
 
 const services = [
-  { key: "aeroport", navLabel: "Transfert aéroport", lead: "Une prise en charge préparée à l'avance pour votre arrivée ou votre départ à l'aéroport Lyon-Saint Exupéry.", heroImage: "/images/airport-transfer.jpg" },
-  { key: "gare", navLabel: "Transfert gare", lead: "KDRIVE assure des prises en charge sur réservation aux principales gares de Lyon, notamment Part-Dieu et Perrache.", heroImage: "/images/service-transferts.jpg" },
-  { key: "entreprise", navLabel: "Chauffeur entreprise", lead: "Ponctualité, discrétion et disponibilité pour vos rendez-vous, équipes et visiteurs.", heroImage: "/images/service-affaires.jpg" },
+  { key: "aeroport", kicker: "Service", navLabel: "Transfert aéroport", lead: "Une prise en charge préparée à l'avance pour votre arrivée ou votre départ à l'aéroport Lyon-Saint Exupéry.", heroImage: "/images/airport-transfer.jpg" },
+  { key: "gare", kicker: "Service", navLabel: "Transfert gare", lead: "KDRIVE assure des prises en charge sur réservation aux principales gares de Lyon, notamment Part-Dieu et Perrache.", heroImage: "/images/service-transferts.jpg" },
+  { key: "entreprise", kicker: "Service", navLabel: "Chauffeur entreprise", lead: "Ponctualité, discrétion et disponibilité pour vos rendez-vous, équipes et visiteurs.", heroImage: "/images/service-affaires.jpg" },
 ];
 
 export function ServicesV2() {
@@ -20,7 +20,8 @@ export function ServicesV2() {
               <div className="v2-service-image-wrap">
                 <SceneImage src={service.heroImage} alt={service.navLabel} note="photo à venir" sizes="(max-width: 860px) 100vw, 33vw" style={{ position: "absolute", inset: 0 }} />
               </div>
-              <p className="v2-kicker">{service.navLabel}</p>
+              <p className="v2-kicker">{service.kicker}</p>
+              <h3 className="v2-h3">{service.navLabel}</h3>
               <div className="v2-service-divider" />
               <p className="v2-body">{service.lead}</p>
               <a className="v2-card-link" href="#">En savoir plus <span aria-hidden="true">→</span></a>
