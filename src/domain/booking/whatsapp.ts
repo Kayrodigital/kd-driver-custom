@@ -45,6 +45,19 @@ export function normalizePhoneForWhatsApp(
   // Sinon : on suppose que l'indicatif pays est déjà présent (ex. un
   // utilisateur qui a saisi "33612345678" directement), on ne le retire pas.
 
+  // Zéro de trunk redondant après l'indicatif pays (ex. "+330612345678" :
+  // quelqu'un a gardé le "+33" ET le "0" initial du numéro local, une
+  // erreur de saisie humaine plausible sur une variable d'environnement
+  // renseignée à la main). Un numéro national français ne commence jamais
+  // par 0 juste après l'indicatif — toujours une erreur, jamais un vrai
+  // numéro. Sans cette correction, le résultat garde un chiffre en trop
+  // (12 au lieu de 11) : la validation de longueur (8-15) le laisse passer
+  // silencieusement, WhatsApp affiche alors "Ce lien n'a pas pu être
+  // ouvert" pour un numéro qui ne correspond à aucun compte.
+  if (digits.startsWith(`${defaultCountryCode}0`)) {
+    digits = `${defaultCountryCode}${digits.slice(defaultCountryCode.length + 1)}`;
+  }
+
   // Un numéro E.164 fait entre 8 et 15 chiffres (indicatif compris). En
   // dehors de cette plage, le lien wa.me serait de toute façon invalide :
   // on retourne null plutôt que de générer une URL cassée silencieusement.
