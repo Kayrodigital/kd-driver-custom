@@ -32,8 +32,8 @@ const advantages = [
 ];
 
 const vehicles = [
-  { name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · confort et sobriété pour le quotidien.", image: "/images/vehicle-berline.jpg" },
-  { name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus pour les occasions importantes.", image: "/images/vehicle-confort.jpg" },
+  { name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · la solution simple et économique pour le quotidien.", image: "/images/vehicle-confort.jpg" },
+  { name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus, pour le standing des rendez-vous professionnels.", image: "/images/vehicle-berline.jpg" },
   { name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
 ];
 

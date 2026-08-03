@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
+import { buildWhatsappLink } from "@/domain/booking/whatsapp";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import type { HistoryEntry } from "../../history-entry";
@@ -95,14 +96,13 @@ function googleMapsLink(reservation: ReservationDetail): string | null {
   return `https://www.google.com/maps/dir/?api=1&origin=${pickup_latitude},${pickup_longitude}&destination=${destination_latitude},${destination_longitude}`;
 }
 
-function whatsappLink(reservation: ReservationDetail, phone: string): string {
-  const digits = phone.replace(/[^\d]/g, "");
+function whatsappLink(reservation: ReservationDetail, phone: string): string | null {
   const when = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" }).format(new Date(reservation.pickup_at));
   let message = `Bonjour, votre demande KDRIVE ${reservation.public_reference} pour le trajet ${reservation.pickup_address} → ${reservation.destination_address} le ${when} a bien été reçue.`;
   if (reservation.confirmed_price_cents !== null) {
     message += ` Le tarif confirmé est de ${formatEuros(reservation.confirmed_price_cents)}.`;
   }
-  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+  return buildWhatsappLink(phone, message);
 }
 
 function formatDateTime(value: string): string {
@@ -245,7 +245,9 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <h2 className="kd-h4">Actions rapides</h2>
 
             {customer?.phone && <a className="kd-btn kd-btn--outline kd-btn--block" href={`tel:${customer.phone}`}>Appeler {customer.phone}</a>}
-            {customer?.phone && <a className="kd-btn kd-btn--gold kd-btn--block" href={whatsappLink(reservation, customer.phone)} target="_blank" rel="noreferrer">WhatsApp</a>}
+            {customer?.phone && whatsappLink(reservation, customer.phone) && (
+              <a className="kd-btn kd-btn--gold kd-btn--block" href={whatsappLink(reservation, customer.phone)!} target="_blank" rel="noreferrer">WhatsApp</a>
+            )}
 
             {showAccept && (
               <form action={acceptReservationWithId}>

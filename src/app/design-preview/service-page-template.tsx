@@ -86,7 +86,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
             {content.benefits.map((benefit) => (
               <div key={benefit.title} className="kd-card kd-card--flat">
                 <h3 className="kd-h4">{benefit.title}</h3>
-                <p className="kd-body" style={{ marginTop: 8 }}>{benefit.body}</p>
+                <p className="kd-body">{benefit.body}</p>
               </div>
             ))}
           </div>

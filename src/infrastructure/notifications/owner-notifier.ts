@@ -1,4 +1,5 @@
 import "server-only";
+import { buildWhatsappLink } from "@/domain/booking/whatsapp";
 
 const BREVO_TIMEOUT_MS = 5_000;
 
@@ -49,10 +50,9 @@ function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(iso));
 }
 
-function whatsappLink(payload: NewBookingEmailPayload): string {
-  const digits = payload.customerPhone.replace(/[^\d]/g, "");
+function whatsappLink(payload: NewBookingEmailPayload): string | null {
   const message = `Bonjour, votre demande KDRIVE ${payload.reference} pour le trajet ${payload.pickupAddress} → ${payload.destinationAddress} le ${formatDateTime(payload.pickupAt)} a bien été reçue.`;
-  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+  return buildWhatsappLink(payload.customerPhone, message);
 }
 
 function adminUrl(payload: NewBookingEmailPayload): string {
@@ -103,7 +103,7 @@ function buildEmailHtml(payload: NewBookingEmailPayload): string {
           </div>
           <div style="margin-top:12px;">
             <a href="tel:${encodeURIComponent(payload.customerPhone)}" style="color:#1b1812;font-size:13px;text-decoration:underline;margin-right:16px;">Appeler le client</a>
-            <a href="${whatsappLink(payload)}" style="color:#1b1812;font-size:13px;text-decoration:underline;">WhatsApp</a>
+            ${whatsappLink(payload) ? `<a href="${whatsappLink(payload)}" style="color:#1b1812;font-size:13px;text-decoration:underline;">WhatsApp</a>` : ""}
           </div>
         </td></tr>
       </table>

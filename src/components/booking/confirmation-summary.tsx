@@ -6,6 +6,7 @@ import { SiteNav } from "@/app/design-preview/sections";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
+import { normalizePhoneForWhatsapp } from "@/domain/booking/whatsapp";
 
 type Summary = {
   pickupAddress: string; destinationAddress: string; pickupAt: string; phone: string;
@@ -17,7 +18,7 @@ const KD_DRIVER_PHONE = process.env.NEXT_PUBLIC_KD_DRIVER_PHONE;
 export function ConfirmationSummary({ reference }: { reference: string }) {
   const stored = useSyncExternalStore(() => () => undefined, () => sessionStorage.getItem(`reservation:${reference}`), () => null);
   const summary = useMemo(() => stored ? JSON.parse(stored) as Summary : null, [stored]);
-  const whatsappNumber = KD_DRIVER_PHONE?.replace(/[^\d]/g, "");
+  const whatsappNumber = KD_DRIVER_PHONE ? normalizePhoneForWhatsapp(KD_DRIVER_PHONE) : null;
   const vehicleLabel = vehicleCatalog.find((v) => v.slug === summary?.vehicleSlug)?.label ?? summary?.vehicleSlug;
   const isQuote = summary?.pricing.mode === "quote";
 
@@ -48,7 +49,7 @@ export function ConfirmationSummary({ reference }: { reference: string }) {
           {KD_DRIVER_PHONE && (
             <div style={{ display: "flex", gap: 12 }}>
               <a className="kd-btn kd-btn--outline" href={`tel:${KD_DRIVER_PHONE}`}>Appeler</a>
-              <a className="kd-btn kd-btn--gold" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">WhatsApp</a>
+              {whatsappNumber && <a className="kd-btn kd-btn--gold" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">WhatsApp</a>}
             </div>
           )}
 

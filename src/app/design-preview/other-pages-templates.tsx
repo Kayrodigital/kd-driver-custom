@@ -49,11 +49,40 @@ function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title
 }
 
 const allVehicles = [
-  { name: "Confort", mode: "Prix calculé", body: "Une catégorie polyvalente pour les trajets du quotidien, professionnels ou privés.", image: "/images/vehicle-confort.jpg" },
-  { name: "Berline", mode: "Prix calculé", body: "Adaptée aux déplacements individuels ou en petit groupe.", image: "/images/vehicle-berline.jpg" },
-  { name: "Luxe", mode: "Prix calculé", body: "Une catégorie premium avec un tarif calculé (minimum de course appliqué) pour les demandes nécessitant un niveau de prestation supérieur.", image: "/images/vehicle-luxe.jpg" },
-  { name: "Van", mode: "Sur devis", body: "Une solution adaptée aux groupes et aux trajets avec davantage de bagages, sur devis.", image: "/images/vehicle-van.jpg" },
-  { name: "Monospace", mode: "Sur devis", body: "Une solution modulable pour les familles et les petits groupes, sur devis.", image: "/images/vehicle-monospace.jpg" },
+  {
+    name: "Confort", tagline: "Entrée de gamme", mode: "Prix calculé",
+    body: "La solution essentielle pour vos déplacements du quotidien. Une catégorie simple, confortable et économique pour voyager seul ou en petit groupe.",
+    image: "/images/vehicle-confort.jpg",
+  },
+  {
+    name: "Berline", tagline: "Catégorie supérieure", mode: "Prix calculé",
+    body: "Une catégorie supérieure pour profiter d’un véhicule plus spacieux et plus valorisant. Adaptée aux rendez-vous professionnels, aux transferts et aux trajets nécessitant davantage de standing.",
+    image: "/images/vehicle-berline.jpg",
+  },
+  {
+    name: "Luxe", tagline: "Premium", mode: "Prix calculé",
+    body: "Une prestation haut de gamme pour les déplacements où le confort, la discrétion et la qualité du véhicule occupent une place centrale.",
+    image: "/images/vehicle-luxe.jpg",
+  },
+  {
+    name: "Van", tagline: "Groupes et bagages", mode: "Sur devis",
+    body: "La solution recommandée pour les groupes, les familles et les transferts avec plusieurs valises. Le Van offre davantage de capacité de chargement et un coffre adapté aux bagages volumineux.",
+    image: "/images/vehicle-van.jpg",
+  },
+  {
+    name: "Monospace", tagline: "Nombreux passagers", mode: "Sur devis",
+    body: "Une solution modulable pour transporter plusieurs passagers. Le Monospace offre de nombreuses places assises, mais son coffre reste plus limité que celui d’un Van.",
+    image: "/images/vehicle-monospace.jpg",
+    note: "Pour plusieurs passagers avec de nombreux bagages, privilégiez le Van.",
+  },
+];
+
+const comparisonRows = [
+  { name: "Confort", points: ["Économique", "Trajets quotidiens", "Tarif calculé"] },
+  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé"] },
+  { name: "Luxe", points: ["Premium", "Mercedes haut de gamme", "Tarif calculé, minimum 40 €"] },
+  { name: "Van", points: ["Groupes + bagages", "Grand coffre", "Sur devis"] },
+  { name: "Monospace", points: ["Nombreux passagers", "Coffre limité", "Sur devis"] },
 ];
 
 const vehiclesRelatedLinks = [
@@ -65,20 +94,40 @@ const vehiclesRelatedLinks = [
 export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Nos véhicules" title="Une flotte adaptée à chaque trajet" lead="Confort, Berline et Luxe affichent un prix calculé avant confirmation. Van et Monospace font l’objet d’un devis." />
+      <PageHero eyebrow="Nos véhicules" title="Une gamme claire, du quotidien au premium" lead="De Confort à Luxe, chaque catégorie représente une montée en gamme. Van et Monospace répondent à des besoins de capacité, sur devis." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
           {allVehicles.map((vehicle) => (
             <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
               <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+              <p className="kd-vehicle-tagline">{vehicle.tagline}</p>
               <div className="kd-vehicle-meta">
                 <h3 className="kd-h4">{vehicle.name}</h3>
                 <small>{vehicle.mode}</small>
               </div>
               <p className="kd-body">{vehicle.body}</p>
+              {vehicle.note && <p className="kd-body" style={{ fontWeight: 700, color: "var(--kd-gold-ink)" }}>{vehicle.note}</p>}
               <a className="kd-card-link" href="/reserver">{vehicle.mode === "Prix calculé" ? "Choisir ce véhicule" : "Demander un devis"} <span aria-hidden="true">→</span></a>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="kd-section kd-on-white">
+        <div className="kd-container">
+          <div className="kd-section-head kd-section-head--center">
+            <p className="kd-eyebrow">Comparatif rapide</p>
+            <h2 className="kd-h2">Quelle catégorie pour quel besoin</h2>
+          </div>
+          <div className="kd-comparison-grid">
+            {comparisonRows.map((row) => (
+              <div key={row.name} className="kd-card kd-card--flat kd-comparison-card">
+                <h3 className="kd-h4">{row.name}</h3>
+                <ul className="kd-comparison-list">
+                  {row.points.map((point) => <li key={point}>{point}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <RelatedLinks title="Poursuivre votre réservation" links={vehiclesRelatedLinks} />
@@ -123,7 +172,7 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
           {pricingPrinciples.map((principle) => (
             <div key={principle.title} className="kd-card kd-card--flat">
               <h3 className="kd-h4">{principle.title}</h3>
-              <p className="kd-body" style={{ marginTop: 8 }}>{principle.body}</p>
+              <p className="kd-body">{principle.body}</p>
             </div>
           ))}
         </div>

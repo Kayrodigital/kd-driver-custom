@@ -74,7 +74,13 @@
 .kd-h1 { font-size: clamp(2.6rem, 5.2vw, 4.6rem); }
 .kd-h2 { font-size: clamp(2rem, 3.6vw, 3rem); }
 .kd-h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); }
-.kd-h4 { font-size: 1.15rem; font-family: var(--kd-font-sans); font-weight: 700; letter-spacing: -0.01em; }
+.kd-h4 { font-size: clamp(1.15rem, 1.7vw, 1.4rem); line-height: 1.2; font-family: var(--kd-font-sans); font-weight: 700; letter-spacing: -0.01em; }
+
+/* Respiration entre titre de carte et description : les cartes (véhicules,
+   services, avantages, étapes) partagent l'idiome h3.kd-h4 suivi d'un
+   p.kd-body ou d'un .kd-vehicle-meta ; sans cette règle le texte colle
+   directement au titre (Tailwind Preflight retire les marges par défaut). */
+.kd-h4 + p.kd-body, .kd-vehicle-meta + p.kd-body { margin-top: var(--kd-space-2); }
 
 .kd-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
@@ -615,9 +621,9 @@ a:has(> .kd-logo) { text-decoration: none; }
 
 a.kd-card { display: block; text-decoration: none; color: var(--kd-ink); }
 .kd-card--dark.kd-card, a.kd-card--dark { color: var(--kd-cream); }
-.kd-service-card { display: grid; gap: 10px; padding: 18px; }
-.kd-service-image { aspect-ratio: 4/3; margin: -18px -18px 4px; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
-.kd-card-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; font-weight: 700; color: var(--kd-gold); margin-top: 4px; }
+.kd-service-card { display: grid; gap: var(--kd-space-3); padding: 18px; }
+.kd-service-image { aspect-ratio: 4/3; margin: -18px -18px 0; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
+.kd-card-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; font-weight: 700; color: var(--kd-gold); margin-top: var(--kd-space-2); }
 .kd-card-link span { transition: transform 0.18s var(--kd-ease); }
 a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 
@@ -645,9 +651,20 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
   .kd-wizard-vehicle-card-body { grid-column: 2; grid-row: 1; }
   .kd-wizard-vehicle-card-action { grid-column: 1 / -1; grid-row: 2; width: 100%; }
 }
-.kd-vehicle-image { aspect-ratio: 4/3; margin: -18px -18px 4px; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
+.kd-vehicle-card { display: grid; gap: var(--kd-space-3); }
+.kd-vehicle-image { aspect-ratio: 4/3; margin: -18px -18px 0; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; }
 .kd-vehicle-meta { display: flex; justify-content: space-between; align-items: baseline; }
 .kd-vehicle-meta small { color: var(--kd-muted); }
+.kd-vehicle-tagline { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kd-gold-ink); margin-top: -4px; }
+
+/* Comparatif rapide véhicules (/vehicules) : cartes empilées en mobile,
+   grille 5 colonnes en desktop large, sans tableau lourd à faire défiler. */
+.kd-comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--kd-space-3); }
+.kd-comparison-card { padding: var(--kd-space-4); display: grid; gap: var(--kd-space-2); }
+.kd-comparison-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.86rem; color: var(--kd-muted); }
+.kd-comparison-list li { padding-left: 14px; position: relative; }
+.kd-comparison-list li::before { content: "—"; position: absolute; left: 0; color: var(--kd-gold-ink); }
+@media (max-width: 640px) { .kd-comparison-grid { grid-template-columns: 1fr; } }
 
 .kd-zone-list { display: flex; flex-wrap: wrap; gap: var(--kd-space-3); }
 .kd-zone-chip { border: 1px solid var(--kd-line-on-dark); border-radius: var(--kd-radius-pill); padding: 10px 18px; font-size: 0.85rem; color: var(--kd-cream); font-weight: 600; }
