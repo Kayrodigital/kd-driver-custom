@@ -34,6 +34,27 @@ exhaustifs par ailleurs).
 | `/contact` | `/reserver` | « Réserver en ligne » | Bloc « Aller plus loin » | Rappelle l'alternative la plus rapide au contact direct |
 | `/faq` | `/reserver`, `/tarifs`, `/vehicules`, `/transfert-aeroport`, `/transfert-gare`, `/contact` | ancre contextuelle par question (ex. « Voir la grille tarifaire ») | Lien discret sous chaque réponse concernée | Oriente vers la page qui traite le sujet en détail, question par question |
 
+## Satellites SEO locaux (sprint autonome — branche uniquement)
+
+Maillage satellite → pilier pour les 5 premières pages locales, conforme
+à `docs/SEO_SILO_ARCHITECTURE.md`. Ces pages ne sont pas encore mergées ni
+liées depuis le menu principal ; ce tableau documente le maillage tel
+qu'il est effectivement codé dans `local-page-template.tsx` /
+`local-pages-content.ts`.
+
+| Satellite | Piliers liés | Emplacement | Note |
+|---|---|---|---|
+| `/vtc-villeurbanne` | `/transfert-aeroport`, `/transfert-gare`, `/chauffeur-entreprise`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | Correspond à la matrice demandée (aéroport, gare, entreprise, réserver) + véhicules/tarifs |
+| `/vtc-lyon-part-dieu` | `/transfert-gare`, `/transfert-aeroport`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | Gare en premier (page dédiée à la gare) |
+| `/vtc-lyon-grenoble` | `/longues-distances`, `/vehicules`, `/tarifs`, `/reserver`, `/contact` | Bloc « Poursuivre votre réservation » | Longue distance en premier ; contact ajouté pour les demandes hors barème |
+| `/vtc-bron` | `/transfert-aeroport`, `/chauffeur-entreprise`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | |
+| `/vtc-saint-priest` | `/transfert-aeroport`, `/longues-distances`, `/reserver`, `/vehicules`, `/tarifs` | Bloc « Poursuivre votre réservation » | |
+
+Chaque satellite a également un lien retour implicite « Accueil » dans son
+fil d'Ariane (`BreadcrumbList`), et sera lié depuis le futur hub « VTC Lyon
+métropole » (`/vtc-lyon-metropole`, non créé) une fois celui-ci publié —
+voir `docs/SEO_SILO_ARCHITECTURE.md`.
+
 ## Fil d'Ariane (Phase SEO 2B)
 
 Ajouté sur les 5 pages service (`transfert-aeroport`, `transfert-gare`,

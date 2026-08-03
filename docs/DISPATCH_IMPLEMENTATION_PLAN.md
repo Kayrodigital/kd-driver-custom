@@ -236,3 +236,119 @@ suivante :
 
 Aucune de ces phases n'a été commencée en dehors de la présente
 documentation.
+
+## 17. Architecture du workflow simplifié (mise à jour)
+
+Le workflow admin réel devra suivre le même principe que la maquette
+`/booking-ux-preview-v2` : une question centrale plutôt qu'une liste
+d'actions techniques au même niveau.
+
+```
+Nouvelle demande
+   → Traiter la demande : « Qui réalise cette course ? »
+        ├── Je prends la course        (Parcours A)
+        ├── Je délègue à un chauffeur  (Parcours B)
+        └── Je refuse la demande       (Parcours C)
+```
+
+- **Parcours A** : confirmation/ajustement du tarif → informations
+  chauffeur préremplies avec le profil du propriétaire → bouton unique
+  qui prépare statut confirmé, bon client, fiche interne, message client
+  et historique en une seule transaction.
+- **Parcours B** : tarif client → commission/net chauffeur → annonce
+  groupe anonymisée → partage WhatsApp (action manuelle) → attente de
+  réponse → affectation → génération des trois documents → confirmation
+  au client. Chaque étape future reste masquée/désactivée tant que
+  l'étape précédente n'est pas terminée (pas d'actions concurrentes
+  visibles en avance).
+- **Parcours C** : motif de refus parmi une liste fermée (aucun chauffeur
+  disponible, horaire impossible, zone non desservie, demande incomplète,
+  autre) → message client préparé automatiquement à partir du motif
+  choisi, jamais rédigé librement pour éviter une formulation
+  inappropriée envoyée par erreur.
+
+## 18. Fonctions de génération futures (signatures proposées)
+
+Ces fonctions sont des **propositions de signature**, non implémentées,
+destinées à cadrer le futur développement réel :
+
+```ts
+// Fiche anonyme groupe (Parcours B, étape 3)
+function generateGroupBrief(reservation: ReservationRecord): GroupBrief;
+
+// Bon client (Parcours A et B, étape finale)
+function generateClientVoucher(reservation: ReservationRecord): ClientVoucher;
+
+// Fiche interne KDRIVE (Parcours A et B)
+function generateInternalDispatchSheet(reservation: ReservationRecord): InternalDispatchSheet;
+
+// Message privé chauffeur après affectation (Parcours B, étape 6)
+function buildDriverPrivateMessage(reservation: ReservationRecord, driver: Driver): string;
+
+// Message de confirmation envoyé au client (dernière étape des 3 parcours)
+function buildClientConfirmationMessage(reservation: ReservationRecord): string;
+```
+
+Chacune doit rester une fonction **pure** (entrée → sortie, sans effet de
+bord ni appel réseau), testable indépendamment de Supabase/Brevo/WhatsApp,
+sur le modèle de `pricing-engine.ts` et `airport-detection.ts` déjà en
+place. L'envoi réel (e-mail, PDF, WhatsApp) reste une couche séparée qui
+consomme le résultat de ces fonctions.
+
+## 19. Versionnement et régénération
+
+- Chaque document généré (fiche groupe, bon client, fiche interne) doit
+  être régénérable si le tarif, le chauffeur ou une option change après
+  une première génération — jamais modifié à la main après coup.
+- Conserver un numéro de version par document (`version: number`,
+  incrémenté à chaque régénération) et la raison de la régénération
+  (`regeneratedReason: string | null`), pour distinguer un document
+  encore valide d'un document obsolète en cas de litige.
+- Ne jamais écraser silencieusement un document déjà envoyé au client ou
+  au chauffeur : une régénération après envoi doit re-déclencher un envoi
+  explicite, pas une mise à jour passive.
+
+## 20. Stockage
+
+- PDF/image générés à la demande (pas de stockage binaire obligatoire en
+  base) ou stockés dans un bucket Supabase Storage dédié
+  (`dispatch-documents`, accès restreint au service role, jamais public)
+  si la régénération à la demande s'avère trop coûteuse en pratique — à
+  trancher lors de l'implémentation réelle selon le volume constaté.
+- Si stockage : un chemin par document et par version
+  (`{reservation_id}/{document_type}/{version}.pdf`), jamais un chemin
+  unique réécrit à chaque régénération.
+
+## 21. Sécurité
+
+- La fiche anonyme groupe ne doit jamais contenir de champ permettant de
+  remonter à l'identité du client (voir la matrice de confidentialité,
+  `confidentiality-matrix.tsx`) : contrôle à faire au niveau de la
+  fonction de génération elle-même (liste blanche de champs autorisés),
+  pas seulement au niveau de l'affichage.
+- Accès aux documents (téléchargement) réservé à l'admin authentifié
+  (Basic Auth actuelle ou système d'auth futur) ; pas d'URL de document
+  publique et devinable.
+- Aucun document ne doit être généré ou stocké avec des données de test
+  ou fictives dans un environnement de production.
+
+## 22. Durée de conservation
+
+- Point non confirmé avec le client : durée de conservation des documents
+  de dispatch (fiche groupe, bons, historique) après la course. À valider
+  avant toute implémentation réelle — proposer par défaut une conservation
+  alignée sur les obligations comptables/légales françaises usuelles (à
+  faire confirmer par KDRIVE, pas à décider techniquement).
+
+## 23. Journalisation
+
+- `dispatch_events` (section 2 et 11) sert déjà de journal fonctionnel.
+  Prévoir en plus un journal technique minimal des générations de
+  documents (qui a généré quoi, quand, quelle version) pour le débogage,
+  distinct du journal fonctionnel destiné à l'écran Historique.
+
+## 24. Point de vigilance transversal
+
+Tous les points 17 à 23 sont des propositions d'architecture pour cadrer
+un développement futur. Rien n'est connecté à la production dans ce
+sprint : ni migration, ni fonction de génération réelle, ni stockage.
