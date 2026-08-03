@@ -141,14 +141,25 @@ a.v2-btn { color: var(--v2-btn-fg); }
 }
 .v2-btn:hover::after { transform: scaleX(1); }
 .v2-btn:hover { transform: translateY(-1px); box-shadow: var(--v2-shadow-sm); }
-.v2-btn--gold { background: var(--v2-gold); border-color: var(--v2-gold); color: var(--v2-black); }
+/* Couleur de texte toujours via --v2-btn-fg (jamais `color:` directement) :
+   `a.v2-btn { color: var(--v2-btn-fg) }` (plus haut, fix du bug texte noir
+   sur fond noir) a une spécificité plus élevée qu'un simple `.v2-btn--gold`
+   et gagnait dessus sur les CTA en lien <a>, repassant leur texte en crème
+   au lieu de noir — crème sur or ne passe pas le contraste AA (~2,2:1).
+   En ne redéfinissant que la variable, le résultat est le même quel que
+   soit l'élément (bouton ou lien). */
+.v2-btn--gold { --v2-btn-fg: var(--v2-black); background: var(--v2-gold); border-color: var(--v2-gold); }
 .v2-btn--gold::after { background: var(--v2-black); }
-.v2-btn--outline { background: transparent; border: 1px solid var(--v2-gold); color: var(--v2-cream); transition: border-width 0.18s var(--v2-ease), transform 0.18s var(--v2-ease); }
+.v2-btn--outline { --v2-btn-fg: var(--v2-cream); background: transparent; border: 1px solid var(--v2-gold); transition: border-width 0.18s var(--v2-ease), transform 0.18s var(--v2-ease); }
 .v2-btn--outline:hover { border-width: 1.5px; }
 .v2-btn--outline::after { display: none; }
 
 /* ---------- hero ---------- */
-.v2-hero { position: relative; overflow: hidden; min-height: 720px; display: flex; align-items: flex-end; padding-top: var(--v2-space-7); padding-bottom: var(--v2-space-8); }
+/* display:flex sans flex-direction:column mettait les deux enfants directs
+   (le bloc hero-inner et la bande de réassurance) côte à côte en row, donc
+   chacun compressé à ~la moitié de la largeur de l'écran en mobile — cause
+   du contenu hero collé au bord gauche sans marge. */
+.v2-hero { position: relative; overflow: hidden; min-height: 720px; display: flex; flex-direction: column; justify-content: flex-end; padding-top: var(--v2-space-7); padding-bottom: var(--v2-space-8); }
 .v2-hero-photo { object-fit: cover; }
 .v2-hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,10,9,0.4) 0%, rgba(11,10,9,0.5) 40%, rgba(11,10,9,0.55) 55%, rgba(11,10,9,0.92) 100%); }
 .v2-hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: var(--v2-space-7); align-items: end; }
