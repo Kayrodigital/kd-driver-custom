@@ -7,10 +7,11 @@ import {
   ScreenDemandeRecue, ScreenCourseConfirmee, ScreenBonClient,
 } from "./screens-client";
 import {
-  ScreenListeDemandes, ScreenNouvelleDemande, ScreenTarifCommission, ScreenAnnonceGroupe,
-  ScreenRechercheChauffeur, ScreenAucunChauffeur, ScreenAffectation, ScreenMessagePrive, ScreenGenerationBon,
-  ScreenConfirmationClient, ScreenHistorique,
+  ScreenListeDemandes, ScreenNouvelleDemande, ScreenTraiterDemande, ScreenJePrends, ScreenTarifCommission,
+  ScreenAnnonceGroupe, ScreenRechercheChauffeur, ScreenAucunChauffeur, ScreenAffectation, ScreenMessagePrive,
+  ScreenGenerationBon, ScreenGenerationDocuments, ScreenConfirmationClient, ScreenHistorique,
 } from "./screens-owner";
+import { StatusTableSection, PaymentCommissionSection } from "./status-and-payment";
 
 const navItems = [
   { href: "#intro", label: "Intro" },
@@ -28,15 +29,20 @@ const navItems = [
   { href: "#screen-c8", label: "C8. Bon (client)" },
   { href: "#screen-o1", label: "P1. Liste demandes" },
   { href: "#screen-o2", label: "P2. Nouvelle demande" },
-  { href: "#screen-o3", label: "P3. Tarif/commission" },
-  { href: "#screen-o4", label: "P4. Annonce groupe" },
-  { href: "#screen-o5", label: "P5. Recherche chauffeur" },
-  { href: "#screen-o6", label: "P6. Aucun chauffeur" },
-  { href: "#screen-o7", label: "P7. Affectation" },
-  { href: "#screen-o8", label: "P8. Message privé" },
-  { href: "#screen-o9", label: "P9. Bon (interne)" },
-  { href: "#screen-o10", label: "P10. Confirmation client" },
-  { href: "#screen-o11", label: "P11. Historique" },
+  { href: "#screen-o3", label: "P3. Traiter la demande" },
+  { href: "#screen-o4", label: "P4. Je prends la course" },
+  { href: "#screen-o5", label: "P5. Tarif/commission (délègue)" },
+  { href: "#screen-o6", label: "P6. Annonce groupe" },
+  { href: "#screen-o7", label: "P7. Recherche chauffeur" },
+  { href: "#screen-o8", label: "P8. Aucun chauffeur" },
+  { href: "#screen-o9", label: "P9. Affectation" },
+  { href: "#screen-o10", label: "P10. Message privé" },
+  { href: "#screen-o11", label: "P11. Les trois documents" },
+  { href: "#screen-o11b", label: "P11b. Génération en un clic" },
+  { href: "#screen-o12", label: "P12. Confirmation client" },
+  { href: "#screen-o13", label: "P13. Historique" },
+  { href: "#statuts", label: "Statuts simplifiés" },
+  { href: "#paiement", label: "Paiement/commission" },
   { href: "#confidentiality", label: "Confidentialité" },
   { href: "#automations", label: "Automatisations" },
 ];
@@ -54,11 +60,13 @@ export default function BookingUxPreviewV2Page() {
           <p className="wf-kicker">Sprint UX V2</p>
           <h1 className="wf-h1">Parcours client, propriétaire et affectation chauffeur</h1>
           <p className="wf-lead">
-            Cette fiche remplace le modèle « client → chauffeur direct » par le fonctionnement réel de KDRIVE :
-            le client envoie une demande, le propriétaire confirme le tarif et diffuse une annonce anonymisée dans
-            un groupe WhatsApp de chauffeurs, choisit le chauffeur intéressé, lui transmet les informations
-            complètes en privé, puis confirme la course au client. Le paiement se fait directement au chauffeur,
-            généralement par TPE — il n’y a pas de paiement en ligne dans cette version.
+            Cette fiche remplace le modèle « client → chauffeur direct » par le fonctionnement réel de KDRIVE, et
+            simplifie le parcours propriétaire autour d’une question centrale : <b>qui réalise cette course ?</b>
+            Trois choix seulement — « Je prends la course », « Je délègue à un chauffeur » ou « Refuser » — plutôt
+            qu’une liste d’actions techniques toutes au même niveau. Pour la délégation : annonce anonymisée diffusée
+            dans un groupe WhatsApp de chauffeurs, chauffeur intéressé retenu, informations complètes transmises en
+            privé, puis confirmation au client. Le paiement se fait directement au chauffeur, généralement par TPE —
+            il n’y a pas de paiement en ligne dans cette version.
           </p>
           <div className="wf-note" style={{ marginTop: 20 }}>
             Wireframes uniquement — données entièrement fictives (Mamadou Diallo, 06 00 00 00 00, Karim B.,
@@ -85,6 +93,8 @@ export default function BookingUxPreviewV2Page() {
 
       <ScreenListeDemandes />
       <ScreenNouvelleDemande />
+      <ScreenTraiterDemande />
+      <ScreenJePrends />
       <ScreenTarifCommission />
       <ScreenAnnonceGroupe />
       <ScreenRechercheChauffeur />
@@ -92,9 +102,12 @@ export default function BookingUxPreviewV2Page() {
       <ScreenAffectation />
       <ScreenMessagePrive />
       <ScreenGenerationBon />
+      <ScreenGenerationDocuments />
       <ScreenConfirmationClient />
       <ScreenHistorique />
 
+      <StatusTableSection />
+      <PaymentCommissionSection />
       <ConfidentialityMatrixSection />
       <AutomationMapSection />
 

@@ -16,18 +16,26 @@ const clientFlow = [
   { title: "Paiement au chauffeur", body: "Réglé directement, généralement par TPE." },
 ];
 
-const ownerFlow = [
+const ownerFlowTriage = [
   { title: "Nouvelle demande", body: "Apparaît dans la liste des demandes." },
   { title: "Contact client si nécessaire", body: "Appel ou WhatsApp depuis la fiche." },
+  { title: "Traiter cette demande", body: "Une seule question : qui réalise cette course ? Je prends / Je délègue / Refuser." },
+];
+
+const ownerFlowA = [
+  { title: "Confirmation du tarif", body: "Tarif estimé prérempli, ajustable avec motif." },
+  { title: "Informations chauffeur", body: "Préremplies avec le profil du propriétaire s’il est configuré." },
+  { title: "Confirmer et générer le bon", body: "Un seul bouton : statut confirmé, bon client, copie propriétaire, message client, historique." },
+];
+
+const ownerFlowB = [
   { title: "Confirmation ou ajustement du tarif", body: "Tarif client validé ou modifié." },
-  { title: "Commission et net chauffeur", body: "Calculés automatiquement à partir du tarif confirmé." },
+  { title: "Commission et net chauffeur", body: "Calculés automatiquement à partir du tarif confirmé, taux configurable." },
   { title: "Préparation de l’annonce groupe", body: "Message anonymisé généré automatiquement." },
   { title: "Partage dans WhatsApp", body: "Seule tâche manuelle : choisir le groupe et envoyer." },
   { title: "Recherche de chauffeur", body: "Attente des réponses en privé." },
-  { title: "Affectation", body: "Choix du chauffeur retenu." },
-  { title: "Envoi privé au chauffeur", body: "Informations complètes, jamais dans le groupe." },
-  { title: "Génération du bon", body: "Version client et version interne." },
-  { title: "Confirmation au client", body: "Statut : Course confirmée." },
+  { title: "Affectation", body: "Un seul bouton : message privé, bon client, bon interne, message client, statut chauffeur attribué." },
+  { title: "Confirmation au client", body: "Dernier bouton, séparé de l’affectation. Statut : Course confirmée." },
 ];
 
 const driverFlow = [
@@ -93,12 +101,25 @@ export function OwnerFlowSection() {
           <p className="wf-kicker">Parcours propriétaire</p>
           <h2 className="wf-h2">De la demande à la confirmation client</h2>
           <p className="wf-lead">
-            La course ne passe jamais directement à « confirmée » après la simple confirmation du tarif. Elle ne
-            devient confirmée que lorsque le tarif est confirmé, qu’un chauffeur est attribué, que les informations
-            utiles ont été préparées, et que la confirmation client peut être envoyée.
+            Le parcours part d’une question centrale — « Qui réalise cette course ? » — plutôt que d’une liste
+            d’actions techniques toutes au même niveau. La course ne passe jamais directement à « confirmée » après
+            la simple confirmation du tarif : elle ne le devient que lorsque le tarif est confirmé, qu’un chauffeur
+            (le propriétaire lui-même ou un chauffeur délégué) est attribué, que les informations utiles ont été
+            préparées, et que la confirmation client a été envoyée.
           </p>
         </div>
-        <FlowDiagram steps={ownerFlow} />
+        <FlowDiagram steps={ownerFlowTriage} />
+
+        <div className="wf-row" style={{ gap: 16, flexWrap: "wrap", marginTop: 24, alignItems: "flex-start" }}>
+          <div style={{ flex: "1 1 320px" }}>
+            <p className="wf-pill wf-pill--auto" style={{ marginBottom: 10 }}>Parcours A — Je prends la course</p>
+            <FlowDiagram steps={ownerFlowA} />
+          </div>
+          <div style={{ flex: "1 1 320px" }}>
+            <p className="wf-pill wf-pill--semi" style={{ marginBottom: 10 }}>Parcours B — Je délègue à un chauffeur</p>
+            <FlowDiagram steps={ownerFlowB} />
+          </div>
+        </div>
 
         <div className="wf-card" style={{ marginTop: 24 }}>
           <h3 className="wf-h3">Statuts proposés</h3>

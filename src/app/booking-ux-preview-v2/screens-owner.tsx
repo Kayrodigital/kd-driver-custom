@@ -52,9 +52,7 @@ function NouvelleDemandeMobile() {
         <button className="wf-btn wf-btn--secondary">Appeler</button>
         <button className="wf-btn wf-btn--secondary">WhatsApp</button>
       </div>
-      <button className="wf-btn wf-btn--primary wf-btn--block">Confirmer le tarif</button>
-      <button className="wf-btn wf-btn--ghost wf-btn--block">Ajuster le tarif</button>
-      <button className="wf-btn wf-btn--ghost wf-btn--block">Refuser</button>
+      <p className="wf-note" style={{ marginTop: 4 }}>↓ Voir « Traiter cette demande »</p>
     </>
   );
 }
@@ -62,14 +60,64 @@ export function ScreenNouvelleDemande() {
   return (
     <ScreenShell
       id="screen-o2" kicker="Écran propriétaire 2" title="Fiche nouvelle demande"
-      lead="Référence, trajet, téléphone client, tarif estimé et statut visibles sans défilement. Hiérarchie mobile claire : Appeler / WhatsApp en haut, décision tarifaire juste en dessous."
+      lead="Uniquement les informations essentielles au-dessus de la ligne de flottaison : référence, date/heure, trajet, catégorie, passagers, bagages, options, tarif estimé, téléphone. Appeler / WhatsApp juste en dessous, avant toute décision."
       mobile={<NouvelleDemandeMobile />} desktop={<div style={{ maxWidth: 480 }}><NouvelleDemandeMobile /></div>}
-      states={<StateCard type="normal" label="En attente de décision">Aucune action de statut n’est prise tant que le propriétaire n’a pas choisi une des quatre actions.</StateCard>}
+      states={<StateCard type="normal" label="Avant décision">Aucune action de statut n’est prise avant le choix fait sur l’écran « Traiter cette demande » qui suit.</StateCard>}
     />
   );
 }
 
-/* ---------- Écran propriétaire 3 — Tarif et commission ---------- */
+/* ---------- Écran propriétaire 3 — Traiter cette demande (triage) ---------- */
+function TraiterDemandeMobile() {
+  return (
+    <>
+      <p className="wf-field-label" style={{ marginBottom: 4 }}>Qui réalise cette course ?</p>
+      <button className="wf-btn wf-btn--primary wf-btn--block">Je prends la course</button>
+      <button className="wf-btn wf-btn--secondary wf-btn--block">Je délègue à un chauffeur</button>
+      <button className="wf-btn wf-btn--ghost wf-btn--block">Refuser la demande</button>
+    </>
+  );
+}
+export function ScreenTraiterDemande() {
+  return (
+    <ScreenShell
+      id="screen-o3" kicker="Écran propriétaire 3" title="Traiter cette demande"
+      lead="Une seule question centrale, trois choix, rien d’autre au même niveau visuel. Les actions techniques (marquer contacté, confirmer le prix…) sont intégrées dans les étapes qui suivent le choix, jamais présentées comme un tableau de commandes séparé."
+      mobile={<TraiterDemandeMobile />} desktop={<div style={{ maxWidth: 380 }}><TraiterDemandeMobile /></div>}
+      states={<StateCard type="normal" label="Objectif">Karamba doit comprendre en quelques secondes la prochaine action à réaliser.</StateCard>}
+    />
+  );
+}
+
+/* ---------- Écran propriétaire 4 — Parcours A : je prends la course ---------- */
+function JePrendsMobile() {
+  return (
+    <>
+      <p className="wf-pill wf-pill--auto">Parcours A — Je prends la course</p>
+      <div className="wf-field"><span className="wf-field-label">Étape 1 — Tarif</span><div className="wf-input">45 € (estimé, prérempli)</div></div>
+      <div className="wf-field"><span className="wf-field-label">Motif de l’ajustement (si modifié)</span><div className="wf-input">—</div></div>
+      <div className="wf-field"><span className="wf-field-label">Étape 2 — Nom (préremplu, profil propriétaire)</span><div className="wf-input">Karamba</div></div>
+      <div className="wf-field"><span className="wf-field-label">Téléphone (préremplu)</span><div className="wf-input">06 52 21 12 92</div></div>
+      <div className="wf-field"><span className="wf-field-label">Véhicule</span><div className="wf-input">Berline noire</div></div>
+      <div className="wf-field"><span className="wf-field-label">Plaque</span><div className="wf-input">AA-123-BB</div></div>
+      <button className="wf-btn wf-btn--primary wf-btn--block">Confirmer et générer le bon</button>
+    </>
+  );
+}
+export function ScreenJePrends() {
+  return (
+    <ScreenShell
+      id="screen-o4" kicker="Écran propriétaire 4" title="Parcours A — Je prends la course"
+      lead="Un panneau compact en deux étapes (tarif, puis informations chauffeur préremplies avec le profil du propriétaire s’il est configuré), puis un seul bouton principal. Pas cinq actions successives à cliquer."
+      mobile={<JePrendsMobile />} desktop={<div style={{ maxWidth: 420 }}><JePrendsMobile /></div>}
+      states={
+        <StateCard type="success" label="Un seul bouton prépare tout">« Confirmer et générer le bon » déclenche en une fois : statut confirmé, bon client, copie propriétaire, message client, historique.</StateCard>
+      }
+    />
+  );
+}
+
+/* ---------- Écran propriétaire 5 — Parcours B, étapes 1-2 : tarif et commission ---------- */
 function TarifCommissionMobile() {
   return (
     <>
@@ -102,7 +150,7 @@ function TarifCommissionMobile() {
 export function ScreenTarifCommission() {
   return (
     <ScreenShell
-      id="screen-o3" kicker="Écran propriétaire 3" title="Tarif et commission"
+      id="screen-o5" kicker="Écran propriétaire 5" title="Tarif et commission"
       lead="Prix client, commission KDRIVE et net chauffeur toujours distingués. La règle de commission reste configurable — 5 € n’est qu’un exemple, pas une valeur figée."
       mobile={<TarifCommissionMobile />} desktop={<div style={{ maxWidth: 420 }}><TarifCommissionMobile /></div>}
       states={<StateCard type="normal" label="Aperçu avant diffusion">Le net chauffeur affiché ici est celui qui apparaîtra dans l’annonce groupe.</StateCard>}
@@ -110,13 +158,13 @@ export function ScreenTarifCommission() {
   );
 }
 
-/* ---------- Écran propriétaire 4 — Annonce groupe ---------- */
+/* ---------- Écran propriétaire 6 — Parcours B, étape 3 : annonce groupe ---------- */
 function AnnonceGroupeMobile() {
   return (
     <>
       <div className="wf-card" style={{ background: "#eef2ff" }}>
         <p style={{ margin: 0, fontSize: "0.8rem", whiteSpace: "pre-line" }}>
-          {"COURSE DISPONIBLE — 13 h 45\n\nDépart : secteur Lyon Perrache\nDestination : Aéroport Lyon-Saint-Exupéry\n1 passager\n2 grandes valises\nFauteuil roulant pliable\nCatégorie : Berline\nNet chauffeur : 40 €\n\nRépondre en privé si disponible."}
+          {"COURSE DISPONIBLE\n\nDate : mardi 6 août\nHeure : 13 h 45\nDépart : secteur Lyon Perrache\nDestination : Aéroport Lyon-Saint-Exupéry\nCatégorie : Berline\nPassagers : 1\nBagages : 2 grandes valises\nOption : fauteuil roulant pliable\nNet chauffeur : 40 €\n\nRépondre en privé si disponible."}
         </p>
       </div>
       <p className="wf-note" style={{ color: "var(--wf-warning)" }}>⚠ Vérifiez qu’aucune donnée personnelle du client n’apparaît avant le partage.</p>
@@ -132,7 +180,7 @@ function AnnonceGroupeMobile() {
 export function ScreenAnnonceGroupe() {
   return (
     <ScreenShell
-      id="screen-o4" kicker="Écran propriétaire 4" title="Aperçu annonce groupe"
+      id="screen-o6" kicker="Écran propriétaire 6" title="Aperçu annonce groupe"
       lead="Aperçu identique à un message WhatsApp. Seule tâche manuelle : choisir le groupe et envoyer. Jamais de nom, téléphone, adresse exacte, référence complète, e-mail, commentaire privé ou numéro de vol/train."
       mobile={<AnnonceGroupeMobile />} desktop={<div style={{ maxWidth: 480 }}><AnnonceGroupeMobile /></div>}
       states={<StateCard type="warning" label="Rappel de vigilance">Avertissement affiché avant chaque partage, pas seulement à la première utilisation.</StateCard>}
@@ -140,7 +188,7 @@ export function ScreenAnnonceGroupe() {
   );
 }
 
-/* ---------- Écran propriétaire 5 — Recherche de chauffeur ---------- */
+/* ---------- Écran propriétaire 7 — Parcours B, étape 4 : recherche de chauffeur ---------- */
 function RechercheChauffeurMobile({ empty = false }: { empty?: boolean }) {
   return (
     <>
@@ -172,7 +220,7 @@ function RechercheChauffeurMobile({ empty = false }: { empty?: boolean }) {
 export function ScreenRechercheChauffeur() {
   return (
     <ScreenShell
-      id="screen-o5" kicker="Écran propriétaire 5" title="Recherche de chauffeur"
+      id="screen-o7" kicker="Écran propriétaire 7" title="Recherche de chauffeur"
       lead="Rappel visuel si aucune affectation après quelques minutes. Pas de relance WhatsApp automatisée dans cette première version."
       mobile={<RechercheChauffeurMobile />} desktop={<div style={{ maxWidth: 420 }}><RechercheChauffeurMobile /></div>}
       states={<StateCard type="warning" label="En recherche">Délai écoulé affiché, actions de relance disponibles.</StateCard>}
@@ -180,11 +228,11 @@ export function ScreenRechercheChauffeur() {
   );
 }
 
-/* ---------- Écran propriétaire 6 — Aucun chauffeur trouvé ---------- */
+/* ---------- Écran propriétaire 8 — Aucun chauffeur trouvé ---------- */
 export function ScreenAucunChauffeur() {
   return (
     <ScreenShell
-      id="screen-o6" kicker="Écran propriétaire 6" title="Aucun chauffeur trouvé"
+      id="screen-o8" kicker="Écran propriétaire 8" title="Aucun chauffeur trouvé"
       lead="État explicite après un délai sans réponse dans le groupe : la réservation ne reste jamais dans un état indéfini. Le client reçoit un message adapté, jamais une fausse confirmation."
       mobile={<RechercheChauffeurMobile empty />} desktop={<div style={{ maxWidth: 420 }}><RechercheChauffeurMobile empty /></div>}
       states={
@@ -197,7 +245,7 @@ export function ScreenAucunChauffeur() {
   );
 }
 
-/* ---------- Écran propriétaire 6 — Affectation chauffeur ---------- */
+/* ---------- Écran propriétaire 9 — Parcours B, étape 5 : affectation chauffeur ---------- */
 function AffectationMobile() {
   return (
     <>
@@ -207,20 +255,19 @@ function AffectationMobile() {
       <div className="wf-field"><span className="wf-field-label">Plaque</span><div className="wf-input">AA-123-BB</div></div>
       <div className="wf-field"><span className="wf-field-label">Net chauffeur</span><div className="wf-input">40 €</div></div>
       <div className="wf-field"><span className="wf-field-label">Commentaire interne (facultatif)</span><div className="wf-input">—</div></div>
-      <button className="wf-btn wf-btn--primary wf-btn--block">Affecter</button>
-      <button className="wf-btn wf-btn--ghost wf-btn--block">Enregistrer ce chauffeur</button>
+      <button className="wf-btn wf-btn--primary wf-btn--block">Affecter et préparer la confirmation</button>
     </>
   );
 }
 export function ScreenAffectation() {
   return (
     <ScreenShell
-      id="screen-o7" kicker="Écran propriétaire 7" title="Affectation chauffeur"
-      lead="Version V1 : saisie manuelle. Version future (non développée dans cette phase) : sélection dans une base de chauffeurs avec favoris, disponibilité, historique et notation interne."
+      id="screen-o9" kicker="Écran propriétaire 9" title="Affectation chauffeur"
+      lead="Version V1 : saisie manuelle. Version future (non développée dans cette phase) : sélection dans une base de chauffeurs avec favoris, disponibilité, historique et notation interne. Un seul bouton — pas de validations redondantes."
       mobile={<AffectationMobile />} desktop={<div style={{ maxWidth: 420 }}><AffectationMobile /></div>}
       states={
         <>
-          <StateCard type="normal" label="V1 — saisie manuelle">Formulaire simple, aucune base de données chauffeurs.</StateCard>
+          <StateCard type="success" label="Un seul bouton prépare tout">« Affecter et préparer la confirmation » déclenche en une fois : message privé chauffeur, bon client, bon interne, message client, statut « chauffeur attribué ».</StateCard>
           <StateCard type="normal" label="V2 future (non développée)">Base de chauffeurs, favoris, disponibilité, historique, notation interne.</StateCard>
         </>
       }
@@ -228,7 +275,7 @@ export function ScreenAffectation() {
   );
 }
 
-/* ---------- Écran propriétaire 7 — Message privé chauffeur ---------- */
+/* ---------- Écran propriétaire 10 — Message privé chauffeur ---------- */
 function MessagePriveMobile() {
   return (
     <>
@@ -249,7 +296,7 @@ function MessagePriveMobile() {
 export function ScreenMessagePrive() {
   return (
     <ScreenShell
-      id="screen-o8" kicker="Écran propriétaire 8" title="Message privé chauffeur"
+      id="screen-o10" kicker="Écran propriétaire 10" title="Message privé chauffeur"
       lead="Généré automatiquement après affectation. Adresse complète, nom et téléphone du client — réservés exclusivement à ce message privé."
       mobile={<MessagePriveMobile />} desktop={<div style={{ maxWidth: 480 }}><MessagePriveMobile /></div>}
       states={<StateCard type="normal" label="Envoyé">Statut « Marqué comme envoyé » horodaté dans l’historique de la course.</StateCard>}
@@ -257,23 +304,78 @@ export function ScreenMessagePrive() {
   );
 }
 
-/* ---------- Écran propriétaire 8 — Génération du bon ---------- */
+/* ---------- Écran propriétaire 11 — Les trois documents ---------- */
+function GenerationDocumentsMobile() {
+  return (
+    <>
+      <button className="wf-btn wf-btn--primary wf-btn--block">Générer les documents</button>
+      <div className="wf-row" style={{ flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+        <button className="wf-btn wf-btn--secondary">Télécharger le bon client</button>
+        <button className="wf-btn wf-btn--secondary">Télécharger la fiche interne</button>
+        <button className="wf-btn wf-btn--secondary">Télécharger la fiche groupe</button>
+        <button className="wf-btn wf-btn--secondary">Copier le message groupe</button>
+        <button className="wf-btn wf-btn--secondary">Partager sur WhatsApp</button>
+        <button className="wf-btn wf-btn--ghost">Envoyer la confirmation client</button>
+      </div>
+      <p className="wf-note" style={{ marginTop: 8 }}>
+        Régénérables si le tarif ou le chauffeur change (implémentation future). Dans cette phase : UX et spécification
+        seulement, pas de génération PDF réelle.
+      </p>
+    </>
+  );
+}
 export function ScreenGenerationBon() {
   return (
     <ScreenShell
-      id="screen-o9" kicker="Écran propriétaire 9" title="Génération du bon"
-      lead="Deux versions nettement distinctes : la version interne ajoute commission, net chauffeur, chauffeur attribué, statut d’envoi et notes internes — jamais visibles sur la version client."
-      mobile={<VoucherPreview variant="internal" compact />} desktop={<VoucherPreview variant="internal" />}
-      states={<StateCard type="normal" label="Deux versions générées">Version client envoyée au client, version interne conservée par KDRIVE.</StateCard>}
+      id="screen-o11" kicker="Écran propriétaire 11" title="Les trois documents"
+      lead="Trois supports distincts, jamais confondus. A. Fiche anonyme groupe — WhatsApp uniquement, aucune donnée client. B. Bon de réservation client — après confirmation, sans commission ni net chauffeur. C. Fiche interne KDRIVE — tarif client, commission, net chauffeur, historique ; jamais envoyée dans le groupe."
+      mobile={<GenerationDocumentsMobile />}
+      desktop={
+        <div className="wf-row" style={{ flexWrap: "wrap", gap: 16, alignItems: "flex-start" }}>
+          <div style={{ flex: "1 1 260px" }}>
+            <p className="wf-field-label" style={{ marginBottom: 8 }}>A. Fiche anonyme groupe</p>
+            <VoucherPreview variant="group" compact />
+          </div>
+          <div style={{ flex: "1 1 260px" }}>
+            <p className="wf-field-label" style={{ marginBottom: 8 }}>B. Bon de réservation client</p>
+            <VoucherPreview variant="client" compact />
+          </div>
+          <div style={{ flex: "1 1 260px" }}>
+            <p className="wf-field-label" style={{ marginBottom: 8 }}>C. Fiche interne KDRIVE</p>
+            <VoucherPreview variant="internal" compact />
+          </div>
+        </div>
+      }
+      states={
+        <>
+          <StateCard type="normal" label="Génération en un clic">{"Un bouton principal (« Générer les documents ») prépare les trois supports sans ressaisie, puis affiche les actions de téléchargement/partage."}</StateCard>
+          <StateCard type="error" label="Jamais dans le groupe">La fiche interne (C) ne doit jamais être envoyée dans le groupe WhatsApp chauffeurs.</StateCard>
+        </>
+      }
+    />
+  );
+}
+export function ScreenGenerationDocuments() {
+  return (
+    <ScreenShell
+      id="screen-o11b" kicker="Écran propriétaire 11 bis" title="Génération en un clic"
+      lead="Le système prépare les documents sans ressaisie. Après génération : téléchargements, copie du message groupe, partage WhatsApp et envoi de la confirmation client, tous accessibles au même endroit."
+      mobile={<GenerationDocumentsMobile />} desktop={<div style={{ maxWidth: 480 }}><GenerationDocumentsMobile /></div>}
+      states={<StateCard type="normal" label="Phase actuelle">UX et spécification technique uniquement ; la génération PDF réelle n’est pas développée dans ce sprint.</StateCard>}
     />
   );
 }
 
-/* ---------- Écran propriétaire 9 — Confirmation client ---------- */
+/* ---------- Écran propriétaire 12 — Confirmation client ---------- */
 function ConfirmationClientMobile() {
   return (
     <>
       <div className="wf-card">
+        <span className="wf-pill" style={{ background: "var(--wf-success-bg)", color: "var(--wf-success)" }}>Prêt à confirmer</span>
+        <p style={{ margin: "8px 0 0", fontSize: "0.82rem" }}>Chauffeur attribué, bons et message client déjà préparés à l’étape précédente.</p>
+      </div>
+      <button className="wf-btn wf-btn--primary wf-btn--block">Confirmer au client</button>
+      <div className="wf-card" style={{ marginTop: 8 }}>
         <span className="wf-pill" style={{ background: "var(--wf-success-bg)", color: "var(--wf-success)" }}>Course confirmée</span>
         <p style={{ margin: "8px 0 0", fontSize: "0.82rem" }}>Bon PDF généré · E-mail client envoyé · E-mail propriétaire (copie) envoyé</p>
       </div>
@@ -287,15 +389,15 @@ function ConfirmationClientMobile() {
 export function ScreenConfirmationClient() {
   return (
     <ScreenShell
-      id="screen-o10" kicker="Écran propriétaire 10" title="Confirmation au client"
-      lead="Dernière étape automatique une fois l’affectation faite : génération et envoi groupés, sans ressaisie."
+      id="screen-o12" kicker="Écran propriétaire 12" title="Confirmation au client"
+      lead="Dernier bouton du parcours, séparé de « Affecter et préparer la confirmation » : pas de validations redondantes, mais un envoi qui reste un geste volontaire distinct."
       mobile={<ConfirmationClientMobile />} desktop={<div style={{ maxWidth: 480 }}><ConfirmationClientMobile /></div>}
       states={<StateCard type="success" label="Course confirmée">Statut final atteint uniquement après tarif confirmé + chauffeur attribué + informations préparées + envoi effectué.</StateCard>}
     />
   );
 }
 
-/* ---------- Écran propriétaire 10 — Historique ---------- */
+/* ---------- Écran propriétaire 13 — Historique ---------- */
 const history = [
   { time: "13:45", label: "Nouvelle demande reçue — type de trajet détecté : transfert aéroport" },
   { time: "13:45", label: "Tarif estimé calculé automatiquement — 45 €" },
@@ -317,7 +419,7 @@ function HistoriqueMobile() {
 export function ScreenHistorique() {
   return (
     <ScreenShell
-      id="screen-o11" kicker="Écran propriétaire 11" title="Historique de la course"
+      id="screen-o13" kicker="Écran propriétaire 13" title="Historique de la course"
       lead="Chaque changement de statut horodaté, pour garder une trace claire sans ressaisie manuelle."
       mobile={<HistoriqueMobile />} desktop={<div style={{ maxWidth: 480 }}><HistoriqueMobile /></div>}
       states={<StateCard type="normal" label="Historique complet">Consultable à tout moment depuis la fiche course, y compris après la course terminée.</StateCard>}
