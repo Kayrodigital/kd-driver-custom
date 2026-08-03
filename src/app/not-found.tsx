@@ -4,7 +4,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Logo } from "@/app/design-preview/sections";
 import "./design-preview/design-preview.css";
 
-const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500"], style: ["normal"], variable: "--kd-font-display" });
+const display = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], style: ["normal"], variable: "--kd-font-display" });
 const sans = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--kd-font-sans" });
 
 export const metadata: Metadata = {
