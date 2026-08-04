@@ -630,11 +630,34 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-grid-3 > *, .kd-grid-4 > *, .kd-grid-2 > * { min-width: 0; }
 
 a.kd-card { display: block; text-decoration: none; color: var(--kd-ink); }
+a.kd-card:focus-visible { outline: 2px solid var(--kd-gold-ink); outline-offset: 3px; }
 .kd-card--dark.kd-card, a.kd-card--dark { color: var(--kd-cream); }
-.kd-service-card { display: grid; gap: var(--kd-space-3); padding: 18px; }
-.kd-service-image { aspect-ratio: 16/10; margin: -18px -18px 0; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; overflow: hidden; }
-.kd-service-image img { transition: transform 0.4s var(--kd-ease); }
-.kd-service-card:hover .kd-service-image img { transform: scale(1.04); }
+
+/* Grille dédiée aux cartes services (accueil) : gouttière plus généreuse
+   que .kd-grid-3 pour éviter l'effet de cartes "collées" à faible largeur. */
+.kd-services-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 2.5vw, 2rem); }
+.kd-services-grid > * { min-width: 0; height: 100%; }
+@media (max-width: 900px) { .kd-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .kd-services-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.kd-service-card {
+  --kd-service-pad: clamp(1.5rem, 2vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  padding: var(--kd-service-pad);
+  height: 100%;
+}
+.kd-service-image {
+  aspect-ratio: 16/10;
+  margin: calc(-1 * var(--kd-service-pad)) calc(-1 * var(--kd-service-pad)) var(--kd-space-4);
+  border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0;
+  overflow: hidden;
+}
+.kd-service-image img { transition: transform 0.22s var(--kd-ease); }
+.kd-service-card:hover .kd-service-image img { transform: scale(1.03); }
+.kd-service-card h3.kd-h4 { font-size: clamp(1.55rem, 2vw, 2rem); line-height: 1.1; margin-bottom: var(--kd-space-3); }
+.kd-service-card p.kd-body { margin-top: 0; }
+.kd-service-card .kd-card-link { margin-top: auto; padding-top: var(--kd-space-4); }
 .kd-card-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; font-weight: 700; color: var(--kd-gold); margin-top: var(--kd-space-2); }
 .kd-card-link span { transition: transform 0.18s var(--kd-ease); }
 a.kd-card:hover .kd-card-link span { transform: translateX(3px); }

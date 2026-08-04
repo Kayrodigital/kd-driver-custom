@@ -22,7 +22,7 @@ const aboutNavItems = [
 
 const services = [
   { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
-  { title: "Transferts aéroport & gares", body: "Suivi des vols et des trains en temps réel, prise en charge sans attente.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
+  { title: "Transferts aéroport & gares", body: "Prise en charge préparée à l’avance pour vos transferts vers les gares et l’aéroport.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
   { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
 ];
 
@@ -77,13 +77,13 @@ export function ServicesSection() {
           <p className="kd-eyebrow">Services</p>
           <h2 className="kd-h2">Un chauffeur privé pour chaque déplacement</h2>
         </div>
-        <div className="kd-grid-3">
+        <div className="kd-services-grid">
           {services.map((service) => (
-            <Link key={service.title} href={service.href} className="kd-card kd-card--hover kd-card--flat kd-service-card">
+            <Link key={service.title} href={service.href} className="kd-card kd-card--hover kd-service-card">
               <SceneImage src={service.image} alt={service.title} className="kd-service-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               <h3 className="kd-h4">{service.title}</h3>
               <p className="kd-body">{service.body}</p>
-              <span className="kd-card-link">Découvrir <span aria-hidden="true">→</span></span>
+              <span className="kd-card-link">Découvrir le service <span aria-hidden="true">→</span></span>
             </Link>
           ))}
         </div>
