@@ -649,6 +649,7 @@ a.kd-card:focus-visible { outline: 2px solid var(--kd-gold-ink); outline-offset:
 }
 .kd-service-image {
   aspect-ratio: 16/10;
+  min-height: 0;
   margin: calc(-1 * var(--kd-service-pad)) calc(-1 * var(--kd-service-pad)) var(--kd-space-4);
   border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0;
   overflow: hidden;
