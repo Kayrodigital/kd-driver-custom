@@ -1,9 +1,28 @@
 # Plan d'implémentation — Dispatch chauffeurs (groupe WhatsApp)
 
-Ce document est **uniquement de la documentation de préparation**. Aucun
-code, aucune migration Supabase, aucun webhook WhatsApp n'a été implémenté
-dans le cadre de ce sprint. Il décrit le travail nécessaire pour faire
-correspondre le système réel (Supabase + admin) au parcours validé dans
+**Mise à jour** : les Parcours A (« Je prends la course moi-même ») et C
+(« Je refuse la demande ») décrits en section 17 sont désormais **implémentés
+en réel**, sans migration Supabase (aucune n'était nécessaire — statuts et
+colonnes existants suffisaient) :
+- `src/domain/dispatch/decline-reasons.ts` (motifs fermés + message client),
+- `src/domain/dispatch/owner-driver-profile.ts` (profil propriétaire chauffeur),
+- `src/domain/dispatch/vouchers.ts` (bon client + fiche interne, sans
+  commission/net chauffeur — non pertinents en Parcours A),
+- `src/app/admin/reservations/[id]/page.tsx` (bloc « Qui réalise cette
+  course ? », affichage des documents générés),
+- `src/app/admin/reservations/[id]/actions.ts` (`declineReservation` prend
+  désormais un `reasonCode` de liste fermée au lieu d'un texte libre).
+
+Le **Parcours B** (délégation à un chauffeur externe : table `drivers`,
+commission, annonce groupe WhatsApp, 3 documents complets) reste non
+implémenté — c'est l'objet du reste de ce document, qui garde sa valeur de
+plan de préparation pour cette partie. Il est bloqué tant que le taux de
+commission n'est pas confirmé par le client (cf. section 5 et section 16).
+
+---
+
+Ce document décrit le travail nécessaire pour faire correspondre le
+système réel (Supabase + admin) au parcours complet validé dans
 `/booking-ux-preview-v2` : client → KDRIVE → annonce anonymisée dans un
 groupe WhatsApp de chauffeurs → chauffeur retenu → message privé → bon →
 confirmation client. Paiement au chauffeur (TPE), pas de paiement en ligne.

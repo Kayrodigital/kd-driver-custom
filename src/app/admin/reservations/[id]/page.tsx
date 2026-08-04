@@ -4,6 +4,9 @@ import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
+import { DECLINE_REASON_CODES, buildDeclineClientMessage, declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
+import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
+import { generateClientVoucher, generateInternalDispatchSheet, type ReservationForDocuments } from "@/domain/dispatch/vouchers";
 import type { HistoryEntry } from "../../history-entry";
 import { statusLabel, statusPillClassName } from "../../status-labels";
 import {
@@ -17,6 +20,7 @@ import {
   setQuotePrice,
 } from "./actions";
 import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
+import { CopyButton } from "./copy-button";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Fiche réservation | Administration KDRIVE", robots: { index: false, follow: false } };
@@ -68,6 +72,7 @@ const pricingStatusLabels: Record<string, string> = {
 
 const errorMessages: Record<string, string> = {
   reason_required: "Le motif est obligatoire pour ajuster un tarif.",
+  decline_reason_required: "Choisissez un motif de refus dans la liste.",
   invalid_amount: "Le montant saisi est invalide.",
   invalid_transition: "Cette action n’est plus disponible pour l’état actuel de la réservation.",
   price_not_confirmed: "Confirmez ou définissez d’abord le tarif avant d’accepter cette course.",
@@ -144,6 +149,30 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
   const showDecline = canDecline(status);
   const showCancelConfirmed = canCancelConfirmed(status);
   const showComplete = canComplete(status);
+
+  const showCentralQuestion = isOpen && status !== "confirmed" && (showAccept || showAcceptBlocked || showDecline);
+
+  const ownerProfile = getOwnerDriverProfile();
+  const reservationForDocuments: ReservationForDocuments = {
+    publicReference: reservation.public_reference,
+    pickupAddress: reservation.pickup_address,
+    destinationAddress: reservation.destination_address,
+    pickupAt: reservation.pickup_at,
+    vehicleLabel: vehicle?.label ?? null,
+    confirmedPriceCents: reservation.confirmed_price_cents,
+    customerName: customer ? [customer.first_name, customer.last_name].filter(Boolean).join(" ") || null : null,
+    customerPhone: customer?.phone ?? null,
+    notes: reservation.notes,
+    priceAdjustmentReason: reservation.price_adjustment_reason,
+  };
+  const clientVoucher = status === "confirmed" ? generateClientVoucher(reservationForDocuments, ownerProfile) : null;
+  const internalSheet = status === "confirmed" ? generateInternalDispatchSheet(reservationForDocuments, ownerProfile) : null;
+
+  const lastDeclineEntry = status === "cancelled" ? history.find((entry) => entry.action === "reservation_declined") : undefined;
+  const declineReasonCode = lastDeclineEntry?.reason && isDeclineReasonCode(lastDeclineEntry.reason) ? lastDeclineEntry.reason : null;
+  const declineClientMessage = declineReasonCode
+    ? buildDeclineClientMessage(declineReasonCode, { publicReference: reservation.public_reference })
+    : null;
 
   const markContactedWithId = markContacted.bind(null, id);
   const confirmEstimatedPriceWithId = confirmEstimatedPrice.bind(null, id);
@@ -249,17 +278,6 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
               <a className="kd-btn kd-btn--gold kd-btn--block" href={whatsappLink(reservation, customer.phone)!} target="_blank" rel="noreferrer">WhatsApp</a>
             )}
 
-            {showAccept && (
-              <form action={acceptReservationWithId}>
-                <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Accepter la course</button>
-              </form>
-            )}
-            {showAcceptBlocked && (
-              <p className="kd-field-hint" style={{ margin: 0 }}>
-                {reservation.pricing_mode === "quote" ? "Définissez d’abord un tarif pour pouvoir accepter cette course." : "Confirmez ou ajustez d’abord le tarif estimé pour pouvoir accepter cette course."}
-              </p>
-            )}
-
             {showMarkContacted && (
               <form action={markContactedWithId}>
                 <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Marquer comme contacté</button>
@@ -308,34 +326,95 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
               </details>
             )}
 
-            {(showDecline || showCancelConfirmed) && (
-              <div className="kd-admin-danger-zone">
-                {showCancelConfirmed && (
-                  <details>
-                    <summary className="kd-more-toggle kd-more-toggle--danger">Annuler la course</summary>
-                    <form action={cancelConfirmedReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
-                      <p className="kd-field-hint">Cette course est confirmée. L’annulation est définitive ; les données restent conservées.</p>
-                      <label className="kd-field">
-                        <span className="kd-field-label">Motif interne (facultatif)</span>
-                        <input className="kd-input" type="text" name="reason" maxLength={300} />
-                      </label>
-                      <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer l’annulation</button>
-                    </form>
-                  </details>
+            {showCentralQuestion && (
+              <div className="kd-admin-central-question">
+                <h2 className="kd-h4" style={{ marginTop: 8 }}>Qui réalise cette course ?</h2>
+
+                {showAccept && (
+                  <form action={acceptReservationWithId}>
+                    <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Je prends la course</button>
+                  </form>
                 )}
+                {showAcceptBlocked && (
+                  <p className="kd-field-hint" style={{ margin: 0 }}>
+                    {reservation.pricing_mode === "quote" ? "Définissez d’abord un tarif pour pouvoir prendre cette course." : "Confirmez ou ajustez d’abord le tarif estimé pour pouvoir prendre cette course."}
+                  </p>
+                )}
+
                 {showDecline && (
                   <details>
-                    <summary className="kd-more-toggle kd-more-toggle--danger">Refuser la course</summary>
+                    <summary className="kd-more-toggle kd-more-toggle--danger">Je refuse la demande</summary>
                     <form action={declineReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
-                      <p className="kd-field-hint">La réservation sera conservée avec le statut « Annulée ».</p>
+                      <p className="kd-field-hint">La réservation sera conservée avec le statut « Annulée ». Un message client sera généré à partir du motif choisi.</p>
                       <label className="kd-field">
-                        <span className="kd-field-label">Motif interne (facultatif)</span>
-                        <input className="kd-input" type="text" name="reason" maxLength={300} />
+                        <span className="kd-field-label">Motif (obligatoire)</span>
+                        <select className="kd-input kd-select" name="reasonCode" required defaultValue="">
+                          <option value="" disabled>Choisir un motif…</option>
+                          {DECLINE_REASON_CODES.map((code) => (
+                            <option key={code} value={code}>{declineReasonLabel(code)}</option>
+                          ))}
+                        </select>
                       </label>
                       <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer le refus</button>
                     </form>
                   </details>
                 )}
+              </div>
+            )}
+
+            {clientVoucher && internalSheet && (
+              <div className="kd-admin-documents">
+                <h2 className="kd-h4" style={{ marginTop: 8 }}>Bon client</h2>
+                <div className="kd-card kd-admin-voucher">
+                  <p className="kd-admin-fiche-row"><span>Référence</span><span>{clientVoucher.reference}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Départ</span><span>{clientVoucher.pickupAddress}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Destination</span><span>{clientVoucher.destinationAddress}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Date et heure</span><span>{clientVoucher.pickupAtLabel}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Catégorie</span><span>{clientVoucher.vehicleLabel}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Tarif</span><span>{clientVoucher.priceLabel}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Chauffeur</span><span>{clientVoucher.driverName ?? "—"}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Véhicule</span><span>{clientVoucher.driverVehicle ?? "—"}</span></p>
+                </div>
+                <CopyButton
+                  label="Copier le bon client"
+                  text={`Bon client KDRIVE\nRéférence : ${clientVoucher.reference}\nDépart : ${clientVoucher.pickupAddress}\nDestination : ${clientVoucher.destinationAddress}\nDate et heure : ${clientVoucher.pickupAtLabel}\nCatégorie : ${clientVoucher.vehicleLabel}\nTarif : ${clientVoucher.priceLabel}\nChauffeur : ${clientVoucher.driverName ?? "—"}\nVéhicule : ${clientVoucher.driverVehicle ?? "—"}`}
+                />
+
+                <h2 className="kd-h4" style={{ marginTop: 8 }}>Fiche interne</h2>
+                <div className="kd-card kd-admin-voucher">
+                  <p className="kd-admin-fiche-row"><span>Client</span><span>{internalSheet.customerName}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Téléphone client</span><span>{internalSheet.customerPhone}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Options et commentaires</span><span>{internalSheet.notes || "—"}</span></p>
+                  {internalSheet.priceAdjustmentReason && <p className="kd-admin-fiche-row"><span>Motif d’ajustement tarifaire</span><span>{internalSheet.priceAdjustmentReason}</span></p>}
+                </div>
+                <CopyButton
+                  label="Copier la fiche interne"
+                  text={`Fiche interne KDRIVE\nRéférence : ${internalSheet.reference}\nClient : ${internalSheet.customerName}\nTéléphone client : ${internalSheet.customerPhone}\nDépart : ${internalSheet.pickupAddress}\nDestination : ${internalSheet.destinationAddress}\nDate et heure : ${internalSheet.pickupAtLabel}\nCatégorie : ${internalSheet.vehicleLabel}\nTarif : ${internalSheet.priceLabel}\nOptions et commentaires : ${internalSheet.notes || "—"}${internalSheet.priceAdjustmentReason ? `\nMotif d’ajustement tarifaire : ${internalSheet.priceAdjustmentReason}` : ""}`}
+                />
+              </div>
+            )}
+
+            {declineClientMessage && (
+              <div className="kd-admin-documents">
+                <h2 className="kd-h4" style={{ marginTop: 8 }}>Message client (refus)</h2>
+                <p className="kd-body" style={{ margin: 0 }}>{declineClientMessage}</p>
+                <CopyButton label="Copier le message" text={declineClientMessage} />
+              </div>
+            )}
+
+            {showCancelConfirmed && (
+              <div className="kd-admin-danger-zone">
+                <details>
+                  <summary className="kd-more-toggle kd-more-toggle--danger">Annuler la course</summary>
+                  <form action={cancelConfirmedReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                    <p className="kd-field-hint">Cette course est confirmée. L’annulation est définitive ; les données restent conservées.</p>
+                    <label className="kd-field">
+                      <span className="kd-field-label">Motif interne (facultatif)</span>
+                      <input className="kd-input" type="text" name="reason" maxLength={300} />
+                    </label>
+                    <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer l’annulation</button>
+                  </form>
+                </details>
               </div>
             )}
 

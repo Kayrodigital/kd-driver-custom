@@ -66,6 +66,23 @@
 }
 .kd-more-toggle--danger { color: #a13a3a; }
 
+/* Question centrale (« Qui réalise cette course ? », Parcours A/C) : un seul
+   bloc qui regroupe la décision principale, plutôt qu'une rangée de boutons
+   plats — objectif explicite du client d'un parcours admin lisible en un
+   coup d'œil. */
+.kd-admin-central-question {
+  display: grid; gap: 10px; margin-top: 8px; padding: 14px;
+  border: 1px solid var(--kd-gold-soft); border-radius: var(--kd-radius-md);
+  background: var(--kd-cream-soft);
+}
+.kd-admin-central-question h2 { margin-top: 0 !important; }
+
+/* Bons générés (client / interne) une fois la course prise en charge, et
+   message client généré après un refus — mêmes espacements que le reste
+   de la fiche pour rester cohérent visuellement. */
+.kd-admin-documents { display: grid; gap: 10px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--kd-line); }
+.kd-admin-voucher { padding: var(--kd-space-4); display: grid; gap: 8px; }
+
 @media (min-width: 900px) {
   .kd-admin-fiche { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
 }

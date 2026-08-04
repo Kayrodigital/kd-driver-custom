@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { eurosToCents, formatEuros } from "@/domain/pricing/money";
+import { declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
 import { appendHistory, type HistoryEntry } from "../../history-entry";
 import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
 
@@ -165,15 +166,19 @@ export async function declineReservation(id: string, formData: FormData) {
     backTo(id, { error: "invalid_transition" });
     return;
   }
-  const reason = String(formData.get("reason") ?? "").trim() || undefined;
+  const reasonCode = String(formData.get("reasonCode") ?? "");
+  if (!isDeclineReasonCode(reasonCode)) {
+    backTo(id, { error: "decline_reason_required" });
+    return;
+  }
   const supabase = createAdminClient();
   const now = new Date().toISOString();
   const history = appendHistory(row.history, {
     action: "reservation_declined",
-    message: reason ? `Course refusée (motif : ${reason})` : "Course refusée",
+    message: `Course refusée (motif : ${declineReasonLabel(reasonCode)})`,
     from_status: row.status,
     to_status: "cancelled",
-    reason,
+    reason: reasonCode,
   });
   const { data: updated, error } = await supabase
     .from("reservations")
