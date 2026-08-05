@@ -45,6 +45,20 @@ describe("createReservation", () => {
     expect(record?.isAirportTrip).toBe(true);
   });
 
+  it("ajoute l'option Fauteuil roulant aux notes, sans supplément tarifaire", async () => {
+    const repository = new MemoryRepository();
+    const withoutOption = await createReservation(validRequest, repository, new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }), new Date("2029-01-01"));
+    const withOption = await createReservation(
+      { ...validRequest, idempotencyKey: "cdb9b788-e9ed-4eeb-a6b0-7604e1206b7e", wheelchair: true },
+      repository,
+      new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 }),
+      new Date("2029-01-01"),
+    );
+    const recordWithOption = repository.records.get("cdb9b788-e9ed-4eeb-a6b0-7604e1206b7e");
+    expect(recordWithOption?.composedNotes).toContain("Fauteuil roulant");
+    expect(recordWithOption?.pricing.totalCents).toBe(withoutOption.summary.pricing.totalCents);
+  });
+
   it("reste idempotent", async () => {
     const repository = new MemoryRepository(); const maps = new FakeMapsProvider({ distanceMeters: 10_000, durationSeconds: 1_200 });
     const first = await createReservation(validRequest, repository, maps, new Date("2029-01-01"));

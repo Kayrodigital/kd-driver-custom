@@ -11,6 +11,7 @@ export const reservationRequestSchema = z.object({
   luggage: z.number().int().min(0).max(30).default(0),
   childSeat: z.boolean().default(false),
   pet: z.boolean().default(false),
+  wheelchair: z.boolean().default(false),
   extraStop: z.string().trim().max(300).default(""),
   flightNumber: z.string().trim().max(20).default(""),
   trainNumber: z.string().trim().max(20).default(""),

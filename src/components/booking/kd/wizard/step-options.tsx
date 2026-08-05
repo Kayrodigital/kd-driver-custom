@@ -36,6 +36,12 @@ export function StepOptions({ wizard }: { wizard: ReturnType<typeof useBookingWi
         <div className="kd-more-fields" style={{ marginTop: "var(--kd-space-3)", display: "grid", gap: 12 }}>
           <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.childSeat} onChange={(event) => wizard.setChildSeat(event.target.checked)} /> Siège enfant</label>
           <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.pet} onChange={(event) => wizard.setPet(event.target.checked)} /> Animal</label>
+          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.wheelchair} onChange={(event) => wizard.setWheelchair(event.target.checked)} /> Fauteuil roulant</label>
+          {wizard.wheelchair && (
+            <p className="kd-field-hint" style={{ margin: 0 }}>
+              Merci de préciser vos besoins afin que KDRIVE puisse vérifier la disponibilité d’un véhicule adapté.
+            </p>
+          )}
 
           <label className="kd-field">
             <span className="kd-field-label">Arrêt supplémentaire</span>

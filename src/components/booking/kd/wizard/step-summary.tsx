@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { formatEuros } from "@/domain/pricing/money";
 import { PRICING_TRANSPARENCY_NOTE, priceHeadline } from "@/domain/pricing/pricing-display";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
@@ -9,9 +10,16 @@ export function StepSummary({ wizard }: { wizard: ReturnType<typeof useBookingWi
   const vehicle = vehicleCatalog.find((v) => v.slug === wizard.vehicleSlug);
   const pricing = wizard.selectedVehicleOption?.pricing;
   const isQuote = pricing?.mode === "quote";
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (wizard.submitError) errorRef.current?.focus();
+  }, [wizard.submitError]);
+
   const options: string[] = [];
   if (wizard.childSeat) options.push("Siège enfant");
   if (wizard.pet) options.push("Animal");
+  if (wizard.wheelchair) options.push("Fauteuil roulant");
   if (wizard.extraStop) options.push(`Arrêt : ${wizard.extraStop}`);
   if (wizard.flightNumber) options.push(`Vol ${wizard.flightNumber}`);
   if (wizard.trainNumber) options.push(`Train ${wizard.trainNumber}`);
@@ -51,12 +59,13 @@ export function StepSummary({ wizard }: { wizard: ReturnType<typeof useBookingWi
       <p className="kd-body">Paiement au chauffeur. Le tarif est recalculé côté serveur avant confirmation.</p>
       {pricing && pricing.mode === "calculated" && <p className="kd-field-hint">{PRICING_TRANSPARENCY_NOTE}</p>}
 
-      {wizard.submitError && <p className="kd-field-error" role="alert">{wizard.submitError}</p>}
+      {wizard.submitError && <p ref={errorRef} className="kd-field-error" role="alert" tabIndex={-1}>{wizard.submitError}</p>}
 
       <div className="kd-actions" style={{ display: "flex", gap: 10 }}>
         <button type="button" className="kd-btn kd-btn--outline" onClick={() => wizard.setStep(4)}>Retour</button>
-        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} disabled={wizard.submitBusy} onClick={() => void wizard.submitReservation()}>
-          {wizard.submitBusy ? "Envoi…" : isQuote ? "Envoyer la demande de devis" : "Confirmer la réservation"}
+        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} disabled={wizard.submitBusy} aria-busy={wizard.submitBusy} onClick={() => void wizard.submitReservation()}>
+          {wizard.submitBusy && <span className="kd-btn-spinner" aria-hidden="true" />}
+          {wizard.submitBusy ? "Envoi en cours…" : isQuote ? "Envoyer la demande de devis" : "Confirmer la réservation"}
         </button>
       </div>
     </div>

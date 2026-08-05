@@ -155,6 +155,16 @@ a.kd-btn { color: var(--kd-btn-fg); }
   background: rgba(245, 239, 224, 0.1); color: var(--kd-muted-on-dark); border-color: rgba(245, 239, 224, 0.1);
 }
 
+/* Indicateur visuel pendant l'envoi (Lot D) : un simple cercle tournant,
+   pas de dépendance externe. */
+.kd-btn-spinner {
+  width: 15px; height: 15px; flex: none;
+  border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%;
+  animation: kd-spin 0.7s linear infinite;
+}
+@keyframes kd-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .kd-btn-spinner { animation: none; } }
+
 .kd-btn--primary:hover { background: var(--kd-gold); border-color: var(--kd-gold); color: var(--kd-black); }
 
 .kd-btn--gold { --kd-btn-bg: var(--kd-gold); --kd-btn-fg: var(--kd-black); --kd-btn-border: var(--kd-gold); }

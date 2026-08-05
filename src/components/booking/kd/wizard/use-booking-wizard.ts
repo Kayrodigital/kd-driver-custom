@@ -68,6 +68,7 @@ export function useBookingWizard() {
   const [luggage, setLuggage] = useState(0);
   const [childSeat, setChildSeat] = useState(false);
   const [pet, setPet] = useState(false);
+  const [wheelchair, setWheelchair] = useState(false);
   const [extraStop, setExtraStop] = useState("");
   const [flightNumber, setFlightNumber] = useState("");
   const [trainNumber, setTrainNumber] = useState("");
@@ -85,6 +86,12 @@ export function useBookingWizard() {
   const [submitError, setSubmitError] = useState("");
 
   const [idempotencyKey] = useState(() => crypto.randomUUID());
+
+  // Verrou synchrone (pas un useState) : un clic très rapproché (double-tap
+  // mobile) peut réexécuter le handler avant que React n'ait committé le
+  // re-render qui pose réellement `disabled` dans le DOM — ce ref supprime
+  // cette fenêtre de course, quelle que soit la vitesse des clics.
+  const submittingRef = useRef(false);
 
   const isAirportTrip = looksLikeAirport(pickup.address) || looksLikeAirport(destination.address);
   const isStationTrip = looksLikeStation(pickup.address) || looksLikeStation(destination.address);
@@ -159,8 +166,10 @@ export function useBookingWizard() {
   }
 
   async function submitReservation() {
+    if (submittingRef.current) return;
     const pickupAt = toIsoWithOffset(date, time);
     if (!pickupAt || !vehicleSlug) return;
+    submittingRef.current = true;
     setSubmitBusy(true); setSubmitError("");
     try {
       const response = await fetch("/api/reservations", {
@@ -171,7 +180,7 @@ export function useBookingWizard() {
           pickup, destination, pickupAt,
           vehicleSlug,
           passengers, luggage,
-          childSeat, pet,
+          childSeat, pet, wheelchair,
           extraStop: extraStop || undefined,
           flightNumber: flightNumber || undefined,
           trainNumber: trainNumber || undefined,
@@ -186,7 +195,7 @@ export function useBookingWizard() {
       window.location.assign(`/reservation/confirmation/${payload.reference}`);
     } catch {
       setSubmitError("La demande n’a pas pu être envoyée. Réessayez.");
-    } finally {
+      submittingRef.current = false;
       setSubmitBusy(false);
     }
   }
@@ -200,7 +209,7 @@ export function useBookingWizard() {
     searchBusy, searchError, searchValid, sameAddress, submitSearch,
     route, vehicleOptions, vehicleSlug, selectVehicle, selectedVehicleOption,
     passengers, setPassengers, luggage, setLuggage,
-    childSeat, setChildSeat, pet, setPet,
+    childSeat, setChildSeat, pet, setPet, wheelchair, setWheelchair,
     extraStop, setExtraStop, flightNumber, setFlightNumber, trainNumber, setTrainNumber,
     forSomeoneElse, setForSomeoneElse, otherFirstName, setOtherFirstName, otherPhone, setOtherPhone,
     notes, setNotes, confirmOptions,

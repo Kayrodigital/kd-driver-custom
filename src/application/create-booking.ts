@@ -39,6 +39,7 @@ function composeNotes(request: ReservationRequest): string {
   const extras: string[] = [];
   if (request.childSeat) extras.push("Siège enfant");
   if (request.pet) extras.push("Animal");
+  if (request.wheelchair) extras.push("Fauteuil roulant");
   if (request.extraStop) extras.push(`Arrêt supplémentaire : ${request.extraStop}`);
   if (request.flightNumber) extras.push(`Vol : ${request.flightNumber}`);
   if (request.trainNumber) extras.push(`Train : ${request.trainNumber}`);
