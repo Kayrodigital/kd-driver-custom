@@ -86,3 +86,34 @@
 @media (min-width: 900px) {
   .kd-admin-fiche { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
 }
+
+/* ---------- liste réservations : vues, sélection, pagination ---------- */
+.kd-admin-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--kd-space-4); border-bottom: 1px solid var(--kd-line); }
+.kd-admin-tab {
+  padding: 10px 16px; font-size: 0.85rem; font-weight: 700; color: var(--kd-muted);
+  border-bottom: 2px solid transparent; text-decoration: none;
+}
+.kd-admin-tab.is-active { color: var(--kd-ink); border-bottom-color: var(--kd-gold); }
+.kd-admin-tab:hover { color: var(--kd-ink); }
+
+.kd-admin-table th[aria-sort="ascending"], .kd-admin-table th[aria-sort="descending"] { color: var(--kd-gold-ink); }
+
+.kd-admin-bulkbar {
+  position: sticky; bottom: 12px; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  background: var(--kd-black); color: var(--kd-cream);
+  padding: 12px 18px; border-radius: var(--kd-radius-md); margin-top: var(--kd-space-4);
+  box-shadow: var(--kd-shadow-lg);
+}
+.kd-admin-bulkbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.kd-admin-pagination {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  margin-top: var(--kd-space-5); padding-top: var(--kd-space-4); border-top: 1px solid var(--kd-line);
+}
+.kd-admin-pagination-sizes, .kd-admin-pagination-nav, .kd-admin-pagination-export { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+@media (max-width: 680px) {
+  .kd-admin-tabs { overflow-x: auto; flex-wrap: nowrap; }
+  .kd-admin-bulkbar { position: fixed; left: 12px; right: 12px; bottom: 76px; }
+}
