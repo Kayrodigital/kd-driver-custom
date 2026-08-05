@@ -16,6 +16,11 @@
   margin-bottom: var(--kd-space-5);
 }
 .kd-admin-filters .kd-field { min-width: 200px; flex: 1 1 200px; }
+/* Champs plage de dates (deux inputs date côte à côte) : 200px ne suffit
+   pas pour deux inputs date natifs, ce qui les faisait déborder sur le
+   champ suivant ("Trier par"). */
+.kd-admin-filters .kd-field--daterange { min-width: 320px; flex: 1 1 320px; }
+.kd-admin-filters .kd-field--daterange > div { flex-wrap: wrap; }
 .kd-admin-filters-actions { display: flex; gap: 10px; align-items: center; }
 
 .kd-status-pill {
@@ -106,6 +111,11 @@
   box-shadow: var(--kd-shadow-lg);
 }
 .kd-admin-bulkbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+/* .kd-btn--outline suppose un fond clair (texte/bordure couleur "ink") —
+   sur la barre noire, ça donnait un texte noir sur fond noir, invisible
+   hors survol. */
+.kd-admin-bulkbar .kd-btn--outline { --kd-btn-fg: var(--kd-cream); --kd-btn-border: rgba(245, 239, 224, 0.4); }
+.kd-admin-bulkbar .kd-btn--outline:hover { background: var(--kd-cream); color: var(--kd-black); }
 
 .kd-admin-pagination {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;

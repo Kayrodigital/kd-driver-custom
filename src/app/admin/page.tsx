@@ -139,14 +139,14 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               {statusFilterOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </label>
-          <label className="kd-field">
+          <label className="kd-field kd-field--daterange">
             <span className="kd-field-label">Créée entre</span>
             <div style={{ display: "flex", gap: 6 }}>
               <input className="kd-input" type="date" name="createdFrom" defaultValue={params.createdFrom} />
               <input className="kd-input" type="date" name="createdTo" defaultValue={params.createdTo} />
             </div>
           </label>
-          <label className="kd-field">
+          <label className="kd-field kd-field--daterange">
             <span className="kd-field-label">Course entre</span>
             <div style={{ display: "flex", gap: 6 }}>
               <input className="kd-input" type="date" name="courseFrom" defaultValue={params.courseFrom} />
