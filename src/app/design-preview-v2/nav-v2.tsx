@@ -32,7 +32,7 @@ export function NavV2() {
             ))}
           </ul>
           <div className="v2-nav-actions">
-            <a className="v2-nav-phone" href="tel:+33652211292">06 52 21 12 92</a>
+            <a className="v2-nav-phone" href="tel:+33688863419">06 88 86 34 19</a>
             <a className="v2-btn v2-btn--gold" href="#reserver-v2" style={{ padding: "10px 20px", minHeight: 40, fontSize: "0.82rem" }}>Réserver</a>
             <button className="v2-mobile-toggle" aria-label="Ouvrir le menu" onClick={() => setOpen(true)}>☰</button>
           </div>
@@ -55,7 +55,7 @@ export function NavV2() {
             ))}
           </ul>
           <div style={{ marginTop: "auto", display: "flex", gap: 12, paddingTop: 32 }}>
-            <a className="v2-btn v2-btn--outline" href="tel:+33652211292" style={{ flex: 1 }}>Appeler</a>
+            <a className="v2-btn v2-btn--outline" href="tel:+33688863419" style={{ flex: 1 }}>Appeler</a>
             <a className="v2-btn v2-btn--gold" href="#reserver-v2" style={{ flex: 1 }} onClick={() => setOpen(false)}>Réserver</a>
           </div>
         </div>

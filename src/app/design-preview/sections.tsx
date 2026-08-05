@@ -62,7 +62,7 @@ export function SiteNav() {
         <li><NavDropdown label="À propos" items={aboutNavItems} /></li>
       </ul>
       <div className="kd-nav-actions">
-        <a className="kd-nav-phone" href="tel:+33652211292">06 52 21 12 92</a>
+        <a className="kd-nav-phone" href="tel:+33688863419">06 88 86 34 19</a>
         <Link className="kd-btn kd-btn--sm kd-btn--gold" href="/reserver">Réserver</Link>
       </div>
       <MobileNavTrigger />
@@ -271,7 +271,7 @@ export function FooterSection() {
           </div>
           <div className="kd-footer-col">
             <h4>Contact</h4>
-            <ul><li>06 52 21 12 92</li><li>Lyon, France</li></ul>
+            <ul><li>06 88 86 34 19</li><li>Lyon, France</li></ul>
           </div>
         </div>
         <div className="kd-footer-bottom">

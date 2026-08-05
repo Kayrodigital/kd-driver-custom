@@ -34,7 +34,7 @@ export default function NotFound() {
             </div>
             <p className="kd-field-hint" style={{ marginTop: 16 }}>
               Besoin d’aide ? <Link href="/contact">Contactez KDRIVE</Link> ou appelez le{" "}
-              <a href="tel:+33652211292">06 52 21 12 92</a>.
+              <a href="tel:+33688863419">06 88 86 34 19</a>.
             </p>
           </div>
         </div>

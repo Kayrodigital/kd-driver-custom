@@ -304,7 +304,7 @@ export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
         <div className="kd-container kd-grid-2" style={{ alignItems: "start" }}>
           <div className="kd-card">
             <p className="kd-eyebrow">Téléphone</p>
-            <h3 className="kd-h3" style={{ margin: "10px 0" }}><a href="tel:+33652211292" style={{ textDecoration: "none", color: "inherit" }}>06 52 21 12 92</a></h3>
+            <h3 className="kd-h3" style={{ margin: "10px 0" }}><a href="tel:+33688863419" style={{ textDecoration: "none", color: "inherit" }}>06 88 86 34 19</a></h3>
             <p className="kd-body">Pour vos questions ou pour préparer une demande particulière, contactez KDRIVE directement.</p>
           </div>
           <div className="kd-card">

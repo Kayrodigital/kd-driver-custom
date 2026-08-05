@@ -8,7 +8,7 @@ export function MobileActionBar() {
 
   return (
     <div className="kd-mobile-action-bar">
-      <a className="kd-btn kd-btn--ghost-dark" href="tel:+33652211292">Appeler</a>
+      <a className="kd-btn kd-btn--ghost-dark" href="tel:+33688863419">Appeler</a>
       <a className="kd-btn kd-btn--gold" href="#reserver">Réserver</a>
     </div>
   );

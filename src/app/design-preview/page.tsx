@@ -157,7 +157,7 @@ function MobilePreview() {
         </div>
         <div className="kd-phone-frame">
           <div className="kd-phone-screen">
-            <nav className="kd-mobile-nav"><Logo size={26} /><a href="tel:+33652211292" style={{ fontSize: "0.8rem", fontWeight: 700 }}>Appeler</a></nav>
+            <nav className="kd-mobile-nav"><Logo size={26} /><a href="tel:+33688863419" style={{ fontSize: "0.8rem", fontWeight: 700 }}>Appeler</a></nav>
             <div className="kd-mobile-hero">
               <p className="kd-eyebrow">Chauffeur privé · Lyon</p>
               <h1 className="kd-h3" style={{ color: "var(--kd-cream)" }}>Votre chauffeur, à l’heure près.</h1>
@@ -191,7 +191,7 @@ function MobilePreview() {
             </div>
             <div className="kd-mobile-footer">
               <Logo size={22} />
-              <span>06 52 21 12 92 · Lyon, France</span>
+              <span>06 88 86 34 19 · Lyon, France</span>
               <span>© {new Date().getFullYear()} KDRIVE</span>
             </div>
           </div>

@@ -86,7 +86,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
         <Link className="kd-btn kd-btn--gold kd-btn--block" href="/reserver" onClick={onClose}>
           Réserver
         </Link>
-        <a className="kd-btn kd-btn--ghost-dark kd-btn--block" href="tel:+33652211292">
+        <a className="kd-btn kd-btn--ghost-dark kd-btn--block" href="tel:+33688863419">
           Appeler KDRIVE
         </a>
       </div>

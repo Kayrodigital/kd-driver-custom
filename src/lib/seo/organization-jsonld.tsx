@@ -25,7 +25,7 @@ export function OrganizationJsonLd() {
         name: "KDRIVE",
         url: SITE_URL,
         image: `${SITE_URL}/logo-icon.png`,
-        telephone: "+33652211292",
+        telephone: "+33688863419",
         address: {
           "@type": "PostalAddress",
           addressLocality: "Lyon",
