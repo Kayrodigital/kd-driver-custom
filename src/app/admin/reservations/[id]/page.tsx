@@ -7,6 +7,8 @@ import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { DECLINE_REASON_CODES, buildDeclineClientMessage, declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
 import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
 import { generateClientVoucher, generateInternalDispatchSheet, type ReservationForDocuments } from "@/domain/dispatch/vouchers";
+import { buildJustificatif, type ReservationForJustificatif } from "@/domain/justificatif/justificatif";
+import { buildBookingConfirmedMessage } from "@/domain/justificatif/justificatif-messages";
 import type { HistoryEntry } from "../../history-entry";
 import { statusLabel, statusPillClassName } from "../../status-labels";
 import {
@@ -15,8 +17,10 @@ import {
   cancelConfirmedReservation,
   completeReservation,
   confirmEstimatedPrice,
+  confirmWithExternalDriver,
   declineReservation,
   markContacted,
+  sendJustificatifToClient,
   setQuotePrice,
 } from "./actions";
 import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
@@ -58,6 +62,10 @@ type ReservationDetail = {
   luggage: number;
   notes: string | null;
   history: HistoryEntry[] | null;
+  assigned_driver_name: string | null;
+  assigned_driver_phone: string | null;
+  assigned_vehicle_label: string | null;
+  assigned_vehicle_plate: string | null;
   customers: Customer | Customer[] | null;
   vehicles: Vehicle | Vehicle[] | null;
 };
@@ -73,6 +81,7 @@ const pricingStatusLabels: Record<string, string> = {
 const errorMessages: Record<string, string> = {
   reason_required: "Le motif est obligatoire pour ajuster un tarif.",
   decline_reason_required: "Choisissez un motif de refus dans la liste.",
+  driver_fields_required: "Renseignez le nom, le téléphone, le véhicule et la plaque du chauffeur.",
   invalid_amount: "Le montant saisi est invalide.",
   invalid_transition: "Cette action n’est plus disponible pour l’état actuel de la réservation.",
   price_not_confirmed: "Confirmez ou définissez d’abord le tarif avant d’accepter cette course.",
@@ -89,6 +98,7 @@ const successMessages: Record<string, string> = {
   reservation_declined: "Course refusée.",
   reservation_cancelled: "Course annulée.",
   reservation_completed: "Course marquée comme terminée.",
+  justificatif_sent: "Justificatif envoyé au client.",
 };
 
 function one<T>(value: T | T[] | null): T | null {
@@ -121,7 +131,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
   const { data, error } = await supabase
     .from("reservations")
     .select(
-      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,contacted_at,confirmed_at,cancelled_at,completed_at,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
+      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,contacted_at,confirmed_at,cancelled_at,completed_at,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,assigned_driver_name,assigned_driver_phone,assigned_vehicle_label,assigned_vehicle_plate,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
     )
     .eq("id", id)
     .maybeSingle();
@@ -174,14 +184,47 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
     ? buildDeclineClientMessage(declineReasonCode, { publicReference: reservation.public_reference })
     : null;
 
+  const reservationForJustificatif: ReservationForJustificatif = {
+    publicReference: reservation.public_reference,
+    status: reservation.status,
+    createdAt: reservation.created_at,
+    pickupAt: reservation.pickup_at,
+    pickupAddress: reservation.pickup_address,
+    destinationAddress: reservation.destination_address,
+    confirmedPriceCents: reservation.confirmed_price_cents,
+    customerName: reservationForDocuments.customerName,
+    customerPhone: customer?.phone ?? null,
+    assignedDriverName: reservation.assigned_driver_name,
+    assignedDriverPhone: reservation.assigned_driver_phone,
+    assignedVehicleLabel: reservation.assigned_vehicle_label,
+    assignedVehiclePlate: reservation.assigned_vehicle_plate,
+  };
+  const justificatif = buildJustificatif(reservationForJustificatif);
+  const appBaseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
+  const justificatifPdfPath = `/api/justificatif/${id}/pdf`;
+  const justificatifWhatsAppUrl = justificatif && customer?.phone
+    ? buildWhatsAppContactUrl({
+        phone: customer.phone,
+        message: buildBookingConfirmedMessage({
+          publicReference: reservation.public_reference,
+          pickupAt: reservation.pickup_at,
+          confirmedPriceCents: reservation.confirmed_price_cents ?? 0,
+          justificatifUrl: `${appBaseUrl}${justificatifPdfPath}`,
+        }),
+      })
+    : null;
+  const showJustificatifMissingHint = status === "confirmed" && !justificatif;
+
   const markContactedWithId = markContacted.bind(null, id);
   const confirmEstimatedPriceWithId = confirmEstimatedPrice.bind(null, id);
   const adjustPriceWithId = adjustPrice.bind(null, id);
   const setQuotePriceWithId = setQuotePrice.bind(null, id);
   const acceptReservationWithId = acceptReservation.bind(null, id);
+  const confirmWithExternalDriverWithId = confirmWithExternalDriver.bind(null, id);
   const declineReservationWithId = declineReservation.bind(null, id);
   const cancelConfirmedReservationWithId = cancelConfirmedReservation.bind(null, id);
   const completeReservationWithId = completeReservation.bind(null, id);
+  const sendJustificatifToClientWithId = sendJustificatifToClient.bind(null, id);
 
   return (
     <main className="kd-admin-main kd-on-cream">
@@ -341,6 +384,32 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                   </p>
                 )}
 
+                {showAccept && (
+                  <details>
+                    <summary className="kd-more-toggle">Un autre chauffeur conduit cette course</summary>
+                    <form action={confirmWithExternalDriverWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                      <p className="kd-field-hint">Saisissez les coordonnées réelles du chauffeur affecté — jamais renseignées par défaut.</p>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Nom du chauffeur</span>
+                        <input className="kd-input" type="text" name="driverName" required maxLength={120} />
+                      </label>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Téléphone du chauffeur</span>
+                        <input className="kd-input" type="tel" name="driverPhone" required maxLength={30} />
+                      </label>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Véhicule</span>
+                        <input className="kd-input" type="text" name="vehicleLabel" required maxLength={120} placeholder="Ex. Berline noire" />
+                      </label>
+                      <label className="kd-field">
+                        <span className="kd-field-label">Immatriculation</span>
+                        <input className="kd-input" type="text" name="vehiclePlate" required maxLength={20} placeholder="Ex. AA-123-BB" />
+                      </label>
+                      <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer avec ce chauffeur</button>
+                    </form>
+                  </details>
+                )}
+
                 {showDecline && (
                   <details>
                     <summary className="kd-more-toggle kd-more-toggle--danger">Je refuse la demande</summary>
@@ -392,6 +461,38 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                   text={`Fiche interne KDRIVE\nRéférence : ${internalSheet.reference}\nClient : ${internalSheet.customerName}\nTéléphone client : ${internalSheet.customerPhone}\nDépart : ${internalSheet.pickupAddress}\nDestination : ${internalSheet.destinationAddress}\nDate et heure : ${internalSheet.pickupAtLabel}\nCatégorie : ${internalSheet.vehicleLabel}\nTarif : ${internalSheet.priceLabel}\nOptions et commentaires : ${internalSheet.notes || "—"}${internalSheet.priceAdjustmentReason ? `\nMotif d’ajustement tarifaire : ${internalSheet.priceAdjustmentReason}` : ""}`}
                 />
               </div>
+            )}
+
+            {justificatif && (
+              <div className="kd-admin-documents">
+                <h2 className="kd-h4" style={{ marginTop: 8 }}>Justificatif de réservation préalable</h2>
+                <div className="kd-card kd-admin-voucher">
+                  <p className="kd-admin-fiche-row"><span>Référence</span><span>{justificatif.reference}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Passager</span><span>{justificatif.passengerName}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Téléphone passager</span><span>{justificatif.passengerPhone}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Prise en charge</span><span>{justificatif.pickupAddress}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Destination</span><span>{justificatif.destinationAddress}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Prix convenu</span><span>{justificatif.agreedPriceLabel}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Chauffeur affecté</span><span>{justificatif.driverName}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Téléphone chauffeur</span><span>{justificatif.driverPhone}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Véhicule</span><span>{justificatif.vehicleLabel}</span></p>
+                  <p className="kd-admin-fiche-row"><span>Immatriculation</span><span>{justificatif.vehiclePlate}</span></p>
+                </div>
+                <a className="kd-btn kd-btn--outline kd-btn--block" href={justificatifPdfPath} target="_blank" rel="noreferrer">Télécharger le PDF</a>
+                <form action={sendJustificatifToClientWithId}>
+                  <button type="submit" className="kd-btn kd-btn--gold kd-btn--block">Envoyer le justificatif par e-mail</button>
+                </form>
+                {justificatifWhatsAppUrl && (
+                  <a className="kd-btn kd-btn--outline kd-btn--block" href={justificatifWhatsAppUrl} target="_blank" rel="noreferrer">Envoyer par WhatsApp</a>
+                )}
+                <p className="kd-field-hint" style={{ margin: 0 }}>{justificatif.legalReference.articleLabel}. {justificatif.legalReference.decreeLabel}</p>
+              </div>
+            )}
+
+            {showJustificatifMissingHint && (
+              <p className="kd-field-hint" style={{ margin: 0 }}>
+                Justificatif indisponible : le nom ou le téléphone du passager, ou les coordonnées du chauffeur affecté, sont incomplets.
+              </p>
             )}
 
             {declineClientMessage && (

@@ -15,8 +15,8 @@ const reservation: ReservationForDocuments = {
   priceAdjustmentReason: null,
 };
 
-const fullOwnerProfile: OwnerDriverProfile = { name: "Karamba", vehicle: "Berline noire · AA-123-BB", phone: "+33600000001" };
-const emptyOwnerProfile: OwnerDriverProfile = { name: null, vehicle: null, phone: null };
+const fullOwnerProfile: OwnerDriverProfile = { name: "Karamba", vehicleLabel: "Berline noire", vehiclePlate: "AA-123-BB", phone: "+33600000001" };
+const emptyOwnerProfile: OwnerDriverProfile = { name: null, vehicleLabel: null, vehiclePlate: null, phone: null };
 
 describe("generateClientVoucher", () => {
   it("contient la référence, le trajet, le tarif et la catégorie", () => {

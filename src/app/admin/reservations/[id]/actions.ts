@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { eurosToCents, formatEuros } from "@/domain/pricing/money";
 import { declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
+import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
+import { BrevoClientNotifier } from "@/infrastructure/notifications/client-notifier";
+import { notifyClientOfBookingConfirmed } from "@/infrastructure/notifications/notify-client-of-booking";
+import { SupabaseReservationRepository } from "@/infrastructure/supabase/booking-repository";
 import { appendHistory, type HistoryEntry } from "../../history-entry";
 import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
 
@@ -138,6 +142,14 @@ export async function setQuotePrice(id: string, formData: FormData) {
   backTo(id, { success: "price_set" });
 }
 
+/**
+ * Parcours A : le propriétaire prend la course lui-même. Le chauffeur
+ * affecté vient du profil propriétaire (variables d'env) — jamais laissé
+ * vide, jamais une autre valeur par défaut. Si le profil n'est pas
+ * configuré (nom/véhicule/plaque manquants), la course est bien confirmée
+ * mais le justificatif restera indisponible tant que ces champs ne sont
+ * pas renseignés (buildJustificatif refuse tout document partiel).
+ */
 export async function acceptReservation(id: string) {
   const row = await loadGuardRow(id);
   const pricing = { pricingMode: row.pricing_mode, pricingStatus: row.pricing_status, confirmedPriceCents: row.confirmed_price_cents };
@@ -145,12 +157,21 @@ export async function acceptReservation(id: string) {
     backTo(id, { error: priceIsConfirmed(pricing) ? "invalid_transition" : "price_not_confirmed" });
     return;
   }
+  const ownerProfile = getOwnerDriverProfile();
   const supabase = createAdminClient();
   const now = new Date().toISOString();
-  const history = appendHistory(row.history, { action: "reservation_confirmed", message: "Course acceptée", from_status: row.status, to_status: "confirmed" });
+  const history = appendHistory(row.history, { action: "reservation_confirmed", message: "Course acceptée (le propriétaire conduit)", from_status: row.status, to_status: "confirmed" });
   const { data: updated, error } = await supabase
     .from("reservations")
-    .update({ status: "confirmed", confirmed_at: now, history })
+    .update({
+      status: "confirmed",
+      confirmed_at: now,
+      assigned_driver_name: ownerProfile.name,
+      assigned_driver_phone: ownerProfile.phone,
+      assigned_vehicle_label: ownerProfile.vehicleLabel,
+      assigned_vehicle_plate: ownerProfile.vehiclePlate,
+      history,
+    })
     .eq("id", id)
     .eq("status", row.status)
     .select("id")
@@ -158,6 +179,96 @@ export async function acceptReservation(id: string) {
   if (error) backTo(id, { error: "update_failed" });
   if (!updated) backTo(id, { error: "invalid_transition" });
   backTo(id, { success: "reservation_confirmed" });
+}
+
+/**
+ * Confirmation avec un chauffeur externe (course déléguée) : formulaire
+ * manuel minimal, PAS le Parcours B complet du plan de dispatch (pas de
+ * commission, pas d'annonce groupe, pas de table `drivers`) — juste assez
+ * pour qu'un justificatif correct puisse être généré. Les 4 champs sont
+ * obligatoires ici : jamais de confirmation avec un chauffeur à moitié
+ * renseigné.
+ */
+export async function confirmWithExternalDriver(id: string, formData: FormData) {
+  const row = await loadGuardRow(id);
+  const pricing = { pricingMode: row.pricing_mode, pricingStatus: row.pricing_status, confirmedPriceCents: row.confirmed_price_cents };
+  if (!canAccept(row.status, pricing)) {
+    backTo(id, { error: priceIsConfirmed(pricing) ? "invalid_transition" : "price_not_confirmed" });
+    return;
+  }
+
+  const driverName = String(formData.get("driverName") ?? "").trim();
+  const driverPhone = String(formData.get("driverPhone") ?? "").trim();
+  const vehicleLabel = String(formData.get("vehicleLabel") ?? "").trim();
+  const vehiclePlate = String(formData.get("vehiclePlate") ?? "").trim();
+
+  if (!driverName || !driverPhone || !vehicleLabel || !vehiclePlate) {
+    backTo(id, { error: "driver_fields_required" });
+    return;
+  }
+
+  const supabase = createAdminClient();
+  const now = new Date().toISOString();
+  const history = appendHistory(row.history, {
+    action: "reservation_confirmed",
+    message: `Course acceptée (chauffeur externe : ${driverName})`,
+    from_status: row.status,
+    to_status: "confirmed",
+  });
+  const { data: updated, error } = await supabase
+    .from("reservations")
+    .update({
+      status: "confirmed",
+      confirmed_at: now,
+      assigned_driver_name: driverName,
+      assigned_driver_phone: driverPhone,
+      assigned_vehicle_label: vehicleLabel,
+      assigned_vehicle_plate: vehiclePlate,
+      history,
+    })
+    .eq("id", id)
+    .eq("status", row.status)
+    .select("id")
+    .maybeSingle();
+  if (error) backTo(id, { error: "update_failed" });
+  if (!updated) backTo(id, { error: "invalid_transition" });
+  backTo(id, { success: "reservation_confirmed" });
+}
+
+/**
+ * Bouton "Envoyer au client" : action explicite, jamais déclenchée
+ * automatiquement à la confirmation. Envoie l'e-mail (si le client a
+ * fourni une adresse) avec le lien du justificatif — le lien WhatsApp
+ * (pré-rempli, à envoyer manuellement) reste affiché sur la fiche par
+ * ailleurs, cf. page.tsx.
+ */
+export async function sendJustificatifToClient(id: string) {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("status,public_reference,pickup_at,confirmed_price_cents,customers(email)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error || !data) { backTo(id, { error: "not_found" }); return; }
+  if (data.status !== "confirmed" || data.confirmed_price_cents === null) {
+    backTo(id, { error: "invalid_transition" });
+    return;
+  }
+
+  const customer = Array.isArray(data.customers) ? data.customers[0] : data.customers;
+  const base = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/$/, "");
+  const justificatifUrl = `${base}/api/justificatif/${id}/pdf`;
+
+  const repository = new SupabaseReservationRepository();
+  await notifyClientOfBookingConfirmed(new BrevoClientNotifier(), repository, id, {
+    reference: data.public_reference,
+    customerEmail: customer?.email ?? null,
+    pickupAt: data.pickup_at,
+    confirmedPriceCents: data.confirmed_price_cents,
+    justificatifUrl,
+  });
+
+  backTo(id, { success: "justificatif_sent" });
 }
 
 export async function declineReservation(id: string, formData: FormData) {

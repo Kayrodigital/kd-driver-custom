@@ -19,6 +19,16 @@ implémenté — c'est l'objet du reste de ce document, qui garde sa valeur de
 plan de préparation pour cette partie. Il est bloqué tant que le taux de
 commission n'est pas confirmé par le client (cf. section 5 et section 16).
 
+**Précision (justificatif légal)** : `confirmWithExternalDriver` (dans
+`actions.ts`) et les colonnes `reservations.assigned_driver_*` ajoutées pour
+le justificatif de réservation préalable (cf.
+`src/domain/justificatif/`) permettent de confirmer une course avec un
+chauffeur externe **saisi à la main** (nom, téléphone, véhicule, plaque) —
+ce n'est **pas** le Parcours B décrit ci-dessous. Aucune commission, aucune
+annonce groupe, aucune table `drivers`, aucun affichage "chauffeurs
+disponibles" : juste assez de données pour qu'un justificatif légal
+correct puisse être généré sur une course non conduite par le propriétaire.
+
 ---
 
 Ce document décrit le travail nécessaire pour faire correspondre le

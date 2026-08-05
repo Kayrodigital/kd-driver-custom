@@ -56,7 +56,9 @@ export function generateClientVoucher(reservation: ReservationForDocuments, owne
     vehicleLabel: reservation.vehicleLabel ?? "—",
     priceLabel: priceLabelFor(reservation.confirmedPriceCents),
     driverName: ownerProfile.name,
-    driverVehicle: ownerProfile.vehicle,
+    driverVehicle: ownerProfile.vehicleLabel && ownerProfile.vehiclePlate
+      ? `${ownerProfile.vehicleLabel} · ${ownerProfile.vehiclePlate}`
+      : ownerProfile.vehicleLabel,
     driverPhone: ownerProfile.phone,
   };
 }

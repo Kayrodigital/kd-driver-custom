@@ -98,3 +98,10 @@ ces validations.
     2026-08-04 après un signalement client (les valeurs avaient été
     laissées à `null` lors d'un sprint antérieur, sans minimum confirmé à
     l'époque pour ces deux catégories).
+22. **Lien du justificatif PDF (`/api/justificatif/[id]/pdf`)** — la
+    "sécurité" du lien repose uniquement sur le fait que l'URL est
+    construite sur l'identifiant UUID interne de la réservation (non
+    énumérable), pas sur un jeton signé ni expirant. Suffisant pour éviter
+    qu'un lien soit deviné au hasard, mais pas un vrai contrôle d'accès. À
+    renforcer (jeton signé à durée limitée) si le client le juge nécessaire
+    une fois le volume réel de justificatifs envoyés observé.

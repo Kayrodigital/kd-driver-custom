@@ -7,14 +7,16 @@
  */
 export type OwnerDriverProfile = {
   name: string | null;
-  vehicle: string | null;
+  vehicleLabel: string | null;
+  vehiclePlate: string | null;
   phone: string | null;
 };
 
 export function getOwnerDriverProfile(): OwnerDriverProfile {
   return {
     name: process.env.KD_OWNER_DRIVER_NAME || null,
-    vehicle: process.env.KD_OWNER_DRIVER_VEHICLE || null,
+    vehicleLabel: process.env.KD_OWNER_DRIVER_VEHICLE_LABEL || null,
+    vehiclePlate: process.env.KD_OWNER_DRIVER_VEHICLE_PLATE || null,
     phone: process.env.NEXT_PUBLIC_KD_DRIVER_PHONE || null,
   };
 }
