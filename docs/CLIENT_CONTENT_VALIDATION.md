@@ -91,13 +91,14 @@ ces validations.
     explicitement `airport: null` et `longDistance: null` (aucun minimum
     appliqué) comme règle provisoire clairement documentée, jamais comme une
     valeur confirmée.
-21. **Minimums Confort (20 €) et Berline (25 €)** — confirmés par le client
+21. **Minimums Confort (20 €) et Berline (26 €)** — confirmés par le client
     et appliqués aux trois types de trajet calculés (course standard,
     transfert aéroport, longue distance), contrairement au minimum Luxe
     ci-dessus qui reste limité à la course standard. Rétablis le
     2026-08-04 après un signalement client (les valeurs avaient été
     laissées à `null` lors d'un sprint antérieur, sans minimum confirmé à
-    l'époque pour ces deux catégories).
+    l'époque pour ces deux catégories). Minimum Berline corrigé de 25 € à
+    26 € le 2026-08-05 sur demande client.
 22. **Lien du justificatif PDF (`/api/justificatif/[id]/pdf`)** — la
     "sécurité" du lien repose uniquement sur le fait que l'URL est
     construite sur l'identifiant UUID interne de la réservation (non

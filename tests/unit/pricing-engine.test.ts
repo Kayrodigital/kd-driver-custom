@@ -58,7 +58,7 @@ describe("calculatePrice", () => {
     expect(result.lines.some((l) => l.code === "minimum_adjustment")).toBe(false);
   });
 
-  describe("minimums Confort (20 €) et Berline (25 €) — rétablis après signalement client, portée : standard/aéroport/longue distance", () => {
+  describe("minimums Confort (20 €) et Berline (26 €) — rétablis après signalement client, portée : standard/aéroport/longue distance", () => {
     it("Confort — calcul à 16 € (3 km, 10 min) → résultat final 20 € (minimum appliqué)", () => {
       const result = calculatePrice({ category: "confort", distanceMeters: 3_000, durationSeconds: 10 * 60 }, pricingConfig);
       expect(result.totalCents).toBe(2_000);
@@ -93,15 +93,15 @@ describe("calculatePrice", () => {
       expect(result.lines.some((l) => l.code === "minimum_adjustment")).toBe(false);
     });
 
-    it("Berline — calcul à 21 € (4,4 km, 10 min) → résultat final 25 € (minimum appliqué)", () => {
+    it("Berline — calcul à 21 € (4,4 km, 10 min) → résultat final 26 € (minimum appliqué)", () => {
       const result = calculatePrice({ category: "berline", distanceMeters: 4_400, durationSeconds: 10 * 60 }, pricingConfig);
-      expect(result.totalCents).toBe(2_500);
-      expect(result.lines.find((l) => l.code === "minimum_adjustment")?.amountCents).toBe(400);
+      expect(result.totalCents).toBe(2_600);
+      expect(result.lines.find((l) => l.code === "minimum_adjustment")?.amountCents).toBe(500);
     });
 
-    it("Berline — calcul exactement à 25 € (6 km, 10 min) → résultat final 25 €, sans ligne d'ajustement", () => {
-      const result = calculatePrice({ category: "berline", distanceMeters: 6_000, durationSeconds: 10 * 60 }, pricingConfig);
-      expect(result.totalCents).toBe(2_500);
+    it("Berline — calcul exactement à 26 € (6,4 km, 10 min) → résultat final 26 €, sans ligne d'ajustement", () => {
+      const result = calculatePrice({ category: "berline", distanceMeters: 6_400, durationSeconds: 10 * 60 }, pricingConfig);
+      expect(result.totalCents).toBe(2_600);
       expect(result.lines.some((l) => l.code === "minimum_adjustment")).toBe(false);
     });
 
@@ -112,12 +112,12 @@ describe("calculatePrice", () => {
       expect(result.lines.some((l) => l.code === "minimum_adjustment")).toBe(false);
     });
 
-    it("Berline — minimum 25 € aussi appliqué en aéroport (2 km, sous le minimum)", () => {
+    it("Berline — minimum 26 € aussi appliqué en aéroport (2 km, sous le minimum)", () => {
       const result = calculatePrice({ category: "berline", distanceMeters: 2_000, durationSeconds: 10 * 60, isAirportTrip: true }, pricingConfig);
       expect(result.tripType).toBe("airport");
-      // 2×2,5 + 5 = 10 € brut -> minimum 25 € appliqué
-      expect(result.totalCents).toBe(2_500);
-      expect(result.lines.find((l) => l.code === "minimum_adjustment")?.amountCents).toBe(1_500);
+      // 2×2,5 + 5 = 10 € brut -> minimum 26 € appliqué
+      expect(result.totalCents).toBe(2_600);
+      expect(result.lines.find((l) => l.code === "minimum_adjustment")?.amountCents).toBe(1_600);
     });
 
     it("Luxe — portée du minimum inchangée : toujours aucun minimum en aéroport (non-régression)", () => {

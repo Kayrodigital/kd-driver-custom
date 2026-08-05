@@ -79,7 +79,7 @@ const allVehicles = [
 
 const comparisonRows = [
   { name: "Confort", points: ["Économique", "Trajets quotidiens", "Tarif calculé, minimum 20 €"] },
-  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé, minimum 25 €"] },
+  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé, minimum 26 €"] },
   { name: "Luxe", points: ["Premium", "Mercedes haut de gamme", "Tarif calculé, minimum 40 €"] },
   { name: "Van", points: ["Groupes + bagages", "Grand coffre", "Sur devis"] },
   { name: "Monospace", points: ["Nombreux passagers", "Coffre limité", "Sur devis"] },

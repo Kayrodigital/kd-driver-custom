@@ -11,7 +11,7 @@
     "berline": {
       "mode": "calculated",
       "pricePerKm": 2.5,
-      "minimumByTripType": { "standard": 25, "airport": 25, "longDistance": 25 }
+      "minimumByTripType": { "standard": 26, "airport": 26, "longDistance": 26 }
     },
     "luxe": {
       "mode": "calculated",
