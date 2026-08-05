@@ -255,7 +255,7 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
       />
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
-          <SceneImage src="/images/about-lyon.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} sizes="100vw" />
+          <SceneImage src="/images/hero-longues-distances.jpg" alt="Lyon" className="kd-scene--tall" style={{ minHeight: 420 }} sizes="100vw" />
         </div>
       </section>
       <section className="kd-section kd-section--compact kd-on-white">

@@ -6,6 +6,7 @@ import {
   CorporateSection,
   CtaSection,
   FooterSection,
+  ReviewsSection,
   ServicesSection,
   SiteNav,
   VehiclesSection,
@@ -59,6 +60,7 @@ export default function HomePage() {
       <AirportSection />
       <CorporateSection />
       <ZonesSection />
+      <ReviewsSection />
       <CtaSection />
       <FooterSection />
     </>

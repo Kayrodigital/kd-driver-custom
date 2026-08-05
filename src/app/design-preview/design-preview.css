@@ -710,6 +710,10 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 
 .kd-cta { text-align: center; display: grid; gap: var(--kd-space-4); justify-items: center; }
 
+/* Widget Trustindex (avis Google) : min-height pour limiter le saut de
+   mise en page pendant le chargement différé (strategy="lazyOnload"). */
+.kd-reviews-widget { min-height: 220px; }
+
 .kd-footer { padding: var(--kd-space-6) 0 var(--kd-space-5); font-size: 0.85rem; }
 .kd-footer-grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }
 .kd-footer-grid > * { min-width: 0; }
