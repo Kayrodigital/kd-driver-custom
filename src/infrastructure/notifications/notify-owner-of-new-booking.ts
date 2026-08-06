@@ -1,6 +1,9 @@
 import "server-only";
+import { normalizePhoneForWhatsApp } from "@/domain/booking/whatsapp";
+import { formatDateTimeParis } from "@/lib/format-date";
 import { formatEuros } from "@/domain/pricing/money";
 import type { NewBookingEmailPayload, OwnerNotifier } from "./owner-notifier";
+import type { WhatsAppSender } from "./whatsapp-sender";
 
 export type NewBookingNotificationContext = {
   createdAt: string;
@@ -91,5 +94,81 @@ export async function notifyOwnerOfNewBooking(
     });
   } catch (error) {
     console.error("owner_email_notification_unexpected_error", error instanceof Error ? error.message : "unknown_error");
+  }
+}
+
+function buildOwnerWhatsAppMessage(reference: string, context: NewBookingNotificationContext, customerPhone: string): string {
+  const priceLabel = context.pricing.mode === "quote" ? "Sur devis" : formatEuros(context.pricing.totalCents ?? 0);
+  return [
+    `Nouvelle demande KDRIVE ${reference}`,
+    `${context.pickupAddress} → ${context.destinationAddress}`,
+    formatDateTimeParis(context.pickupAt, { dateStyle: "short", timeStyle: "short" }),
+    `Tarif estimé : ${priceLabel}`,
+    `Client : ${context.customerName ?? "—"} · ${customerPhone}`,
+  ].join("\n");
+}
+
+/**
+ * Même principe que notifyOwnerOfNewBooking (e-mail), pour le canal
+ * WhatsApp. Échec silencieux en local (juste journalisé) : ne doit jamais
+ * faire échouer la création de la réservation elle-même — cf. le
+ * try/catch englobant, appelé depuis un after() côté route, hors du
+ * chemin critique de réponse au client.
+ */
+export async function notifyOwnerOfNewBookingByWhatsApp(
+  sender: WhatsAppSender,
+  historyWriter: HistoryWriter,
+  id: string,
+  reference: string,
+  context: NewBookingNotificationContext,
+  customerPhone: string,
+): Promise<void> {
+  const eventId = `${id}:new_booking_whatsapp`;
+  const ownerPhoneRaw = process.env.NEXT_PUBLIC_KD_DRIVER_PHONE;
+  const ownerPhone = ownerPhoneRaw ? normalizePhoneForWhatsApp(ownerPhoneRaw) : null;
+
+  if (!ownerPhone) {
+    await historyWriter.appendHistoryEvent(id, {
+      action: "owner_whatsapp_notification_skipped",
+      message: "Numéro WhatsApp propriétaire non configuré",
+      channel: "whatsapp",
+      event_id: eventId,
+      error_code: "not_configured",
+    });
+    return;
+  }
+
+  const message = buildOwnerWhatsAppMessage(reference, context, customerPhone);
+
+  try {
+    const result = await sender.sendText(ownerPhone, message);
+    if (result.outcome === "success") {
+      await historyWriter.appendHistoryEvent(id, {
+        action: "owner_whatsapp_notification_sent",
+        message: "WhatsApp propriétaire envoyé",
+        channel: "whatsapp",
+        event_id: eventId,
+      });
+      return;
+    }
+    if (result.outcome === "skipped") {
+      await historyWriter.appendHistoryEvent(id, {
+        action: "owner_whatsapp_notification_skipped",
+        message: "Notification WhatsApp propriétaire non configurée",
+        channel: "whatsapp",
+        event_id: eventId,
+        error_code: result.errorCode,
+      });
+      return;
+    }
+    await historyWriter.appendHistoryEvent(id, {
+      action: "owner_whatsapp_notification_failed",
+      message: "Le WhatsApp propriétaire a échoué (fenêtre de 24h expirée sans modèle de message approuvé, ou erreur API)",
+      channel: "whatsapp",
+      event_id: eventId,
+      error_code: result.errorCode ?? "http_error",
+    });
+  } catch (error) {
+    console.error("owner_whatsapp_notification_unexpected_error", error instanceof Error ? error.message : "unknown_error");
   }
 }

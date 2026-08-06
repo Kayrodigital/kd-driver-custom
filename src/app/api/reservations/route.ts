@@ -2,7 +2,8 @@ import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { createReservation } from "@/application/create-booking";
 import { BrevoOwnerNotifier } from "@/infrastructure/notifications/owner-notifier";
-import { notifyOwnerOfNewBooking } from "@/infrastructure/notifications/notify-owner-of-new-booking";
+import { notifyOwnerOfNewBooking, notifyOwnerOfNewBookingByWhatsApp } from "@/infrastructure/notifications/notify-owner-of-new-booking";
+import { MetaWhatsAppSender } from "@/infrastructure/notifications/whatsapp-sender";
 import { BrevoClientNotifier } from "@/infrastructure/notifications/client-notifier";
 import { notifyClientOfBookingReceived } from "@/infrastructure/notifications/notify-client-of-booking";
 import { GoogleRoutesProvider } from "@/infrastructure/maps/google-routes-provider";
@@ -34,6 +35,9 @@ export async function POST(request: Request) {
     if (result.created) {
       after(() =>
         notifyOwnerOfNewBooking(new BrevoOwnerNotifier(), repository, result.id, result.reference, notificationContext, result.summary.phone),
+      );
+      after(() =>
+        notifyOwnerOfNewBookingByWhatsApp(new MetaWhatsAppSender(), repository, result.id, result.reference, notificationContext, result.summary.phone),
       );
       after(() =>
         notifyClientOfBookingReceived(new BrevoClientNotifier(), repository, result.id, {
