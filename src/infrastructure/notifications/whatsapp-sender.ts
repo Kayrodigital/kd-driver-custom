@@ -35,7 +35,12 @@ export class MetaWhatsAppSender implements WhatsAppSender {
       });
 
       if (!response.ok) {
-        console.error("whatsapp_send_http_error", response.status);
+        // Le corps d'erreur de Meta (jamais le jeton d'accès, absent de la
+        // réponse) est journalisé pour diagnostiquer précisément la cause
+        // (ex. fenêtre de 24h expirée, numéro invalide) — le seul code HTTP
+        // ne suffit pas à distinguer ces cas.
+        const errorBody = await response.text().catch(() => "");
+        console.error("whatsapp_send_http_error", response.status, errorBody);
         return { outcome: "failed", errorCode: "http_error" };
       }
 
