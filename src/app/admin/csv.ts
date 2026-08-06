@@ -1,4 +1,5 @@
 import { formatEuros } from "@/domain/pricing/money";
+import { formatDateTimeParis } from "@/lib/format-date";
 import { statusLabel } from "./status-labels";
 
 export type CsvReservationRow = {
@@ -66,7 +67,7 @@ export function sanitizeCsvCell(value: string): string {
 
 function formatDateTime(iso: string | null): string {
   if (!iso) return "";
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(iso));
+  return formatDateTimeParis(iso, { dateStyle: "short", timeStyle: "short" });
 }
 
 function quoteCsvField(value: string): string {

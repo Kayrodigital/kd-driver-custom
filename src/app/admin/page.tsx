@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { formatEuros } from "@/domain/pricing/money";
+import { formatDateTimeParis } from "@/lib/format-date";
 import { statusFilterOptions, statusLabel, statusPillClassName } from "./status-labels";
 import { archiveReservation, restoreReservation } from "./actions";
 import {
@@ -69,7 +70,7 @@ function priceCell(row: ReservationRow): string {
 }
 
 function formatDateTime(value: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
+  return formatDateTimeParis(value, { dateStyle: "short", timeStyle: "short" });
 }
 
 type RawSearchParams = { [key: string]: string | string[] | undefined };

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
 import { formatEuros } from "@/domain/pricing/money";
+import { formatDateTimeParis } from "@/lib/format-date";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { DECLINE_REASON_CODES, buildDeclineClientMessage, declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
 import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
@@ -112,7 +113,7 @@ function googleMapsLink(reservation: ReservationDetail): string | null {
 }
 
 function whatsappLink(reservation: ReservationDetail, phone: string): string | null {
-  const when = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" }).format(new Date(reservation.pickup_at));
+  const when = formatDateTimeParis(reservation.pickup_at, { dateStyle: "long", timeStyle: "short" });
   let message = `Bonjour, votre demande KDRIVE ${reservation.public_reference} pour le trajet ${reservation.pickup_address} → ${reservation.destination_address} le ${when} a bien été reçue.`;
   if (reservation.confirmed_price_cents !== null) {
     message += ` Le tarif confirmé est de ${formatEuros(reservation.confirmed_price_cents)}.`;
@@ -121,7 +122,7 @@ function whatsappLink(reservation: ReservationDetail, phone: string): string | n
 }
 
 function formatDateTime(value: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
+  return formatDateTimeParis(value, { dateStyle: "short", timeStyle: "short" });
 }
 
 export default async function ReservationDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string; success?: string }> }) {
@@ -251,7 +252,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Trajet</h2>
             <p className="kd-admin-fiche-row"><span>Départ</span><span>{reservation.pickup_address}</span></p>
             <p className="kd-admin-fiche-row"><span>Destination</span><span>{reservation.destination_address}</span></p>
-            <p className="kd-admin-fiche-row"><span>Date et heure</span><span>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(reservation.pickup_at))}</span></p>
+            <p className="kd-admin-fiche-row"><span>Date et heure</span><span>{formatDateTimeParis(reservation.pickup_at, { dateStyle: "full", timeStyle: "short" })}</span></p>
             <p className="kd-admin-fiche-row"><span>Distance</span><span>{(reservation.distance_meters / 1000).toFixed(1)} km</span></p>
             <p className="kd-admin-fiche-row"><span>Durée</span><span>≈ {Math.round(reservation.duration_seconds / 60)} min</span></p>
             {mapsLink && <a href={mapsLink} target="_blank" rel="noreferrer" className="kd-card-link">Voir l’itinéraire sur Google Maps →</a>}

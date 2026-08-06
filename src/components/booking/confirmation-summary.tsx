@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useSyncExternalStore } from "react";
 import { SiteNav } from "@/app/design-preview/sections";
+import { formatDateTimeParis } from "@/lib/format-date";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
@@ -37,7 +38,7 @@ export function ConfirmationSummary({ reference }: { reference: string }) {
           {summary ? (
             <dl className="kd-card kd-stack" style={{ textAlign: "left", width: "100%" }}>
               <div><dt className="kd-field-label">Trajet</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{summary.pickupAddress}<br />→ {summary.destinationAddress}</dd></div>
-              <div><dt className="kd-field-label">Date</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(summary.pickupAt))}</dd></div>
+              <div><dt className="kd-field-label">Date</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{formatDateTimeParis(summary.pickupAt, { dateStyle: "full", timeStyle: "short" })}</dd></div>
               <div><dt className="kd-field-label">Véhicule</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{vehicleLabel} · {summary.passengers} passagers · {summary.luggage} bagages</dd></div>
               <div><dt className="kd-field-label">Téléphone</dt><dd className="kd-body" style={{ margin: "4px 0 0" }}>{summary.phone}</dd></div>
               <div><dt className="kd-field-label">Tarif</dt><dd className="kd-body" style={{ margin: "4px 0 0", fontWeight: 700 }}>{isQuote ? "Sur devis" : formatEuros(summary.pricing.totalCents ?? 0)}</dd></div>

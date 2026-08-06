@@ -1,3 +1,4 @@
+import { formatDateTimeParis } from "@/lib/format-date";
 import { formatEuros } from "@/domain/pricing/money";
 import type { OwnerDriverProfile } from "./owner-driver-profile";
 
@@ -40,7 +41,7 @@ export type InternalDispatchSheet = ClientVoucher & {
 };
 
 function formatPickupAt(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(iso));
+  return formatDateTimeParis(iso, { dateStyle: "full", timeStyle: "short" });
 }
 
 function priceLabelFor(cents: number | null): string {

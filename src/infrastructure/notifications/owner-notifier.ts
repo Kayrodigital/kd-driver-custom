@@ -1,5 +1,6 @@
 import "server-only";
 import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
+import { formatDateTimeParis } from "@/lib/format-date";
 
 const BREVO_TIMEOUT_MS = 5_000;
 
@@ -47,7 +48,7 @@ function escapeHtml(value: string): string {
 }
 
 function formatDateTime(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(iso));
+  return formatDateTimeParis(iso, { dateStyle: "full", timeStyle: "short" });
 }
 
 function whatsappLink(payload: NewBookingEmailPayload): string | null {

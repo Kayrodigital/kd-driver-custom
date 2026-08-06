@@ -1,4 +1,5 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { formatDateTimeParis } from "@/lib/format-date";
 import type { Justificatif } from "./justificatif";
 
 const styles = StyleSheet.create({
@@ -22,7 +23,7 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 function formatDateTime(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "full", timeStyle: "short" }).format(new Date(iso));
+  return formatDateTimeParis(iso, { dateStyle: "full", timeStyle: "short" });
 }
 
 export function JustificatifDocument({ justificatif }: { justificatif: Justificatif }) {
