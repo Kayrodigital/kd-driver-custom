@@ -6,7 +6,7 @@ const originalEnv = { ...process.env };
 function setTwilioEnv() {
   process.env.TWILIO_ACCOUNT_SID = "AC-fake-sid";
   process.env.TWILIO_AUTH_TOKEN = "fake-auth-token";
-  process.env.TWILIO_FROM_NUMBER = "+15550001111";
+  process.env.TWILIO_MESSAGING_SERVICE_SID = "MG-fake-service-sid";
 }
 
 describe("TwilioBookingSmsSender", () => {
@@ -46,7 +46,7 @@ describe("TwilioBookingSmsSender", () => {
     expect(options.headers.Authorization).toBe(`Basic ${Buffer.from("AC-fake-sid:fake-auth-token").toString("base64")}`);
     const body = new URLSearchParams(options.body);
     expect(body.get("To")).toBe("+33688863419");
-    expect(body.get("From")).toBe("+15550001111");
+    expect(body.get("MessagingServiceSid")).toBe("MG-fake-service-sid");
     expect(body.get("Body")).toBe("Nouvelle demande KDRIVE");
   });
 

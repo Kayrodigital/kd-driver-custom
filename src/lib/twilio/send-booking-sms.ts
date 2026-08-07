@@ -20,13 +20,13 @@ export class TwilioBookingSmsSender implements BookingSmsSender {
   async sendBookingSms(toPhone: string, message: string): Promise<SmsSendResult> {
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
-    const fromNumber = process.env.TWILIO_FROM_NUMBER;
-    if (!accountSid || !authToken || !fromNumber) return { outcome: "skipped", errorCode: "not_configured" };
+    const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+    if (!accountSid || !authToken || !messagingServiceSid) return { outcome: "skipped", errorCode: "not_configured" };
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
     try {
-      const body = new URLSearchParams({ To: toPhone, From: fromNumber, Body: message });
+      const body = new URLSearchParams({ To: toPhone, MessagingServiceSid: messagingServiceSid, Body: message });
       const response = await fetch(`${TWILIO_API_BASE}/Accounts/${accountSid}/Messages.json`, {
         method: "POST",
         headers: {
