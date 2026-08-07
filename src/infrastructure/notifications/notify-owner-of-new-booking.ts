@@ -4,6 +4,7 @@ import { formatDateTimeParis } from "@/lib/format-date";
 import { formatEuros } from "@/domain/pricing/money";
 import type { NewBookingEmailPayload, OwnerNotifier } from "./owner-notifier";
 import type { WhatsAppSender } from "./whatsapp-sender";
+import type { BookingSmsSender } from "@/lib/twilio/send-booking-sms";
 
 export type NewBookingNotificationContext = {
   createdAt: string;
@@ -170,5 +171,81 @@ export async function notifyOwnerOfNewBookingByWhatsApp(
     });
   } catch (error) {
     console.error("owner_whatsapp_notification_unexpected_error", error instanceof Error ? error.message : "unknown_error");
+  }
+}
+
+function buildOwnerSmsMessage(reference: string, context: NewBookingNotificationContext, customerPhone: string): string {
+  const priceLabel = context.pricing.mode === "quote" ? "Sur devis" : formatEuros(context.pricing.totalCents ?? 0);
+  return [
+    `KDRIVE ${reference}`,
+    `${context.pickupAddress} -> ${context.destinationAddress}`,
+    formatDateTimeParis(context.pickupAt, { dateStyle: "short", timeStyle: "short" }),
+    `${priceLabel} - ${customerPhone}`,
+  ].join("\n");
+}
+
+/**
+ * Canal de secours au SMS pour la même alerte que
+ * notifyOwnerOfNewBookingByWhatsApp : ne dépend pas d'une fenêtre de
+ * session active côté destinataire, contrairement à WhatsApp. Même
+ * discipline d'échec silencieux (journalisé, jamais propagé) : appelé
+ * depuis un after() côté route, hors chemin critique de réponse au client.
+ */
+export async function notifyOwnerOfNewBookingBySms(
+  sender: BookingSmsSender,
+  historyWriter: HistoryWriter,
+  id: string,
+  reference: string,
+  context: NewBookingNotificationContext,
+  customerPhone: string,
+): Promise<void> {
+  const eventId = `${id}:new_booking_sms`;
+  const ownerPhoneRaw = process.env.NEXT_PUBLIC_KD_DRIVER_PHONE;
+  const ownerPhoneDigits = ownerPhoneRaw ? normalizePhoneForWhatsApp(ownerPhoneRaw) : null;
+  const ownerPhone = ownerPhoneDigits ? `+${ownerPhoneDigits}` : null;
+
+  if (!ownerPhone) {
+    await historyWriter.appendHistoryEvent(id, {
+      action: "owner_sms_notification_skipped",
+      message: "Numéro SMS propriétaire non configuré",
+      channel: "sms",
+      event_id: eventId,
+      error_code: "not_configured",
+    });
+    return;
+  }
+
+  const message = buildOwnerSmsMessage(reference, context, customerPhone);
+
+  try {
+    const result = await sender.sendBookingSms(ownerPhone, message);
+    if (result.outcome === "success") {
+      await historyWriter.appendHistoryEvent(id, {
+        action: "owner_sms_notification_sent",
+        message: "SMS propriétaire envoyé",
+        channel: "sms",
+        event_id: eventId,
+      });
+      return;
+    }
+    if (result.outcome === "skipped") {
+      await historyWriter.appendHistoryEvent(id, {
+        action: "owner_sms_notification_skipped",
+        message: "Notification SMS propriétaire non configurée",
+        channel: "sms",
+        event_id: eventId,
+        error_code: result.errorCode,
+      });
+      return;
+    }
+    await historyWriter.appendHistoryEvent(id, {
+      action: "owner_sms_notification_failed",
+      message: "Le SMS propriétaire a échoué",
+      channel: "sms",
+      event_id: eventId,
+      error_code: result.errorCode ?? "http_error",
+    });
+  } catch (error) {
+    console.error("owner_sms_notification_unexpected_error", error instanceof Error ? error.message : "unknown_error");
   }
 }

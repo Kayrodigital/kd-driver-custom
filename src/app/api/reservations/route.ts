@@ -2,8 +2,9 @@ import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { createReservation } from "@/application/create-booking";
 import { BrevoOwnerNotifier } from "@/infrastructure/notifications/owner-notifier";
-import { notifyOwnerOfNewBooking, notifyOwnerOfNewBookingByWhatsApp } from "@/infrastructure/notifications/notify-owner-of-new-booking";
+import { notifyOwnerOfNewBooking, notifyOwnerOfNewBookingByWhatsApp, notifyOwnerOfNewBookingBySms } from "@/infrastructure/notifications/notify-owner-of-new-booking";
 import { MetaWhatsAppSender } from "@/infrastructure/notifications/whatsapp-sender";
+import { TwilioBookingSmsSender } from "@/lib/twilio/send-booking-sms";
 import { BrevoClientNotifier } from "@/infrastructure/notifications/client-notifier";
 import { notifyClientOfBookingReceived } from "@/infrastructure/notifications/notify-client-of-booking";
 import { GoogleRoutesProvider } from "@/infrastructure/maps/google-routes-provider";
@@ -38,6 +39,9 @@ export async function POST(request: Request) {
       );
       after(() =>
         notifyOwnerOfNewBookingByWhatsApp(new MetaWhatsAppSender(), repository, result.id, result.reference, notificationContext, result.summary.phone),
+      );
+      after(() =>
+        notifyOwnerOfNewBookingBySms(new TwilioBookingSmsSender(), repository, result.id, result.reference, notificationContext, result.summary.phone),
       );
       after(() =>
         notifyClientOfBookingReceived(new BrevoClientNotifier(), repository, result.id, {

@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { notifyOwnerOfNewBooking, notifyOwnerOfNewBookingByWhatsApp, type NewBookingNotificationContext } from "@/infrastructure/notifications/notify-owner-of-new-booking";
+import { notifyOwnerOfNewBooking, notifyOwnerOfNewBookingByWhatsApp, notifyOwnerOfNewBookingBySms, type NewBookingNotificationContext } from "@/infrastructure/notifications/notify-owner-of-new-booking";
 import type { NewBookingEmailPayload, NotifyResult, OwnerNotifier } from "@/infrastructure/notifications/owner-notifier";
 import type { WhatsAppSendResult, WhatsAppSender } from "@/infrastructure/notifications/whatsapp-sender";
+import type { SmsSendResult, BookingSmsSender } from "@/lib/twilio/send-booking-sms";
 
 class FakeNotifier implements OwnerNotifier {
   calls: NewBookingEmailPayload[] = [];
@@ -16,6 +17,15 @@ class FakeWhatsAppSender implements WhatsAppSender {
   calls: { toPhone: string; message: string }[] = [];
   constructor(private readonly result: WhatsAppSendResult) {}
   async sendText(toPhone: string, message: string) {
+    this.calls.push({ toPhone, message });
+    return this.result;
+  }
+}
+
+class FakeSmsSender implements BookingSmsSender {
+  calls: { toPhone: string; message: string }[] = [];
+  constructor(private readonly result: SmsSendResult) {}
+  async sendBookingSms(toPhone: string, message: string) {
     this.calls.push({ toPhone, message });
     return this.result;
   }
@@ -148,5 +158,58 @@ describe("notifyOwnerOfNewBookingByWhatsApp", () => {
     const sender = new FakeWhatsAppSender({ outcome: "success" });
     const history = { appendHistoryEvent: async () => { throw new Error("db down"); } };
     await expect(notifyOwnerOfNewBookingByWhatsApp(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000")).resolves.toBeUndefined();
+  });
+});
+
+describe("notifyOwnerOfNewBookingBySms", () => {
+  const originalEnv = { ...process.env };
+  beforeEach(() => { process.env = { ...originalEnv, NEXT_PUBLIC_KD_DRIVER_PHONE: "+33688863419" }; });
+  afterEach(() => { process.env = { ...originalEnv }; });
+
+  it("envoie au numéro propriétaire au format E.164, journalise owner_sms_notification_sent en cas de succès", async () => {
+    const sender = new FakeSmsSender({ outcome: "success" });
+    const history = new FakeHistoryWriter();
+    await notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
+    expect(sender.calls).toHaveLength(1);
+    expect(sender.calls[0].toPhone).toBe("+33688863419");
+    expect(history.events[0].entry).toMatchObject({
+      action: "owner_sms_notification_sent",
+      channel: "sms",
+      event_id: `${RESERVATION_ID}:new_booking_sms`,
+    });
+  });
+
+  it("le message contient la référence, le trajet et le tarif, jamais de contenu vide", async () => {
+    const sender = new FakeSmsSender({ outcome: "success" });
+    const history = new FakeHistoryWriter();
+    await notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
+    const message = sender.calls[0].message;
+    expect(message).toContain("KD-20260801-TEST0001");
+    expect(message).toContain(context.pickupAddress);
+    expect(message).toContain(context.destinationAddress);
+    expect(message).toContain("27,50");
+    expect(message).toContain("€");
+  });
+
+  it("journalise owner_sms_notification_skipped si le numéro propriétaire n'est pas configuré", async () => {
+    delete process.env.NEXT_PUBLIC_KD_DRIVER_PHONE;
+    const sender = new FakeSmsSender({ outcome: "success" });
+    const history = new FakeHistoryWriter();
+    await notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
+    expect(sender.calls).toHaveLength(0);
+    expect(history.events[0].entry).toMatchObject({ action: "owner_sms_notification_skipped", error_code: "not_configured" });
+  });
+
+  it("journalise owner_sms_notification_failed avec le code d'erreur en cas d'échec", async () => {
+    const sender = new FakeSmsSender({ outcome: "failed", errorCode: "http_error" });
+    const history = new FakeHistoryWriter();
+    await notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
+    expect(history.events[0].entry).toMatchObject({ action: "owner_sms_notification_failed", error_code: "http_error" });
+  });
+
+  it("ne relance jamais si le repository échoue silencieusement (pas d'exception propagée)", async () => {
+    const sender = new FakeSmsSender({ outcome: "success" });
+    const history = { appendHistoryEvent: async () => { throw new Error("db down"); } };
+    await expect(notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000")).resolves.toBeUndefined();
   });
 });
