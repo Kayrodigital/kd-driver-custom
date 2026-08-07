@@ -499,6 +499,25 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-faq-item summary:focus-visible { outline: 2px solid var(--kd-gold-ink); outline-offset: 3px; }
 .kd-faq-item p { margin-top: 10px; }
 
+/* ---------- legal pages (politique de confidentialité, mentions légales) ----------
+   Contenu long, structuré en balises sémantiques brutes (h2/h3/p/ul) plutôt qu'en
+   className par élément : plus simple à faire évoluer pour du texte juridique révisé
+   côté client sans repasser par un balisage kd-h*/kd-body à chaque section. */
+.kd-legal h2 {
+  font-family: var(--kd-font-display); font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 600;
+  letter-spacing: -0.01em; color: var(--kd-ink); margin: var(--kd-space-7) 0 var(--kd-space-3);
+}
+.kd-legal h2:first-child { margin-top: 0; }
+.kd-legal h3 {
+  font-family: var(--kd-font-display); font-size: clamp(1.1rem, 1.6vw, 1.3rem); font-weight: 600;
+  color: var(--kd-ink); margin: var(--kd-space-5) 0 var(--kd-space-2);
+}
+.kd-legal p { font-size: 0.98rem; line-height: 1.65; color: var(--kd-muted); margin: 0 0 var(--kd-space-3); }
+.kd-legal ul { margin: 0 0 var(--kd-space-3); padding-left: 1.2em; display: grid; gap: var(--kd-space-2); }
+.kd-legal li { font-size: 0.98rem; line-height: 1.6; color: var(--kd-muted); }
+.kd-legal strong { color: var(--kd-ink); font-weight: 600; }
+.kd-legal a { color: var(--kd-gold-ink); text-decoration: underline; }
+
 /* ---------- hero ---------- */
 .kd-hero { position: relative; overflow: hidden; padding-top: var(--kd-space-7); padding-bottom: var(--kd-space-8); min-height: 640px; display: flex; align-items: center; }
 .kd-hero-bg {
