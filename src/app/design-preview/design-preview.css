@@ -743,6 +743,10 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 /* Widget Trustindex (avis Google) : min-height pour limiter le saut de
    mise en page pendant le chargement différé (strategy="lazyOnload"). */
 .kd-reviews-widget { min-height: 220px; }
+/* Widget Trustindex rendu statiquement côté serveur (voir reviews-widget.tsx) :
+   pas de JS chargé, donc les flèches précédent/suivant du carrousel sont
+   inertes — masquées plutôt que de laisser un bouton mort à l'écran. */
+.kd-reviews-widget .ti-next, .kd-reviews-widget .ti-prev { display: none !important; }
 
 .kd-footer { padding: var(--kd-space-6) 0 var(--kd-space-5); font-size: 0.85rem; }
 .kd-footer-grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }

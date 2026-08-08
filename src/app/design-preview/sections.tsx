@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
+import { ReviewsWidget } from "./reviews-widget";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
 import { formatEuros } from "@/domain/pricing/money";
 
@@ -215,9 +215,7 @@ export function ReviewsSection() {
           <p className="kd-eyebrow">Avis clients</p>
           <h2 className="kd-h2">Ce que nos clients disent de KDRIVE</h2>
         </div>
-        <div className="kd-reviews-widget">
-          <Script src="https://cdn.trustindex.io/loader.js?97e48897843c59738b56f76f33b" strategy="lazyOnload" />
-        </div>
+        <ReviewsWidget pid="97e48897843c59738b56f76f33b" />
       </div>
     </section>
   );
