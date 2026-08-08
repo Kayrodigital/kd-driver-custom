@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { OrganizationJsonLd } from "@/lib/seo/organization-jsonld";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo/site";
+import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             gtag('config', 'AW-11347885497');
           `}
         </Script>
+        <AnalyticsTracker />
         <OrganizationJsonLd />
         {children}
       </body>

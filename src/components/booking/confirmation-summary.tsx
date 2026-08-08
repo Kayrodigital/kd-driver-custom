@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { SiteNav } from "@/app/design-preview/sections";
 import { formatDateTimeParis } from "@/lib/format-date";
 import { formatEuros } from "@/domain/pricing/money";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import { buildWhatsAppContactUrl } from "@/domain/booking/whatsapp";
+import { trackEvent } from "@/lib/analytics/gtag";
 
 type Summary = {
   pickupAddress: string; destinationAddress: string; pickupAt: string; phone: string;
@@ -24,6 +25,21 @@ export function ConfirmationSummary({ reference }: { reference: string }) {
     : null;
   const vehicleLabel = vehicleCatalog.find((v) => v.slug === summary?.vehicleSlug)?.label ?? summary?.vehicleSlug;
   const isQuote = summary?.pricing.mode === "quote";
+
+  const tracked = useRef(false);
+  useEffect(() => {
+    if (tracked.current) return;
+    tracked.current = true;
+    // Nom d'événement générique en attendant un libellé de conversion
+    // Google Ads dédié (Ads > Conversions > Nouvelle action) : une fois créé,
+    // ajouter { send_to: "AW-11347885497/<libellé>" } aux paramètres pour
+    // que ça remonte comme une vraie conversion Ads, pas juste un événement.
+    trackEvent("reservation_confirmed", {
+      transaction_id: reference,
+      value: summary?.pricing.mode === "quote" ? undefined : (summary?.pricing.totalCents ?? 0) / 100,
+      currency: "EUR",
+    });
+  }, [reference, summary]);
 
   return (
     <>
