@@ -23,7 +23,7 @@ beforeEach(() => {
 describe("POST /api/pricing — limite de débit", () => {
   it("retourne 429 quand la limite est dépassée, sans calculer de tarif", async () => {
     checkRateLimit.mockResolvedValue({ allowed: false, retryAfterSeconds: 12 });
-    const response = await POST(postRequest({ category: "berline", distanceMeters: 1000, durationSeconds: 60 }));
+    const response = await POST(postRequest({ category: "premium", distanceMeters: 1000, durationSeconds: 60 }));
     expect(response.status).toBe(429);
     expect(response.headers.get("Retry-After")).toBe("12");
     expect(checkRateLimit).toHaveBeenCalledWith("pricing:9.9.9.9", 60, 30);
@@ -31,7 +31,7 @@ describe("POST /api/pricing — limite de débit", () => {
 
   it("calcule normalement quand la limite n'est pas dépassée", async () => {
     checkRateLimit.mockResolvedValue({ allowed: true, retryAfterSeconds: null });
-    const response = await POST(postRequest({ category: "berline", distanceMeters: 5000, durationSeconds: 600 }));
+    const response = await POST(postRequest({ category: "premium", distanceMeters: 5000, durationSeconds: 600 }));
     expect(response.status).toBe(200);
   });
 });

@@ -10,20 +10,19 @@ export type BookingReceivedInput = {
   pickupAddress: string;
   destinationAddress: string;
   pickupAt: string;
-  estimatedPriceCents: number | null;
 };
 
 /**
- * booking_received : demande reçue, tarif encore *estimé*, aucun chauffeur
- * annoncé comme confirmé. Ne jamais laisser croire que la course est
- * confirmée à ce stade.
+ * booking_received : demande reçue, aucun tarif ni chauffeur annoncé comme
+ * confirmé — le nouveau parcours ne calcule plus de prix côté public
+ * (sprint "nouveau parcours sans prix") : KDRIVE communique le tarif par
+ * téléphone après étude du trajet dans son calculateur interne.
  */
 export function buildBookingReceivedMessage(input: BookingReceivedInput): string {
-  const priceLabel = input.estimatedPriceCents !== null ? `Tarif estimé : ${formatEuros(input.estimatedPriceCents)}.` : "Tarif sur devis, à confirmer par notre équipe.";
   return (
     `Bonjour, votre demande KDRIVE ${input.publicReference} a bien été reçue : ` +
     `${input.pickupAddress} → ${input.destinationAddress}, le ${formatPickupAt(input.pickupAt)}. ` +
-    `${priceLabel} Un chauffeur vous sera confirmé avant votre course.`
+    `KDRIVE étudie votre trajet et vous contacte par téléphone pour vous communiquer le tarif avant confirmation.`
   );
 }
 

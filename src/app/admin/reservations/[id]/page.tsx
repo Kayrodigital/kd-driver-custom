@@ -10,6 +10,7 @@ import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
 import { generateClientVoucher, generateInternalDispatchSheet, type ReservationForDocuments } from "@/domain/dispatch/vouchers";
 import { buildJustificatif, type ReservationForJustificatif } from "@/domain/justificatif/justificatif";
 import { buildBookingConfirmedMessage } from "@/domain/justificatif/justificatif-messages";
+import { minimumApplied, tripTypeLabel } from "@/domain/pricing/pricing-display";
 import type { HistoryEntry } from "../../history-entry";
 import { statusLabel, statusPillClassName } from "../../status-labels";
 import {
@@ -21,6 +22,7 @@ import {
   confirmWithExternalDriver,
   declineReservation,
   markContacted,
+  recalculatePrice,
   sendJustificatifToClient,
   setQuotePrice,
 } from "./actions";
@@ -90,9 +92,12 @@ const errorMessages: Record<string, string> = {
   not_found: "Réservation introuvable.",
 };
 
+const RECALCULABLE_PRICING_STATUSES = new Set(["estimated", "quote_required"]);
+
 const successMessages: Record<string, string> = {
   contacted: "Client marqué comme contacté.",
   price_confirmed: "Tarif estimé confirmé.",
+  price_recalculated: "Tarif recalculé avec la configuration tarifaire actuelle.",
   price_adjusted: "Tarif ajusté avec le motif renseigné.",
   price_set: "Tarif défini pour cette demande sur devis.",
   reservation_confirmed: "Course acceptée.",
@@ -218,6 +223,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
 
   const markContactedWithId = markContacted.bind(null, id);
   const confirmEstimatedPriceWithId = confirmEstimatedPrice.bind(null, id);
+  const recalculatePriceWithId = recalculatePrice.bind(null, id);
   const adjustPriceWithId = adjustPrice.bind(null, id);
   const setQuotePriceWithId = setQuotePrice.bind(null, id);
   const acceptReservationWithId = acceptReservation.bind(null, id);
@@ -266,10 +272,22 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Options et commentaires</h2>
             <p className="kd-body" style={{ margin: 0 }}>{reservation.notes || "Aucune option ni commentaire."}</p>
 
-            <h2 className="kd-h4" style={{ marginTop: 8 }}>Tarification</h2>
-            <p className="kd-admin-fiche-row"><span>Tarif estimé</span><span>{reservation.pricing_mode === "quote" ? "Sur devis" : formatEuros(reservation.estimated_price_cents ?? 0)}</span></p>
+            <h2 className="kd-h4" style={{ marginTop: 8 }}>Calculateur interne KDRIVE</h2>
+            <p className="kd-field-hint" style={{ margin: "0 0 8px" }}>Réservé à l’usage interne — jamais montré au client.</p>
+            <p className="kd-admin-fiche-row"><span>Catégorie</span><span>{vehicle?.label ?? "—"}</span></p>
+            <p className="kd-admin-fiche-row"><span>Distance</span><span>{(reservation.distance_meters / 1000).toFixed(1)} km</span></p>
+            <p className="kd-admin-fiche-row"><span>Durée</span><span>≈ {Math.round(reservation.duration_seconds / 60)} min</span></p>
+            <p className="kd-admin-fiche-row"><span>Type de trajet</span><span>{tripTypeLabel(pricing?.tripType ?? null) ?? "—"}</span></p>
+            <p className="kd-admin-fiche-row"><span>Tarif recommandé</span><span>{reservation.pricing_mode === "quote" ? "Sur devis" : formatEuros(reservation.estimated_price_cents ?? 0)}</span></p>
+            {pricing && <p className="kd-admin-fiche-row"><span>Minimum appliqué</span><span>{minimumApplied(pricing) ? "Oui" : "Non"}</span></p>}
+            <p className="kd-admin-fiche-row"><span>Tarif proposé</span><span>{reservation.confirmed_price_cents !== null ? formatEuros(reservation.confirmed_price_cents) : "Non défini"}</span></p>
             <p className="kd-admin-fiche-row"><span>Tarif confirmé</span><span>{reservation.confirmed_price_cents !== null ? formatEuros(reservation.confirmed_price_cents) : "Non confirmé"}</span></p>
             <p className="kd-admin-fiche-row"><span>État tarifaire</span><span>{reservation.pricing_status ? (pricingStatusLabels[reservation.pricing_status] ?? reservation.pricing_status) : "—"}</span></p>
+            {RECALCULABLE_PRICING_STATUSES.has(reservation.pricing_status ?? "") && (
+              <form action={recalculatePriceWithId} style={{ marginTop: 6 }}>
+                <button type="submit" className="kd-btn kd-btn--outline kd-btn--sm">Recalculer le tarif</button>
+              </form>
+            )}
             {reservation.price_adjustment_reason && <p className="kd-admin-fiche-row"><span>Motif d’ajustement</span><span>{reservation.price_adjustment_reason}</span></p>}
             {reservation.price_confirmed_at && <p className="kd-admin-fiche-row"><span>Confirmé le</span><span>{formatDateTime(reservation.price_confirmed_at)}</span></p>}
             <p className="kd-admin-fiche-row"><span>Règle tarifaire</span><span>{reservation.pricing_rule_version}</span></p>

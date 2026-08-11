@@ -114,9 +114,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   return (
     <main className="kd-admin-main kd-on-cream">
       <div className="kd-container">
-        <div className="kd-section-head">
-          <p className="kd-eyebrow">Administration</p>
-          <h1 className="kd-h2">Réservations</h1>
+        <div className="kd-section-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <p className="kd-eyebrow">Administration</p>
+            <h1 className="kd-h2">Réservations</h1>
+          </div>
+          <Link href="/admin/calculateur" className="kd-btn kd-btn--outline">Calculer un tarif</Link>
         </div>
 
         <div className="kd-admin-tabs" role="tablist" aria-label="Vues des réservations">

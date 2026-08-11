@@ -3,9 +3,11 @@ import { SceneImage } from "@/app/design-preview/scene-image";
 import {
   AdvantagesSection,
   AirportSection,
+  CommercialMessageSection,
   CorporateSection,
   CtaSection,
   FooterSection,
+  ImmediateRideSection,
   ReviewsSection,
   ServicesSection,
   SiteNav,
@@ -40,7 +42,7 @@ export default function HomePage() {
           <p className="kd-hero-reassurance">
             <span className="kd-hero-reassurance-item">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-              Tarif estimé
+              Tarif par téléphone
             </span>
             <span className="kd-hero-reassurance-item">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M3 11l4-4 4 3 3-3 4 4" /><path d="M3 11l3 5 4 2 5-2 3-5" /></svg>
@@ -54,9 +56,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      <CommercialMessageSection />
       <ServicesSection />
       <AdvantagesSection />
       <VehiclesSection />
+      <ImmediateRideSection />
       <AirportSection />
       <CorporateSection />
       <ZonesSection />

@@ -52,7 +52,7 @@ export function StepSearch({ wizard }: { wizard: ReturnType<typeof useBookingWiz
       {wizard.sameAddress && <p className="kd-field-error" role="alert">Le départ et la destination sont identiques.</p>}
       {wizard.searchError && <p className="kd-field-error" role="alert">{wizard.searchError}</p>}
       <button type="button" className="kd-btn kd-btn--gold kd-btn--block" disabled={!wizard.searchValid || wizard.searchBusy} onClick={() => void wizard.submitSearch()}>
-        {wizard.searchBusy ? "Calcul en cours…" : "Voir les véhicules et les tarifs"}
+        {wizard.searchBusy ? "Recherche en cours…" : "Choisir ma catégorie"}
       </button>
     </div>
   );

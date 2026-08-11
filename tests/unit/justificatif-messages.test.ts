@@ -7,24 +7,19 @@ describe("buildBookingReceivedMessage", () => {
     pickupAddress: "12 quai Perrache, 69002 Lyon",
     destinationAddress: "Aéroport Lyon-Saint-Exupéry, Terminal 1",
     pickupAt: "2026-08-10T13:45:00.000Z",
-    estimatedPriceCents: 4500,
   };
 
-  it("annonce un tarif estimé, pas confirmé", () => {
+  it("n'annonce aucun tarif — le nouveau parcours ne calcule plus de prix côté public, KDRIVE l'annonce par téléphone", () => {
     const message = buildBookingReceivedMessage(base);
-    expect(message).toContain("estimé");
+    expect(message).not.toMatch(/\d+[,.]?\d*\s?€/);
     expect(message).not.toMatch(/tarif confirmé/i);
+    expect(message).toContain("téléphone");
   });
 
   it("n'annonce jamais de chauffeur confirmé à ce stade", () => {
     const message = buildBookingReceivedMessage(base);
     expect(message.toLowerCase()).not.toContain("chauffeur affecté");
     expect(message).not.toMatch(/Karamba|Berline noire|AA-123-BB/);
-  });
-
-  it("indique un devis à confirmer quand aucun tarif estimé n'est disponible", () => {
-    const message = buildBookingReceivedMessage({ ...base, estimatedPriceCents: null });
-    expect(message).toContain("devis");
   });
 
   it("inclut la référence et le trajet", () => {

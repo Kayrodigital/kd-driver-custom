@@ -3,11 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { emptyAddress, type AddressValue } from "@/domain/booking/address";
 import { defaultBookingDateTime } from "@/domain/booking/booking-defaults";
-import type { PricingResult } from "@/domain/pricing/pricing-types";
 import type { VehicleSlug } from "@/domain/pricing/vehicle-catalog";
+import { trackEvent } from "@/lib/analytics/gtag";
 
-export type WizardStep = 1 | 2 | 3 | 4 | 5;
-export type VehicleOption = { category: string; pricing: PricingResult };
+/**
+ * 3 étapes (Trajet / Réservation / Coordonnées), au lieu des 5 précédentes :
+ * Véhicule + Options ont été fusionnées en une seule étape "Réservation",
+ * et le récapitulatif tarifaire a disparu — plus aucun prix n'est calculé
+ * ni affiché côté public (cf. sprint "nouveau parcours sans prix").
+ * L'étape Coordonnées porte directement l'envoi de la demande.
+ */
+export type WizardStep = 1 | 2 | 3;
 
 const PREFILL_KEY = "kd-booking-prefill";
 
@@ -61,7 +67,6 @@ export function useBookingWizard() {
   const [searchError, setSearchError] = useState("");
 
   const [route, setRoute] = useState<{ distanceMeters: number; durationSeconds: number; encodedPolyline?: string | null } | null>(null);
-  const [vehicleOptions, setVehicleOptions] = useState<VehicleOption[]>([]);
   const [vehicleSlug, setVehicleSlug] = useState<VehicleSlug | null>(null);
 
   const [passengers, setPassengers] = useState(1);
@@ -113,7 +118,6 @@ export function useBookingWizard() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error);
       setRoute(payload.route);
-      setVehicleOptions(payload.options);
       setStep(2);
     } catch {
       setSearchError("Impossible de calculer ce trajet. Vérifiez les adresses.");
@@ -152,23 +156,21 @@ export function useBookingWizard() {
 
   function selectVehicle(slug: VehicleSlug) {
     setVehicleSlug(slug);
+    trackEvent("vehicle_category_selected", { category: slug });
+  }
+
+  const reservationValid = vehicleSlug !== null;
+  function confirmReservation() {
+    if (!reservationValid) return;
     setStep(3);
   }
 
-  function confirmOptions() {
-    setStep(4);
-  }
-
   const identificationValid = phone.trim().length >= 6 && termsAccepted;
-  function confirmIdentification() {
-    if (!identificationValid) return;
-    setStep(5);
-  }
 
   async function submitReservation() {
     if (submittingRef.current) return;
     const pickupAt = toIsoWithOffset(date, time);
-    if (!pickupAt || !vehicleSlug) return;
+    if (!pickupAt || !vehicleSlug || !identificationValid) return;
     submittingRef.current = true;
     setSubmitBusy(true); setSubmitError("");
     try {
@@ -200,22 +202,20 @@ export function useBookingWizard() {
     }
   }
 
-  const selectedVehicleOption = vehicleOptions.find((option) => option.category === vehicleSlug) ?? null;
-
   return {
     step, setStep,
     pickup, setPickup, destination, setDestination, date, setDate, time, setTime,
     firstAvailableTime,
     searchBusy, searchError, searchValid, sameAddress, submitSearch,
-    route, vehicleOptions, vehicleSlug, selectVehicle, selectedVehicleOption,
+    route, vehicleSlug, selectVehicle, reservationValid, confirmReservation,
     passengers, setPassengers, luggage, setLuggage,
     childSeat, setChildSeat, pet, setPet, wheelchair, setWheelchair,
     extraStop, setExtraStop, flightNumber, setFlightNumber, trainNumber, setTrainNumber,
     forSomeoneElse, setForSomeoneElse, otherFirstName, setOtherFirstName, otherPhone, setOtherPhone,
-    notes, setNotes, confirmOptions,
+    notes, setNotes,
     isAirportTrip, isStationTrip,
     firstName, setFirstName, email, setEmail, phone, setPhone,
-    termsAccepted, setTermsAccepted, identificationValid, confirmIdentification,
+    termsAccepted, setTermsAccepted, identificationValid,
     submitBusy, submitError, submitReservation,
   };
 }

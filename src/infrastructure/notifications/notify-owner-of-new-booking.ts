@@ -1,10 +1,18 @@
 import "server-only";
 import { normalizePhoneForWhatsApp } from "@/domain/booking/whatsapp";
 import { formatDateTimeParis } from "@/lib/format-date";
-import { formatEuros } from "@/domain/pricing/money";
 import type { NewBookingEmailPayload, OwnerNotifier } from "./owner-notifier";
 import type { WhatsAppSender } from "./whatsapp-sender";
 import type { BookingSmsSender } from "@/lib/twilio/send-booking-sms";
+
+/**
+ * Le tunnel public ne calcule plus de prix (sprint "nouveau parcours sans
+ * prix") : le montant estimé automatiquement à la création n'est qu'un
+ * point de départ pour le calculateur interne (fiche admin), jamais un
+ * tarif à annoncer tel quel — cette notification ne doit donc jamais
+ * afficher de montant, seulement inviter à le calculer.
+ */
+const PRICE_TO_CALCULATE_LABEL = "Tarif : à calculer";
 
 export type NewBookingNotificationContext = {
   createdAt: string;
@@ -60,7 +68,7 @@ export async function notifyOwnerOfNewBooking(
     passengers: context.passengers,
     luggage: context.luggage,
     optionsSummary: context.optionsSummary,
-    estimatedPriceLabel: context.pricing.mode === "quote" ? "Sur devis" : formatEuros(context.pricing.totalCents ?? 0),
+    estimatedPriceLabel: PRICE_TO_CALCULATE_LABEL,
     confirmedPriceLabel: null,
     status: context.status,
   };
@@ -99,12 +107,11 @@ export async function notifyOwnerOfNewBooking(
 }
 
 function buildOwnerWhatsAppMessage(reference: string, context: NewBookingNotificationContext, customerPhone: string): string {
-  const priceLabel = context.pricing.mode === "quote" ? "Sur devis" : formatEuros(context.pricing.totalCents ?? 0);
   return [
     `Nouvelle demande KDRIVE ${reference}`,
     `${context.pickupAddress} → ${context.destinationAddress}`,
     formatDateTimeParis(context.pickupAt, { dateStyle: "short", timeStyle: "short" }),
-    `Tarif estimé : ${priceLabel}`,
+    PRICE_TO_CALCULATE_LABEL,
     `Client : ${context.customerName ?? "—"} · ${customerPhone}`,
   ].join("\n");
 }
@@ -175,12 +182,11 @@ export async function notifyOwnerOfNewBookingByWhatsApp(
 }
 
 function buildOwnerSmsMessage(reference: string, context: NewBookingNotificationContext, customerPhone: string): string {
-  const priceLabel = context.pricing.mode === "quote" ? "Sur devis" : formatEuros(context.pricing.totalCents ?? 0);
   return [
     `KDRIVE ${reference}`,
     `${context.pickupAddress} -> ${context.destinationAddress}`,
     formatDateTimeParis(context.pickupAt, { dateStyle: "short", timeStyle: "short" }),
-    `${priceLabel} - ${customerPhone}`,
+    `${PRICE_TO_CALCULATE_LABEL} - ${customerPhone}`,
   ].join("\n");
 }
 

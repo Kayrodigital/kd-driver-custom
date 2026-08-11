@@ -4,8 +4,7 @@ import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
 import { ReviewsWidget } from "./reviews-widget";
-import { pricingConfig } from "@/domain/pricing/pricing-config";
-import { formatEuros } from "@/domain/pricing/money";
+import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 const serviceNavItems = [
   { label: "Transfert aéroport", href: "/transfert-aeroport" },
@@ -22,23 +21,22 @@ const aboutNavItems = [
 ];
 
 const services = [
-  { title: "Trajets d’affaires", body: "Rendez-vous, aéroport, rendez-vous d’équipe : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
-  { title: "Transferts aéroport & gares", body: "Prise en charge préparée à l’avance pour vos transferts vers les gares et l’aéroport.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
-  { title: "Mise à disposition", body: "Un chauffeur dédié à l’heure ou à la journée, pour vos déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
+  { title: "Transferts aéroports", body: "Lyon-Saint-Exupéry et autres aéroports : prise en charge préparée à l’avance.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
+  { title: "Transferts gares", body: "Part-Dieu, Perrache et autres gares, sur réservation.", image: "/images/service-transferts.jpg", href: "/transfert-gare" },
+  { title: "Déplacements professionnels", body: "Rendez-vous, équipes en déplacement : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
+  { title: "Transferts hôtels & destinations privées", body: "Un chauffeur dédié pour vos arrivées, départs et déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
+  { title: "Événements & sorties", body: "Soirées, événements privés ou professionnels : réservez votre trajet en ligne.", image: "/images/service-affaires.jpg", href: "/reserver" },
+  { title: "Transport de groupes", body: "Familles, groupes et bagages nombreux : la catégorie Van s’adapte à vos besoins.", image: "/images/vehicle-van.jpg", href: "/vehicules" },
+  { title: "Course immédiate", body: "Besoin d’un chauffeur maintenant ? Appelez-nous directement.", image: "/images/service-transferts.jpg", href: "/#course-immediate" },
 ];
 
 const advantages = [
   { num: "01", title: "Chauffeurs locaux", body: "Une équipe basée à Lyon, à l’écoute de vos habitudes de déplacement." },
-  { num: "02", title: "Tarif annoncé à l’avance", body: "Un prix calculé avant confirmation, sans surprise à l’arrivée." },
+  { num: "02", title: "Tarif communiqué par téléphone", body: "KDRIVE étudie votre trajet et vous appelle pour confirmer le tarif, sans surprise à l’arrivée." },
   { num: "03", title: "Réservation immédiate", body: "Une demande envoyée en quelques secondes, sans compte à créer." },
   { num: "04", title: "Véhicules soignés", body: "Une flotte pensée pour le confort, adaptée à chaque trajet." },
 ];
 
-const vehicles = [
-  { slug: "confort", name: "Confort", mode: "Prix calculé", body: "Jusqu’à 4 passagers · la solution simple et économique pour le quotidien.", image: "/images/vehicle-confort.jpg" },
-  { slug: "berline", name: "Berline", mode: "Prix calculé", body: "Jusqu’à 4 passagers · un cran au-dessus, pour le standing des rendez-vous professionnels.", image: "/images/vehicle-berline.jpg" },
-  { slug: "van", name: "Van", mode: "Sur devis", body: "Jusqu’à 7 passagers · pour les groupes et les familles.", image: "/images/vehicle-van.jpg" },
-];
 
 const zones = ["Lyon", "Villeurbanne", "Aéroport Lyon-Saint Exupéry", "Gare Part-Dieu", "Gare Perrache", "Écully", "Caluire-et-Cuire", "Vénissieux"];
 
@@ -127,28 +125,23 @@ export function VehiclesSection() {
       <div className="kd-container">
         <div className="kd-section-head">
           <p className="kd-eyebrow">Véhicules</p>
-          <h2 className="kd-h2">Une flotte adaptée à chaque trajet</h2>
+          <h2 className="kd-h2">Une catégorie adaptée à chaque trajet</h2>
         </div>
         <div className="kd-grid-3">
-          {vehicles.map((vehicle) => {
-            const category = pricingConfig.categories[vehicle.slug];
-            const fromPrice = category?.mode === "calculated" && category.minimumByTripType.standard != null
-              ? formatEuros(category.minimumByTripType.standard * 100)
-              : null;
-            return (
-              <Link key={vehicle.name} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
-                <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
-                <div className="kd-vehicle-meta">
-                  <h3 className="kd-h4">{vehicle.name}</h3>
-                  <small>{vehicle.mode}</small>
-                </div>
-                {fromPrice && <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {fromPrice}</p>}
-                <p className="kd-body">{vehicle.body}</p>
-                <span className="kd-card-link">En savoir plus <span aria-hidden="true">→</span></span>
-              </Link>
-            );
-          })}
+          {vehicleCatalog.map((vehicle) => (
+            <Link key={vehicle.slug} href="/vehicules" className="kd-card kd-card--hover kd-vehicle-card">
+              <SceneImage src={vehicle.image} alt={vehicle.label} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+              <div className="kd-vehicle-meta">
+                <h3 className="kd-h4">{vehicle.label}</h3>
+                <small>{vehicle.examples.join(" · ")}</small>
+              </div>
+              <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {vehicle.fromPriceEuros} €</p>
+              <p className="kd-body">{vehicle.body}</p>
+              <span className="kd-card-link">En savoir plus <span aria-hidden="true">→</span></span>
+            </Link>
+          ))}
         </div>
+        <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>{VEHICLE_EXAMPLES_DISCLAIMER}</p>
         <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
           Retrouvez le détail des <Link href="/tarifs">tarifs par catégorie</Link>.
         </p>
@@ -233,6 +226,57 @@ export function CtaSection() {
           Après votre demande, KDRIVE vérifie la disponibilité et confirme le tarif de la course. Une question ?
           Consultez notre <Link href="/faq">FAQ</Link>.
         </p>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Message commercial haut de page : les deux façons de réserver
+ * (formulaire en ligne / téléphone), sans jamais promettre de prix avant
+ * l'échange téléphonique — cf. sprint "nouveau parcours sans prix".
+ */
+export function CommercialMessageSection() {
+  return (
+    <section className="kd-section kd-section--compact kd-on-cream">
+      <div className="kd-container">
+        <div className="kd-section-head kd-section-head--center">
+          <p className="kd-eyebrow">Besoin d’un chauffeur ?</p>
+          <h2 className="kd-h2">Réservez votre trajet simplement avec KDRIVE</h2>
+        </div>
+        <div className="kd-grid-2">
+          <div className="kd-card" style={{ display: "grid", gap: 10 }}>
+            <h3 className="kd-h4">Demande en ligne</h3>
+            <p className="kd-body">Remplissez notre formulaire et choisissez votre catégorie de véhicule.</p>
+            <Link className="kd-btn kd-btn--primary" href="/reserver">Demander un trajet</Link>
+          </div>
+          <div className="kd-card" style={{ display: "grid", gap: 10 }}>
+            <h3 className="kd-h4">Par téléphone</h3>
+            <p className="kd-body">Appelez-nous directement au 06 88 86 34 19.</p>
+            <a className="kd-btn kd-btn--outline" href="tel:+33688863419">Appeler</a>
+          </div>
+        </div>
+        <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-4)", textAlign: "center" }}>
+          Votre tarif vous sera communiqué par téléphone avant confirmation.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * "Chauffeur disponible sous 10 minutes" n'est jamais affirmé sans réserve
+ * (cf. brief) : la formulation reste conditionnelle, la disponibilité
+ * dépend de la circulation et des chauffeurs déjà en course.
+ */
+export function ImmediateRideSection() {
+  return (
+    <section id="course-immediate" className="kd-section kd-on-dark">
+      <div className="kd-container kd-cta">
+        <p className="kd-eyebrow">Course immédiate</p>
+        <h2 className="kd-h2">Besoin d’un chauffeur maintenant ?</h2>
+        <p className="kd-lead">Une prise en charge rapide peut être proposée selon les disponibilités et les conditions de circulation.</p>
+        <a className="kd-btn kd-btn--primary" href="tel:+33688863419" data-analytics-event="immediate_ride_phone_click">📞 Appeler KDRIVE — 06 88 86 34 19</a>
       </div>
     </section>
   );

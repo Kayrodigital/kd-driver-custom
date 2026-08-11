@@ -50,7 +50,6 @@ export async function POST(request: Request) {
           pickupAddress: notificationContext.pickupAddress,
           destinationAddress: notificationContext.destinationAddress,
           pickupAt: notificationContext.pickupAt,
-          estimatedPriceCents: notificationContext.pricing.mode === "quote" ? null : notificationContext.pricing.totalCents,
         }),
       );
     }

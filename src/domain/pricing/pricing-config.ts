@@ -2,22 +2,25 @@ import rawConfig from "../../../config/tarifs.example.json";
 import { z } from "zod";
 
 /**
- * Tarif Berline : 2,50 €/km. Confirmé par la dernière consigne explicite du
- * projet ("Petite modif : Confort 2€/km, Berline 2,50€/km, Luxe 3€/km"),
- * donc conservé tel quel — ce n'est pas un point resté ouvert.
+ * Sprint "nouveau parcours sans prix" (2026-08) : la gamme publique devient
+ * Essentiel / Premium / Van. Seuls les minimums de course ont été redéfinis
+ * explicitement (23 € / 30 € / 45 €, appliqués aux 3 types de trajet). Les
+ * tarifs kilométriques d'Essentiel et Premium reprennent tels quels ceux des
+ * anciennes catégories qu'elles remplacent (Confort 2 €/km, Berline
+ * 2,50 €/km) — non redéfinis par le brief, donc conservés sans invention.
+ * Van devient calculé (3 €/km, explicitement fourni) au lieu de "sur devis".
+ * Le squelette tarifaire (frais fixes, seuils de distance, minutes
+ * incluses) reste inchangé — cf. docs/CLIENT_CONTENT_VALIDATION.md pour
+ * l'historique des décisions antérieures (Confort/Berline/Luxe).
  */
 
 /**
- * Minimum de catégorie explicitement décomposé par type de trajet.
- * Confort (20 €) et Berline (25 €) : minimum confirmé pour les trois types
- * de trajet calculés (standard, aéroport, longue distance) — portée
- * explicitement validée par le client, jamais copiée silencieusement d'un
- * type à l'autre, chaque valeur est répétée dans la config à dessein.
- * Luxe (40 €) : seule la valeur "standard" est définitivement validée ;
- * "airport" et "longDistance" restent à confirmer et sont laissés à `null`
- * (aucun minimum appliqué) tant qu'aucune décision n'est prise pour cette
- * catégorie — portée volontairement différente de Confort/Berline, à ne
- * pas aligner sans nouvelle confirmation explicite.
+ * Minimum de catégorie décomposé par type de trajet, mais désormais
+ * identique pour les 3 types (standard, aéroport, longue distance) sur les
+ * 3 catégories publiques — portée volontairement uniformisée par ce sprint
+ * (contrairement à l'ancienne catégorie Luxe, qui laissait `airport` et
+ * `longDistance` à `null`, cas révolu depuis son retrait de la gamme
+ * publique).
  */
 const minimumByTripTypeSchema = z.object({
   standard: z.number().nonnegative().nullable(),
