@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { routeRequestSchema } from "@/domain/maps/route";
-import { calculatePrice } from "@/domain/pricing/pricing-engine";
-import { pricingConfig } from "@/domain/pricing/pricing-config";
 import { GoogleRoutesProvider } from "@/infrastructure/maps/google-routes-provider";
 
 const schema = routeRequestSchema.extend({ isAirportTrip: z.boolean().default(false) });
 
+/**
+ * Retourne uniquement le trajet (distance, durée, tracé) — jamais de tarif :
+ * le client public ne voit plus de prix (cf. sprint "nouveau parcours sans
+ * prix"). Le calcul tarifaire reste un outil interne (fiche réservation
+ * admin et /admin/calculateur), jamais exposé par cette route publique.
+ */
 export async function POST(request: Request) {
   try {
     const input = schema.parse(await request.json());
     const route = await new GoogleRoutesProvider().calculateRoute(input);
-    const options = Object.keys(pricingConfig.categories).map((category) => ({
-      category,
-      pricing: calculatePrice({ category, distanceMeters: route.distanceMeters, durationSeconds: route.durationSeconds, isAirportTrip: input.isAirportTrip }, pricingConfig),
-    }));
-    return NextResponse.json({ route, options });
+    return NextResponse.json({ route });
   } catch (error) {
     if (error instanceof z.ZodError || error instanceof RangeError) return NextResponse.json({ error: "Trajet invalide ou introuvable." }, { status: 400 });
     console.error("booking_options_failed", error);

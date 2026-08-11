@@ -3,7 +3,7 @@ import { buildMetadata } from "@/lib/seo/page-metadata";
 
 export const metadata = buildMetadata({
   title: "Tarifs | KDRIVE",
-  description: "Un tarif calculé avant confirmation pour Berline et Confort, un devis personnalisé pour les autres trajets.",
+  description: "Essentiel, Premium, Van : demandez votre trajet et recevez votre tarif par téléphone après étude par KDRIVE.",
   path: "/tarifs",
 });
 

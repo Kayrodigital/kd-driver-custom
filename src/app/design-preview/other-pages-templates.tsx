@@ -2,8 +2,7 @@ import Link from "next/link";
 import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
-import { pricingConfig } from "@/domain/pricing/pricing-config";
-import { formatEuros } from "@/domain/pricing/money";
+import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
@@ -48,45 +47,8 @@ function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title
   );
 }
 
-const allVehicles = [
-  {
-    slug: "confort", name: "Confort", tagline: "Entrée de gamme", mode: "Prix calculé",
-    body: "La solution essentielle pour vos déplacements du quotidien. Une catégorie simple, confortable et économique pour voyager seul ou en petit groupe.",
-    image: "/images/vehicle-confort.jpg",
-  },
-  {
-    slug: "berline", name: "Berline", tagline: "Catégorie supérieure", mode: "Prix calculé",
-    body: "Une catégorie supérieure pour profiter d’un véhicule plus spacieux et plus valorisant. Adaptée aux rendez-vous professionnels, aux transferts et aux trajets nécessitant davantage de standing.",
-    image: "/images/vehicle-berline.jpg",
-  },
-  {
-    slug: "luxe", name: "Luxe", tagline: "Premium", mode: "Prix calculé",
-    body: "Une prestation haut de gamme pour les déplacements où le confort, la discrétion et la qualité du véhicule occupent une place centrale.",
-    image: "/images/vehicle-luxe.jpg",
-  },
-  {
-    slug: "van", name: "Van", tagline: "Groupes et bagages", mode: "Sur devis",
-    body: "La solution recommandée pour les groupes, les familles et les transferts avec plusieurs valises. Le Van offre davantage de capacité de chargement et un coffre adapté aux bagages volumineux.",
-    image: "/images/vehicle-van.jpg",
-  },
-  {
-    slug: "monospace", name: "Monospace", tagline: "Nombreux passagers", mode: "Sur devis",
-    body: "Une solution modulable pour transporter plusieurs passagers. Le Monospace offre de nombreuses places assises, mais son coffre reste plus limité que celui d’un Van.",
-    image: "/images/vehicle-monospace.jpg",
-    note: "Pour plusieurs passagers avec de nombreux bagages, privilégiez le Van.",
-  },
-];
-
-const comparisonRows = [
-  { name: "Confort", points: ["Économique", "Trajets quotidiens", "Tarif calculé, minimum 20 €"] },
-  { name: "Berline", points: ["Standing supérieur", "Professionnel", "Tarif calculé, minimum 26 €"] },
-  { name: "Luxe", points: ["Premium", "Mercedes haut de gamme", "Tarif calculé, minimum 40 €"] },
-  { name: "Van", points: ["Groupes + bagages", "Grand coffre", "Sur devis"] },
-  { name: "Monospace", points: ["Nombreux passagers", "Coffre limité", "Sur devis"] },
-];
-
 const vehiclesRelatedLinks = [
-  { href: "/tarifs", label: "Consulter la grille tarifaire" },
+  { href: "/tarifs", label: "Consulter les catégories et tarifs" },
   { href: "/transfert-aeroport", label: "Transfert aéroport" },
   { href: "/chauffeur-entreprise", label: "Déplacements professionnels" },
 ];
@@ -94,103 +56,59 @@ const vehiclesRelatedLinks = [
 export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Nos véhicules" title="Une gamme claire, du quotidien au premium" lead="De Confort à Luxe, chaque catégorie représente une montée en gamme. Van et Monospace répondent à des besoins de capacité, sur devis." />
+      <PageHero eyebrow="Nos véhicules" title="Une catégorie claire pour chaque besoin" lead="Essentiel, Premium ou Van : choisissez votre catégorie, KDRIVE vous contacte ensuite pour confirmer le tarif et la réservation." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
-          {allVehicles.map((vehicle) => {
-            const category = pricingConfig.categories[vehicle.slug];
-            const fromPrice = category?.mode === "calculated" && category.minimumByTripType.standard != null
-              ? formatEuros(category.minimumByTripType.standard * 100)
-              : null;
-            return (
-              <div key={vehicle.name} className="kd-card kd-card--hover kd-vehicle-card">
-                <SceneImage src={vehicle.image} alt={vehicle.name} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
-                <p className="kd-vehicle-tagline">{vehicle.tagline}</p>
-                <div className="kd-vehicle-meta">
-                  <h3 className="kd-h4">{vehicle.name}</h3>
-                  <small>{vehicle.mode}</small>
-                </div>
-                {fromPrice && <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {fromPrice}</p>}
-                <p className="kd-body">{vehicle.body}</p>
-                {vehicle.note && <p className="kd-body" style={{ fontWeight: 700, color: "var(--kd-gold-ink)" }}>{vehicle.note}</p>}
-                <a className="kd-card-link" href="/reserver">{vehicle.mode === "Prix calculé" ? "Choisir ce véhicule" : "Demander un devis"} <span aria-hidden="true">→</span></a>
+          {vehicleCatalog.map((vehicle) => (
+            <div key={vehicle.slug} className="kd-card kd-card--hover kd-vehicle-card">
+              <SceneImage src={vehicle.image} alt={vehicle.label} note="photo à venir" className="kd-vehicle-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+              <div className="kd-vehicle-meta">
+                <h3 className="kd-h4">{vehicle.label}</h3>
+                <small>{vehicle.examples.join(" · ")}</small>
               </div>
-            );
-          })}
+              <p className="kd-body" style={{ fontWeight: 700, margin: 0 }}>À partir de {vehicle.fromPriceEuros} €</p>
+              <p className="kd-body">{vehicle.body}</p>
+              <a className="kd-card-link" href="/reserver">Choisir ma catégorie <span aria-hidden="true">→</span></a>
+            </div>
+          ))}
         </div>
-      </section>
-      <section className="kd-section kd-on-white">
-        <div className="kd-container">
-          <div className="kd-section-head kd-section-head--center">
-            <p className="kd-eyebrow">Comparatif rapide</p>
-            <h2 className="kd-h2">Quelle catégorie pour quel besoin</h2>
-          </div>
-          <div className="kd-comparison-grid">
-            {comparisonRows.map((row) => (
-              <div key={row.name} className="kd-card kd-card--flat kd-comparison-card">
-                <h3 className="kd-h4">{row.name}</h3>
-                <ul className="kd-comparison-list">
-                  {row.points.map((point) => <li key={point}>{point}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
+        <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-4)", maxWidth: 640 }}>{VEHICLE_EXAMPLES_DISCLAIMER}</p>
+        <p className="kd-field-hint" style={{ marginTop: 8, maxWidth: 640 }}>
+          Tarifs indicatifs. Le tarif définitif est communiqué après étude de votre trajet.
+          KDRIVE vous contacte par téléphone avant toute confirmation de réservation.
+        </p>
       </section>
       <RelatedLinks title="Poursuivre votre réservation" links={vehiclesRelatedLinks} />
       <section id="reserver" className="kd-section kd-on-white">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Choisissez votre véhicule en réservant</h2>
-          <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+          <h2 className="kd-h2">Choisissez votre catégorie en réservant</h2>
+          <a className="kd-btn kd-btn--primary" href="/reserver">Choisir ma catégorie <span aria-hidden="true">→</span></a>
         </div>
       </section>
     </PageShell>
   );
 }
 
-const tariffLabels: Record<string, string> = { confort: "Confort", berline: "Berline", luxe: "Luxe", van: "Van", monospace: "Monospace" };
-const tariffOrder = ["confort", "berline", "luxe", "van", "monospace"];
-
-const tariffCards = tariffOrder.map((slug) => {
-  const category = pricingConfig.categories[slug];
-  const label = tariffLabels[slug] ?? slug;
-  if (!category || category.mode === "quote") return { label, quote: true, lines: [] as string[] };
-  const lines = [
-    `${formatEuros(category.pricePerKm * 100)}/km`,
-    `Prise en charge : ${formatEuros(pricingConfig.standardBaseFee * 100)} (course standard) ou ${formatEuros(pricingConfig.transferBaseFee * 100)} (transfert aéroport / longue distance)`,
-  ];
-  const { standard, airport, longDistance } = category.minimumByTripType;
-  if (standard != null) {
-    // Portée du minimum lue depuis la config, jamais supposée par catégorie :
-    // si les trois types partagent la même valeur, le minimum s'applique
-    // partout ; sinon (cas Luxe actuel) il ne s'applique qu'à la course
-    // standard, et le libellé doit rester honnête sur cette différence.
-    const appliesEverywhere = airport === standard && longDistance === standard;
-    const scopeLabel = appliesEverywhere
-      ? "course standard, transfert aéroport et longue distance"
-      : "course standard uniquement";
-    lines.push(`Minimum de course : ${formatEuros(standard * 100)} (${scopeLabel})`);
-  }
-  return { label, quote: false, lines };
-});
-
-const pricingPrinciples = [
-  { title: "Calculé avant confirmation", body: `Pour Confort, Berline et Luxe, le prix est calculé à partir de la distance réelle. Pour les courses de moins de 10 km, les ${pricingConfig.includedMinutes} premières minutes sont incluses, puis ${formatEuros(pricingConfig.extraMinutePrice * 100)}/minute.` },
-  { title: "Sur devis pour certains véhicules", body: "Van et Monospace font l’objet d’un devis personnalisé." },
-  { title: "Aucune surprise à l’arrivée", body: "Le montant annoncé au moment de la confirmation est celui qui s’applique." },
+const tarifsSteps = [
+  "Vous envoyez votre demande en ligne",
+  "KDRIVE étudie votre trajet",
+  "Nous vous contactons par téléphone",
+  "Nous vous communiquons le tarif",
+  "Vous confirmez votre réservation",
 ];
 
 export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Tarifs" title="Un prix connu avant de partir" lead="KDRIVE calcule le tarif de votre trajet côté serveur, à partir de la distance réelle, avant toute confirmation." />
+      <PageHero eyebrow="Tarifs" title="Nos catégories" lead="Un tarif est communiqué par téléphone après étude de votre trajet — jamais avant." />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
-          {pricingPrinciples.map((principle) => (
-            <div key={principle.title} className="kd-card kd-card--flat">
-              <h3 className="kd-h4">{principle.title}</h3>
-              <p className="kd-body">{principle.body}</p>
+          {vehicleCatalog.map((vehicle) => (
+            <div key={vehicle.slug} className="kd-card kd-card--flat">
+              <h3 className="kd-h4">{vehicle.label}</h3>
+              <p className="kd-body" style={{ fontWeight: 700, fontSize: "1.1rem" }}>À partir de {vehicle.fromPriceEuros} €</p>
+              <p className="kd-body">{vehicle.examples.join(" · ")}</p>
             </div>
           ))}
         </div>
@@ -198,31 +116,28 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
       <section className="kd-section kd-on-white">
         <div className="kd-container">
           <div className="kd-section-head kd-section-head--center">
-            <p className="kd-eyebrow">Grille tarifaire</p>
-            <h2 className="kd-h2">Les tarifs par catégorie</h2>
+            <p className="kd-eyebrow">Comment ça marche</p>
+            <h2 className="kd-h2">Comment obtenir votre tarif ?</h2>
           </div>
-          <div className="kd-grid-3">
-            {tariffCards.map((card) => (
-              <div key={card.label} className="kd-card kd-card--flat">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                  <h3 className="kd-h4">{card.label}</h3>
-                  {card.quote && <span className="kd-pill">Sur devis</span>}
-                </div>
-                {!card.quote && (
-                  <ul className="kd-price-detail" style={{ marginTop: 10 }}>
-                    {card.lines.map((line) => <li key={line} style={{ justifyContent: "flex-start" }}><span>{line}</span></li>)}
-                  </ul>
-                )}
-              </div>
+          <ol className="kd-grid-3" style={{ listStyle: "none", padding: 0, counterReset: "step" }}>
+            {tarifsSteps.map((step, index) => (
+              <li key={step} className="kd-card kd-card--flat" style={{ display: "grid", gap: 8 }}>
+                <span className="kd-advantage-num">{index + 1}</span>
+                <p className="kd-body" style={{ margin: 0 }}>{step}</p>
+              </li>
             ))}
-          </div>
+          </ol>
           <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-4)", maxWidth: 640 }}>
-            Le tarif est estimé à partir de l’itinéraire calculé au moment de la demande. Il peut être confirmé ou
-            ajusté par KDRIVE selon les conditions réelles du trajet et les options sélectionnées.
+            Tarifs indicatifs. Le tarif définitif est communiqué après étude de votre trajet par KDRIVE.
           </p>
-          <p className="kd-field-hint" style={{ marginTop: 8, maxWidth: 640 }}>
-            Les modalités de règlement sont confirmées avec KDRIVE lors de la prise en charge de la réservation.
-          </p>
+        </div>
+      </section>
+      <section id="reserver" className="kd-section kd-on-cream">
+        <div className="kd-container kd-cta">
+          <p className="kd-eyebrow">Réservation</p>
+          <h2 className="kd-h2">Demandez votre tarif</h2>
+          <a className="kd-btn kd-btn--primary" href="/reserver">Demander mon tarif <span aria-hidden="true">→</span></a>
+          <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>📞 06 88 86 34 19</p>
         </div>
       </section>
       <RelatedLinks

@@ -6,7 +6,7 @@ export const reservationRequestSchema = z.object({
   pickup: addressSchema,
   destination: addressSchema,
   pickupAt: z.iso.datetime({ offset: true }),
-  vehicleSlug: z.enum(["berline", "confort", "luxe", "van", "monospace"]).default("berline"),
+  vehicleSlug: z.enum(["essential", "premium", "van"]).default("essential"),
   passengers: z.number().int().min(1).max(20).default(1),
   luggage: z.number().int().min(0).max(30).default(0),
   childSeat: z.boolean().default(false),

@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { eurosToCents, formatEuros } from "@/domain/pricing/money";
+import { calculatePrice } from "@/domain/pricing/pricing-engine";
+import { pricingConfig } from "@/domain/pricing/pricing-config";
 import { declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
 import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
 import { BrevoClientNotifier } from "@/infrastructure/notifications/client-notifier";
@@ -76,6 +78,53 @@ export async function confirmEstimatedPrice(id: string) {
   if (error) backTo(id, { error: "update_failed" });
   if (!updated) backTo(id, { error: "invalid_transition" });
   backTo(id, { success: "price_confirmed" });
+}
+
+/**
+ * Relance le moteur tarifaire avec la config actuelle contre la
+ * distance/durée/catégorie déjà enregistrées (ne recalcule jamais
+ * l'itinéraire, contrairement à la création) — utile si la config tarifaire
+ * a changé depuis la demande initiale. Refusé une fois le tarif
+ * confirmé/ajusté : ne doit jamais écraser silencieusement un montant déjà
+ * convenu avec le client.
+ */
+export async function recalculatePrice(id: string) {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("status,pricing_status,history,distance_meters,duration_seconds,is_airport_trip,vehicles(slug)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error || !data) { backTo(id, { error: "not_found" }); return; }
+  if (data.pricing_status !== "estimated" && data.pricing_status !== "quote_required") {
+    backTo(id, { error: "invalid_transition" });
+    return;
+  }
+  const vehicle = Array.isArray(data.vehicles) ? data.vehicles[0] : data.vehicles;
+  if (!vehicle?.slug) { backTo(id, { error: "invalid_transition" }); return; }
+
+  const pricing = calculatePrice(
+    { category: vehicle.slug, distanceMeters: data.distance_meters, durationSeconds: data.duration_seconds, isAirportTrip: data.is_airport_trip },
+    pricingConfig,
+  );
+  const pricingStatus = pricing.mode === "quote" ? "quote_required" : "estimated";
+  const history = appendHistory(data.history as HistoryEntry[] | null, {
+    action: "price_recalculated",
+    message: pricing.mode === "quote" ? "Tarif recalculé : sur devis" : `Tarif recalculé : ${formatEuros(pricing.totalCents ?? 0)}`,
+  });
+  const { error: updateError } = await supabase
+    .from("reservations")
+    .update({
+      pricing_mode: pricing.mode,
+      estimated_price_cents: pricing.totalCents,
+      pricing_status: pricingStatus,
+      pricing_snapshot: pricing,
+      pricing_rule_version: pricing.ruleVersion,
+      history,
+    })
+    .eq("id", id);
+  if (updateError) { backTo(id, { error: "update_failed" }); return; }
+  backTo(id, { success: "price_recalculated" });
 }
 
 export async function adjustPrice(id: string, formData: FormData) {

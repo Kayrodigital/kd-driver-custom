@@ -721,7 +721,7 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 .kd-vehicle-image { aspect-ratio: 3/4; margin: -18px -18px 0; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; overflow: hidden; }
 .kd-vehicle-image img { transition: transform 0.4s var(--kd-ease); }
 .kd-vehicle-card:hover .kd-vehicle-image img { transform: scale(1.04); }
-.kd-vehicle-meta { display: flex; justify-content: space-between; align-items: baseline; }
+.kd-vehicle-meta { display: flex; flex-direction: column; gap: 2px; }
 .kd-vehicle-meta small { color: var(--kd-muted); }
 .kd-vehicle-tagline { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kd-gold-ink); margin-top: -4px; }
 

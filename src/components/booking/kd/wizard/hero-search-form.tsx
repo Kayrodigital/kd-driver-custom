@@ -85,7 +85,7 @@ export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
       {sameAddress && <p className="kd-field-error" role="alert">Le départ et la destination sont identiques.</p>}
 
       <button type="submit" className="kd-btn kd-btn--gold kd-btn--block" disabled={!valid}>
-        Voir les véhicules et les tarifs
+        Choisir ma catégorie
       </button>
     </form>
   );

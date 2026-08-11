@@ -1,18 +1,63 @@
 "use client";
 
-import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
+import { SceneImage } from "@/app/design-preview/scene-image";
+import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER, type VehicleSlug } from "@/domain/pricing/vehicle-catalog";
+import { RouteMap } from "./route-map";
 import type { useBookingWizard } from "./use-booking-wizard";
 
-export function StepOptions({ wizard }: { wizard: ReturnType<typeof useBookingWizard> }) {
+/**
+ * Fusion des anciennes étapes "Véhicule" et "Options" (5 étapes → 3) :
+ * la catégorie choisie n'affiche plus aucun prix calculé, seulement le
+ * point de départ indicatif du catalogue ("à partir de X €", statique).
+ */
+export function StepReservation({ wizard }: { wizard: ReturnType<typeof useBookingWizard> }) {
   const vehicle = vehicleCatalog.find((v) => v.slug === wizard.vehicleSlug);
   const capacityExceeded = Boolean(vehicle && (wizard.passengers > vehicle.passengers || wizard.luggage > vehicle.luggage));
 
   return (
     <div className="kd-booking-card">
       <div>
-        <p className="kd-eyebrow">Étape 3 · Options</p>
-        <h2 className="kd-h3" style={{ marginTop: 6 }}>Précisions sur votre trajet</h2>
+        <p className="kd-eyebrow">Étape 2 · Votre réservation</p>
+        <h2 className="kd-h3" style={{ marginTop: 6 }}>Choisissez votre catégorie</h2>
       </div>
+
+      {wizard.route && (
+        <div className="kd-card kd-card--flat" style={{ padding: 14 }}>
+          <p style={{ fontSize: "0.86rem", margin: 0 }}>{wizard.pickup.address} → {wizard.destination.address}</p>
+          <p style={{ fontSize: "0.8rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>
+            {(wizard.route.distanceMeters / 1000).toFixed(1)} km · ≈ {Math.round(wizard.route.durationSeconds / 60)} min · {wizard.date} à {wizard.time}
+          </p>
+        </div>
+      )}
+
+      <RouteMap pickup={wizard.pickup} destination={wizard.destination} route={wizard.route} />
+
+      <div style={{ display: "grid", gap: 12 }}>
+        {vehicleCatalog.map((option) => {
+          const isSelected = wizard.vehicleSlug === option.slug;
+          return (
+            <button
+              key={option.slug}
+              type="button"
+              className={`kd-card kd-card--hover kd-wizard-vehicle-card ${isSelected ? "is-selected" : ""}`}
+              style={{ textAlign: "left", cursor: "pointer", border: isSelected ? "2px solid var(--kd-gold)" : undefined }}
+              onClick={() => wizard.selectVehicle(option.slug as VehicleSlug)}
+            >
+              <SceneImage className="kd-wizard-vehicle-card-image" src={option.image} alt={option.label} note="photo à venir" style={{ minHeight: 80, borderRadius: "var(--kd-radius-md)", margin: 0 }} />
+              <div className="kd-wizard-vehicle-card-body" style={{ minWidth: 0 }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
+                  <b>{option.label}</b>
+                  <span style={{ color: "var(--kd-gold)", fontWeight: 700, fontSize: "0.88rem" }}>À partir de {option.fromPriceEuros} €</span>
+                </div>
+                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>{option.examples.join(" · ")}</p>
+                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "2px 0 0" }}>{option.passengers} passagers · {option.luggage} bagages</p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="kd-field-hint">{VEHICLE_EXAMPLES_DISCLAIMER}</p>
 
       <div className="kd-fields" style={{ gridTemplateColumns: "1fr 1fr", display: "grid" }}>
         <label className="kd-field">
@@ -70,15 +115,15 @@ export function StepOptions({ wizard }: { wizard: ReturnType<typeof useBookingWi
           )}
 
           <label className="kd-field">
-            <span className="kd-field-label">Commentaire pour le chauffeur</span>
+            <span className="kd-field-label">Informations complémentaires</span>
             <textarea className="kd-input" value={wizard.notes} maxLength={1_000} onChange={(event) => wizard.setNotes(event.target.value)} />
           </label>
         </div>
       </details>
 
       <div className="kd-actions" style={{ display: "flex", gap: 10 }}>
-        <button type="button" className="kd-btn kd-btn--outline" onClick={() => wizard.setStep(2)}>Retour</button>
-        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} onClick={wizard.confirmOptions}>Continuer</button>
+        <button type="button" className="kd-btn kd-btn--outline" onClick={() => wizard.setStep(1)}>Retour</button>
+        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} disabled={!wizard.reservationValid} onClick={wizard.confirmReservation}>Continuer</button>
       </div>
     </div>
   );

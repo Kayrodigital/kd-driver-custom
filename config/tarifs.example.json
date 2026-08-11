@@ -1,25 +1,23 @@
 {
-  "version": "2026-08-kdrive-v2b",
+  "version": "2026-08-kdrive-v3-sans-prix-public",
   "currency": "EUR",
   "distanceUnit": "km",
   "categories": {
-    "confort": {
+    "essential": {
       "mode": "calculated",
       "pricePerKm": 2,
-      "minimumByTripType": { "standard": 20, "airport": 20, "longDistance": 20 }
+      "minimumByTripType": { "standard": 23, "airport": 23, "longDistance": 23 }
     },
-    "berline": {
+    "premium": {
       "mode": "calculated",
       "pricePerKm": 2.5,
-      "minimumByTripType": { "standard": 26, "airport": 26, "longDistance": 26 }
+      "minimumByTripType": { "standard": 30, "airport": 30, "longDistance": 30 }
     },
-    "luxe": {
+    "van": {
       "mode": "calculated",
       "pricePerKm": 3,
-      "minimumByTripType": { "standard": 40, "airport": null, "longDistance": null }
-    },
-    "van": { "mode": "quote" },
-    "monospace": { "mode": "quote" }
+      "minimumByTripType": { "standard": 45, "airport": 45, "longDistance": 45 }
+    }
   },
   "standardBaseFee": 10,
   "transferBaseFee": 5,

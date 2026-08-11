@@ -13,7 +13,6 @@ export type BookingReceivedEmailPayload = {
   pickupAddress: string;
   destinationAddress: string;
   pickupAt: string;
-  estimatedPriceCents: number | null;
 };
 
 export type BookingConfirmedEmailPayload = {
@@ -119,7 +118,6 @@ export class BrevoClientNotifier implements ClientNotifier {
       pickupAddress: payload.pickupAddress,
       destinationAddress: payload.destinationAddress,
       pickupAt: payload.pickupAt,
-      estimatedPriceCents: payload.estimatedPriceCents,
     });
 
     return sendTransactionalEmail({

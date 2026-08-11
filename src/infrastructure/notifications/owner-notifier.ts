@@ -81,7 +81,7 @@ function buildEmailHtml(payload: NewBookingEmailPayload): string {
     row("Passagers", String(payload.passengers)),
     row("Bagages", String(payload.luggage)),
     row("Options", escapeHtml(payload.optionsSummary || "—")),
-    row("Tarif estimé", escapeHtml(payload.estimatedPriceLabel)),
+    row("Tarif", escapeHtml(payload.estimatedPriceLabel)),
     ...(payload.confirmedPriceLabel ? [row("Tarif confirmé", escapeHtml(payload.confirmedPriceLabel))] : []),
     row("Statut", statusLabels[payload.status]),
   ].join("");
@@ -130,7 +130,7 @@ function buildEmailText(payload: NewBookingEmailPayload): string {
     `Passagers : ${payload.passengers}`,
     `Bagages : ${payload.luggage}`,
     `Options : ${payload.optionsSummary || "—"}`,
-    `Tarif estimé : ${payload.estimatedPriceLabel}`,
+    `Tarif : ${payload.estimatedPriceLabel}`,
   ];
   if (payload.confirmedPriceLabel) lines.push(`Tarif confirmé : ${payload.confirmedPriceLabel}`);
   lines.push(`Statut : ${statusLabels[payload.status]}`);

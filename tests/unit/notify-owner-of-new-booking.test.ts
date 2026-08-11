@@ -126,7 +126,7 @@ describe("notifyOwnerOfNewBookingByWhatsApp", () => {
     });
   });
 
-  it("le message contient la référence, le trajet et le tarif, jamais de contenu vide", async () => {
+  it("le message contient la référence, le trajet et une invitation à calculer le tarif — jamais un montant (le tunnel public ne calcule plus de prix)", async () => {
     const sender = new FakeWhatsAppSender({ outcome: "success" });
     const history = new FakeHistoryWriter();
     await notifyOwnerOfNewBookingByWhatsApp(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
@@ -134,8 +134,8 @@ describe("notifyOwnerOfNewBookingByWhatsApp", () => {
     expect(message).toContain("KD-20260801-TEST0001");
     expect(message).toContain(context.pickupAddress);
     expect(message).toContain(context.destinationAddress);
-    expect(message).toContain("27,50");
-    expect(message).toContain("€");
+    expect(message).toContain("Tarif : à calculer");
+    expect(message).not.toMatch(/\d+[,.]?\d*\s?€/);
   });
 
   it("journalise owner_whatsapp_notification_skipped si le numéro propriétaire n'est pas configuré", async () => {
@@ -179,7 +179,7 @@ describe("notifyOwnerOfNewBookingBySms", () => {
     });
   });
 
-  it("le message contient la référence, le trajet et le tarif, jamais de contenu vide", async () => {
+  it("le message contient la référence, le trajet et une invitation à calculer le tarif — jamais un montant (le tunnel public ne calcule plus de prix)", async () => {
     const sender = new FakeSmsSender({ outcome: "success" });
     const history = new FakeHistoryWriter();
     await notifyOwnerOfNewBookingBySms(sender, history, RESERVATION_ID, "KD-20260801-TEST0001", context, "+33600000000");
@@ -187,8 +187,8 @@ describe("notifyOwnerOfNewBookingBySms", () => {
     expect(message).toContain("KD-20260801-TEST0001");
     expect(message).toContain(context.pickupAddress);
     expect(message).toContain(context.destinationAddress);
-    expect(message).toContain("27,50");
-    expect(message).toContain("€");
+    expect(message).toContain("Tarif : à calculer");
+    expect(message).not.toMatch(/\d+[,.]?\d*\s?€/);
   });
 
   it("journalise owner_sms_notification_skipped si le numéro propriétaire n'est pas configuré", async () => {

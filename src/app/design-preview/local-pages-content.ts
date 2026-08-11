@@ -13,16 +13,16 @@ export const localPages: LocalPageContent[] = [
       "Chaque demande est confirmée individuellement par l'équipe KDRIVE, avec un tarif calculé à partir de la distance réelle avant toute confirmation.",
     ],
     frequentTrips: [
-      { title: "Villeurbanne → Lyon centre", body: "Trajet vers la Presqu'île ou le centre-ville de Lyon, en catégorie Confort, Berline ou Luxe selon votre besoin." },
+      { title: "Villeurbanne → Lyon centre", body: "Trajet vers la Presqu'île ou le centre-ville de Lyon, en catégorie Essentiel ou Premium selon votre besoin." },
       { title: "Villeurbanne → Gare Part-Dieu", body: "La gare de la Part-Dieu se trouve à proximité de Villeurbanne. Indiquez votre horaire de train lors de la réservation." },
       { title: "Villeurbanne → Aéroport Lyon-Saint Exupéry", body: "Un transfert avec suivi de votre numéro de vol, pour anticiper un éventuel ajustement d'horaire." },
     ],
     extraTitle: "Déplacements professionnels depuis Villeurbanne",
-    extraBody: "KDRIVE accompagne aussi les déplacements professionnels au départ de Villeurbanne : rendez-vous client, trajet vers un site d'entreprise ou transfert vers une gare pour un déplacement d'affaires. La catégorie Berline est recommandée pour ce type de trajet.",
+    extraBody: "KDRIVE accompagne aussi les déplacements professionnels au départ de Villeurbanne : rendez-vous client, trajet vers un site d'entreprise ou transfert vers une gare pour un déplacement d'affaires. La catégorie Premium est recommandée pour ce type de trajet.",
     faq: [
       { q: "KDRIVE dessert-il tout Villeurbanne ?", a: "KDRIVE prend en charge les demandes de VTC à Villeurbanne au cas par cas ; chaque demande est confirmée individuellement par l'équipe avant la course." },
       { q: "Combien de temps pour rejoindre la Part-Dieu depuis Villeurbanne ?", a: "La durée dépend du trafic et de l'adresse exacte de départ ; aucun délai n'est garanti à l'avance, mais le trajet est proche de Lyon." },
-      { q: "Quel véhicule choisir pour un trajet professionnel ?", a: "La catégorie Berline est adaptée aux rendez-vous professionnels ; Confort convient pour un trajet simple, Luxe pour une prestation plus haut de gamme." },
+      { q: "Quel véhicule choisir pour un trajet professionnel ?", a: "La catégorie Premium est adaptée aux rendez-vous professionnels ; Essentiel convient pour un trajet simple." },
     ],
     pillarLinksTitle: "Poursuivre votre réservation",
     pillarLinks: [
@@ -51,7 +51,7 @@ export const localPages: LocalPageContent[] = [
       { title: "Part-Dieu → Villeurbanne", body: "Trajet vers Villeurbanne, à proximité immédiate de la gare." },
     ],
     extraTitle: "Voyageurs et bagages",
-    extraBody: "Indiquez le nombre de passagers et de bagages lors de votre demande : KDRIVE confirme la catégorie de véhicule la plus adaptée (Confort, Berline, Luxe pour les groupes réduits ; Van ou Monospace sur devis pour davantage de bagages ou de passagers).",
+    extraBody: "Indiquez le nombre de passagers et de bagages lors de votre demande : KDRIVE confirme la catégorie de véhicule la plus adaptée (Essentiel ou Premium pour les groupes réduits ; Van pour davantage de bagages ou de passagers).",
     faq: [
       { q: "KDRIVE suit-il mon train en temps réel ?", a: "Non, aucun suivi automatique des correspondances n'est en place actuellement ; en cas de retard, contactez KDRIVE pour ajuster l'heure de prise en charge." },
       { q: "Où se fait la prise en charge à la gare Part-Dieu ?", a: "Le point de prise en charge précis est confirmé avec vous au moment de la réservation, selon les zones d'accès autorisées de la gare." },
@@ -78,7 +78,7 @@ export const localPages: LocalPageContent[] = [
       "Une réservation à l'avance est recommandée pour ce type de trajet, afin de permettre la préparation du véhicule et la confirmation du tarif dans de bonnes conditions.",
     ],
     frequentTrips: [
-      { title: "Lyon → Grenoble", body: "Trajet direct, catégorie Confort, Berline ou Luxe selon le niveau de prestation souhaité." },
+      { title: "Lyon → Grenoble", body: "Trajet direct, catégorie Essentiel ou Premium selon le niveau de prestation souhaité." },
       { title: "Grenoble → Aéroport Lyon-Saint Exupéry", body: "Liaison vers l'aéroport pour un vol au départ de Lyon-Saint Exupéry." },
       { title: "Grenoble → Lyon centre", body: "Trajet retour vers le centre de Lyon ou un autre point de la métropole." },
     ],
@@ -116,7 +116,7 @@ export const localPages: LocalPageContent[] = [
     ],
     faq: [
       { q: "KDRIVE dessert-il tout Bron ?", a: "KDRIVE prend en charge les demandes de VTC à Bron au cas par cas ; chaque demande est confirmée individuellement par l'équipe avant la course." },
-      { q: "Puis-je réserver un trajet professionnel depuis Bron ?", a: "Oui, la catégorie Berline est recommandée pour un déplacement professionnel ; le tarif est calculé et confirmé avant la course." },
+      { q: "Puis-je réserver un trajet professionnel depuis Bron ?", a: "Oui, la catégorie Premium est recommandée pour un déplacement professionnel ; le tarif est communiqué par téléphone avant confirmation." },
       { q: "Le trajet vers l'aéroport est-il rapide depuis Bron ?", a: "Aucun délai n'est garanti à l'avance ; la durée dépend du trafic au moment du trajet." },
     ],
     pillarLinksTitle: "Poursuivre votre réservation",
@@ -140,14 +140,14 @@ export const localPages: LocalPageContent[] = [
       "Ce secteur regroupe plusieurs zones d'activité, sans que cela ne constitue une preuve de clientèle établie : chaque demande est traitée individuellement selon le trajet indiqué.",
     ],
     frequentTrips: [
-      { title: "Saint-Priest → Lyon centre", body: "Trajet vers le centre de Lyon, catégorie Confort, Berline ou Luxe selon votre besoin." },
+      { title: "Saint-Priest → Lyon centre", body: "Trajet vers le centre de Lyon, catégorie Essentiel ou Premium selon votre besoin." },
       { title: "Saint-Priest → Aéroport Lyon-Saint Exupéry", body: "Transfert vers l'aéroport, avec suivi de votre numéro de vol si vous le renseignez." },
       { title: "Saint-Priest → Longue distance", body: "Pour un trajet au-delà de la métropole lyonnaise, le tarif est calculé à partir de la distance réelle." },
     ],
     faq: [
       { q: "KDRIVE dessert-il tout Saint-Priest ?", a: "KDRIVE prend en charge les demandes de VTC à Saint-Priest au cas par cas ; chaque demande est confirmée individuellement par l'équipe avant la course." },
       { q: "Puis-je réserver un trajet longue distance depuis Saint-Priest ?", a: "Oui, le tarif est alors calculé à partir de la distance réelle du trajet et confirmé avant votre départ." },
-      { q: "Quel véhicule pour un déplacement professionnel ?", a: "La catégorie Berline est recommandée pour un rendez-vous professionnel ; Luxe pour une prestation plus haut de gamme." },
+      { q: "Quel véhicule pour un déplacement professionnel ?", a: "La catégorie Premium est recommandée pour un rendez-vous professionnel." },
     ],
     pillarLinksTitle: "Poursuivre votre réservation",
     pillarLinks: [
