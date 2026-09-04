@@ -1,5 +1,7 @@
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { SceneImage } from "@/app/design-preview/scene-image";
+import { TrustBadge } from "@/app/design-preview/trust-badge";
+import { ReviewsSection } from "@/app/design-preview/reviews-section";
 import {
   AdvantagesSection,
   AirportSection,
@@ -8,7 +10,6 @@ import {
   CtaSection,
   FooterSection,
   ImmediateRideSection,
-  ReviewsSection,
   ServicesSection,
   SiteNav,
   VehiclesSection,
@@ -53,6 +54,7 @@ export default function HomePage() {
               Contact direct
             </span>
           </p>
+          <TrustBadge />
         </div>
       </section>
 

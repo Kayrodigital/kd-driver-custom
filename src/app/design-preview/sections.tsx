@@ -3,7 +3,6 @@ import Link from "next/link";
 import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
-import { ReviewsWidget } from "./reviews-widget";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 const serviceNavItems = [
@@ -195,20 +194,6 @@ export function ZonesSection() {
             <span key={zone} className={`kd-zone-chip${index === 0 ? " kd-zone-chip--primary" : ""}`}>{zone}</span>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function ReviewsSection() {
-  return (
-    <section id="avis" className="kd-section kd-on-cream">
-      <div className="kd-container">
-        <div className="kd-section-head">
-          <p className="kd-eyebrow">Avis clients</p>
-          <h2 className="kd-h2">Ce que nos clients disent de KDRIVE</h2>
-        </div>
-        <ReviewsWidget pid="97e48897843c59738b56f76f33b" />
       </div>
     </section>
   );

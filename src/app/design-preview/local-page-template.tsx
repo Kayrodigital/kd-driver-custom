@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { SceneImage } from "./scene-image";
+import { TrustBadge } from "./trust-badge";
 import { SiteNav, FooterSection } from "./sections";
 import { Breadcrumb } from "./breadcrumb";
 
@@ -64,6 +65,7 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
             <p className="kd-eyebrow">{content.eyebrow}</p>
             <h1 className="kd-h1">{content.h1}</h1>
             <p className="kd-lead">{content.heroLead}</p>
+            <TrustBadge />
           </div>
           <div className="kd-hero-form-card">
             <HeroSearchForm tone="dark" />

@@ -104,7 +104,7 @@ function DesktopPreview() {
 }
 
 type OtherPageKey = "vehicules" | "tarifs" | "a-propos" | "contact" | "faq";
-const otherPages: { key: OtherPageKey; label: string; Component: () => React.JSX.Element }[] = [
+const otherPages: { key: OtherPageKey; label: string; Component: (props: { showTrustBadge?: boolean }) => React.JSX.Element }[] = [
   { key: "vehicules", label: "Nos véhicules", Component: VehiclesPage },
   { key: "tarifs", label: "Tarifs", Component: TarifsPage },
   { key: "a-propos", label: "À propos", Component: AboutPage },
@@ -142,7 +142,10 @@ function PagesPreview() {
       </div>
 
       {service && <ServicePageTemplate content={service} />}
-      {other && <other.Component />}
+      {/* showTrustBadge=false : ce badge est un composant serveur
+          asynchrone (fetch Trustindex), qui ne peut pas être rendu depuis
+          cet outil de prévisualisation client-side. */}
+      {other && <other.Component showTrustBadge={false} />}
     </section>
   );
 }

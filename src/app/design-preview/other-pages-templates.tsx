@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
+import { TrustBadge } from "./trust-badge";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
@@ -34,7 +35,7 @@ function PageShell({ children, framed = true }: { children: React.ReactNode; fra
   );
 }
 
-function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title: string; lead: string; breadcrumb?: BreadcrumbItem[] }) {
+function PageHero({ eyebrow, title, lead, breadcrumb, showTrustBadge = true }: { eyebrow: string; title: string; lead: string; breadcrumb?: BreadcrumbItem[]; showTrustBadge?: boolean }) {
   return (
     <section className="kd-section kd-on-dark" style={{ paddingBottom: "var(--kd-space-6)" }}>
       <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
@@ -42,6 +43,12 @@ function PageHero({ eyebrow, title, lead, breadcrumb }: { eyebrow: string; title
         <p className="kd-eyebrow">{eyebrow}</p>
         <h1 className="kd-h1">{title}</h1>
         <p className="kd-lead">{lead}</p>
+        {/* Le badge Trustindex est un composant serveur asynchrone : ne
+            jamais l'afficher quand PageHero est rendu depuis un contexte
+            client (cf. le sélecteur de gabarits de /design-preview, un
+            outil de prévisualisation interne, non indexé) — React ne peut
+            pas rendre un composant serveur async dans un arbre client. */}
+        {showTrustBadge && <TrustBadge />}
       </div>
     </section>
   );
@@ -53,10 +60,10 @@ const vehiclesRelatedLinks = [
   { href: "/chauffeur-entreprise", label: "Déplacements professionnels" },
 ];
 
-export function VehiclesPage({ framed = true }: { framed?: boolean } = {}) {
+export function VehiclesPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Nos véhicules" title="Une catégorie claire pour chaque besoin" lead="Essentiel, Premium ou Van : choisissez votre catégorie, KDRIVE vous contacte ensuite pour confirmer le tarif et la réservation." />
+      <PageHero eyebrow="Nos véhicules" title="Une catégorie claire pour chaque besoin" lead="Essentiel, Premium ou Van : choisissez votre catégorie, KDRIVE vous contacte ensuite pour confirmer le tarif et la réservation." showTrustBadge={showTrustBadge} />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
           {vehicleCatalog.map((vehicle) => (
@@ -98,10 +105,10 @@ const tarifsSteps = [
   "Vous confirmez votre réservation",
 ];
 
-export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
+export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
-      <PageHero eyebrow="Tarifs" title="Nos catégories" lead="Un tarif est communiqué par téléphone après étude de votre trajet — jamais avant." />
+      <PageHero eyebrow="Tarifs" title="Nos catégories" lead="Un tarif est communiqué par téléphone après étude de votre trajet — jamais avant." showTrustBadge={showTrustBadge} />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-3">
           {vehicleCatalog.map((vehicle) => (
@@ -159,7 +166,7 @@ export function TarifsPage({ framed = true }: { framed?: boolean } = {}) {
   );
 }
 
-export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
+export function AboutPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
@@ -167,6 +174,7 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
         title="Une entreprise locale, à Lyon"
         lead="KDRIVE propose un service de chauffeur privé pensé pour les habitants, les entreprises et les visiteurs de Lyon et sa région."
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "À propos" }]}
+        showTrustBadge={showTrustBadge}
       />
       <section className="kd-section kd-on-cream" style={{ paddingTop: 0 }}>
         <div className="kd-container">
@@ -206,7 +214,7 @@ export function AboutPage({ framed = true }: { framed?: boolean } = {}) {
   );
 }
 
-export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
+export function ContactPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
@@ -214,6 +222,7 @@ export function ContactPage({ framed = true }: { framed?: boolean } = {}) {
         title="Nous contacter"
         lead="Pour une demande de réservation, le formulaire reste le moyen le plus rapide. Pour toute autre question, contactez-nous directement."
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Contact" }]}
+        showTrustBadge={showTrustBadge}
       />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-grid-2" style={{ alignItems: "start" }}>
@@ -305,7 +314,7 @@ const faqJsonLd = {
   })),
 };
 
-export function FaqPage({ framed = true }: { framed?: boolean } = {}) {
+export function FaqPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
@@ -313,6 +322,7 @@ export function FaqPage({ framed = true }: { framed?: boolean } = {}) {
         title="Questions fréquentes"
         lead="Les réponses aux questions les plus courantes sur la réservation et le déroulement d’un trajet avec KDRIVE."
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "FAQ" }]}
+        showTrustBadge={showTrustBadge}
       />
       <section className="kd-section kd-on-cream">
         <div className="kd-container" style={{ maxWidth: 720 }}>
