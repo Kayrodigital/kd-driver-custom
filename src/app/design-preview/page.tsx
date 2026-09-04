@@ -177,8 +177,8 @@ function MobilePreview() {
               <div className="kd-mobile-col">
                 <p className="kd-eyebrow">Véhicules</p>
                 <div className="kd-mobile-scroll">
-                  <div className="kd-card"><SceneImage src="/images/vehicle-berline.jpg" alt="Berline" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Berline</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
-                  <div className="kd-card"><SceneImage src="/images/vehicle-confort.jpg" alt="Confort" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Confort</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
+                  <div className="kd-card"><SceneImage src="/images/vehicle-berline.jpg" alt="Premium" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Premium</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
+                  <div className="kd-card"><SceneImage src="/images/vehicle-confort.jpg" alt="Essentiel" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Essentiel</b><small style={{ color: "var(--kd-muted)" }}>4 passagers</small></div>
                   <div className="kd-card"><SceneImage src="/images/vehicle-van.jpg" alt="Van" className="kd-vehicle-image" style={{ minHeight: 90 }} /><b style={{ display: "block", marginTop: 8 }}>Van</b><small style={{ color: "var(--kd-muted)" }}>7 passagers</small></div>
                 </div>
               </div>

@@ -256,18 +256,13 @@ const faqItems: { q: string; a: string; link?: { href: string; label: string } }
     link: { href: "/reserver", label: "Faire une demande de réservation" },
   },
   {
-    q: "Le tarif affiché est-il définitif ?",
-    a: "Pour les catégories à prix calculé (Confort, Berline, Luxe), le montant est déterminé avant confirmation, y compris pour un transfert aéroport ou une longue distance. Pour Van et Monospace, un devis personnalisé vous est communiqué avant tout engagement.",
-    link: { href: "/tarifs", label: "Voir la grille tarifaire" },
+    q: "Comment mon tarif est-il communiqué ?",
+    a: "Après votre demande, KDRIVE étudie votre trajet et vous contacte par téléphone pour vous communiquer le tarif. Vous confirmez ensuite votre réservation en connaissance de cause.",
+    link: { href: "/tarifs", label: "Voir les catégories et leurs tarifs indicatifs" },
   },
   {
-    q: "Comment le prix est-il calculé ?",
-    a: "Le tarif est estimé à partir de l’itinéraire réel au moment de la demande, puis confirmé ou ajusté par KDRIVE selon les conditions du trajet.",
-    link: { href: "/tarifs", label: "Voir la grille tarifaire" },
-  },
-  {
-    q: "Puis-je réserver un Van, une catégorie Luxe ou un Monospace ?",
-    a: "Oui. Luxe affiche un tarif calculé (avec un minimum de course) comme Confort et Berline. Van et Monospace font l’objet d’un devis personnalisé.",
+    q: "Quelles catégories de véhicule puis-je choisir ?",
+    a: "Essentiel, Premium ou Van, chacune avec un tarif de départ indicatif. Le véhicule précis dépend de la catégorie choisie, du trajet et des disponibilités.",
     link: { href: "/vehicules", label: "Voir les véhicules disponibles" },
   },
   {

@@ -418,7 +418,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                       </label>
                       <label className="kd-field">
                         <span className="kd-field-label">Véhicule</span>
-                        <input className="kd-input" type="text" name="vehicleLabel" required maxLength={120} placeholder="Ex. Berline noire" />
+                        <input className="kd-input" type="text" name="vehicleLabel" required maxLength={120} placeholder="Ex. Premium noire" />
                       </label>
                       <label className="kd-field">
                         <span className="kd-field-label">Immatriculation</span>
