@@ -747,6 +747,27 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
    pas de JS chargé, donc les flèches précédent/suivant du carrousel sont
    inertes — masquées plutôt que de laisser un bouton mort à l'écran. */
 .kd-reviews-widget .ti-next, .kd-reviews-widget .ti-prev { display: none !important; }
+/* Sans JS, le widget ne peut pas faire défiler ses 3 colonnes fixes
+   (.ti-col-3, flex 0 0 33% + overflow-x:hidden) — sur mobile ça donne 3
+   cartes écrasées à ~120px avec du texte coupé au milieu des mots.
+   Empilées en une colonne, tous les avis restent lisibles et accessibles
+   par simple défilement de page, sans dépendre du carrousel. */
+@media (max-width: 680px) {
+  .kd-reviews-widget .ti-reviews-container-wrapper {
+    flex-direction: column !important;
+    overflow: visible !important;
+    height: auto !important;
+    transform: none !important;
+  }
+  .kd-reviews-widget .ti-review-item {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .kd-reviews-widget .ti-widget-header-tick,
+  .kd-reviews-widget .ti-controls { display: none !important; }
+  .kd-reviews-widget .ti-header-content { flex-wrap: wrap !important; row-gap: 8px; }
+}
 
 .kd-footer { padding: var(--kd-space-6) 0 var(--kd-space-5); font-size: 0.85rem; }
 .kd-footer-grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }
