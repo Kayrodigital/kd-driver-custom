@@ -1,4 +1,4 @@
-import { extractTrustindexCssPreset, fetchTrustindexWidgetHtml } from "@/lib/trustindex";
+import { extractTrustindexCssPreset, fetchTrustindexWidgetHtml, neutralizeTrustindexLinks } from "@/lib/trustindex";
 
 /**
  * Le loader JS de Trustindex (cdn.trustindex.io/loader.js) suppose un
@@ -21,10 +21,13 @@ import { extractTrustindexCssPreset, fetchTrustindexWidgetHtml } from "@/lib/tru
 const WIDGET_PID = "97e48897843c59738b56f76f33b";
 
 export async function ReviewsWidget({ pid = WIDGET_PID }: { pid?: string }) {
-  const html = await fetchTrustindexWidgetHtml(pid);
-  if (!html) return <div className="kd-reviews-widget" />;
+  const rawHtml = await fetchTrustindexWidgetHtml(pid);
+  if (!rawHtml) return <div className="kd-reviews-widget" />;
 
-  const cssHref = extractTrustindexCssPreset(html);
+  const cssHref = extractTrustindexCssPreset(rawHtml);
+  // L'ajout d'avis reste réservé aux clients ayant réellement réservé, à
+  // qui KDRIVE envoie lui-même le lien — jamais à un visiteur du site.
+  const html = neutralizeTrustindexLinks(rawHtml);
 
   return (
     <div className="kd-reviews-widget">

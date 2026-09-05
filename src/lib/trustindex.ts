@@ -22,6 +22,20 @@ export async function fetchTrustindexWidgetHtml(pid: string): Promise<string | n
   }
 }
 
+/**
+ * Le client veut réserver l'ajout d'avis aux seuls clients ayant réellement
+ * réservé, à qui il envoie lui-même le lien — jamais à un visiteur du site
+ * qui cliquerait sur le widget. On retire donc tout ce qui rend les liens
+ * du HTML Trustindex navigables (href, target, role="button" qui n'a plus
+ * de sens sans href), sans changer la structure ni le rendu visuel.
+ */
+export function neutralizeTrustindexLinks(html: string): string {
+  return html
+    .replace(/\s+href="[^"]*"/g, "")
+    .replace(/\s+target="_blank"/g, "")
+    .replace(/\s+role="button"/g, "");
+}
+
 export function extractTrustindexCssPreset(html: string): string | null {
   const layoutId = /data-layout-id="([^"]+)"/.exec(html)?.[1];
   const setId = /data-set-id="([^"]+)"/.exec(html)?.[1];
