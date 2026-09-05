@@ -36,6 +36,20 @@ export function neutralizeTrustindexLinks(html: string): string {
     .replace(/\s+role="button"/g, "");
 }
 
+/**
+ * Variante pour le badge bouton : au lieu de retirer tout lien, on
+ * redirige les liens (celui de Trustindex vers leur page publique d'avis,
+ * et tout lien secondaire éventuel) vers l'ancre des avis de la page —
+ * jamais vers un formulaire externe où un visiteur pourrait déposer un
+ * avis lui-même.
+ */
+export function redirectTrustindexLinks(html: string, anchor: string): string {
+  return html
+    .replace(/\s+href="[^"]*"/g, ` href="${anchor}"`)
+    .replace(/\s+target="_blank"/g, "")
+    .replace(/\s+role="button"/g, "");
+}
+
 export function extractTrustindexCssPreset(html: string): string | null {
   const layoutId = /data-layout-id="([^"]+)"/.exec(html)?.[1];
   const setId = /data-set-id="([^"]+)"/.exec(html)?.[1];

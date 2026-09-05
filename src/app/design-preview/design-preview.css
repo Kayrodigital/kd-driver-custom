@@ -770,7 +770,10 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 }
 /* Les liens sont retirés côté serveur (voir neutralizeTrustindexLinks) ;
    cette règle est une sécurité en plus, pas la protection principale. */
-.kd-reviews-widget a, .kd-trust-badge a { pointer-events: none !important; cursor: default !important; }
+.kd-reviews-widget a { pointer-events: none !important; cursor: default !important; }
+/* Le badge, lui, reste cliquable : il pointe vers l'ancre des avis de la
+   page (voir redirectTrustindexLinks), pas vers un formulaire externe. */
+.kd-trust-badge a { cursor: pointer; }
 
 .kd-footer { padding: var(--kd-space-6) 0 var(--kd-space-5); font-size: 0.85rem; }
 .kd-footer-grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }
