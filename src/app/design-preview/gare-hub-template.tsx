@@ -17,6 +17,11 @@ const stationCards = [
     label: "Gare de Lyon Perrache",
     body: "À la pointe de la Presqu'île, entre Saône et Rhône, à quelques minutes de la Confluence et du centre-ville.",
   },
+  {
+    href: "/vtc-gare-lyon-saint-exupery-tgv",
+    label: "Gare de Lyon Saint-Exupéry TGV",
+    body: "Une gare ferroviaire à part entière, distincte des terminaux aéroportuaires auxquels elle est reliée à pied.",
+  },
 ];
 
 const organizeSteps = [
@@ -84,10 +89,10 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       <section className="kd-section kd-on-cream">
         <div className="kd-container">
           <div className="kd-section-head">
-            <p className="kd-eyebrow">Deux gares desservies</p>
+            <p className="kd-eyebrow">Trois gares desservies</p>
             <h2 className="kd-h2">Quelle gare de Lyon souhaitez-vous rejoindre ou quitter ?</h2>
           </div>
-          <div className="kd-grid-2">
+          <div className="kd-grid-3">
             {stationCards.map((station) => (
               <div key={station.href} className="kd-card">
                 <h3 className="kd-h4">{station.label}</h3>

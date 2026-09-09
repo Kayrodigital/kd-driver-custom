@@ -4,6 +4,8 @@ import { SceneImage } from "./scene-image";
 import { TrustBadge } from "./trust-badge";
 import { SiteNav, FooterSection } from "./sections";
 import { Breadcrumb } from "./breadcrumb";
+import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
+import type { AddressValue } from "@/domain/booking/address";
 
 export type LocalPageContent = {
   slug: string;
@@ -11,15 +13,29 @@ export type LocalPageContent = {
   h1: string;
   heroLead: string;
   heroImage: string;
+  /** Préremplit le formulaire hero (départ ou destination, au choix de
+   * l'utilisateur) avec ce lieu — voir hero-search-form.tsx. Optionnel. */
+  prefillAddress?: AddressValue;
+  prefillLabel?: string;
   presentationTitle: string;
   presentationBody: string[];
   /** Informations factuelles vérifiées sur une source indépendante (adresse,
    * arrondissement, accès, correspondances) — jamais un usage ou un
-   * fonctionnement KDRIVE inventé. Optionnel : seules les pages gare en ont
-   * besoin pour l'instant. */
+   * fonctionnement KDRIVE inventé. Optionnel : seules les pages gare/aéroport
+   * en ont besoin pour l'instant. */
   practicalInfoTitle?: string;
   practicalInfoItems?: string[];
-  frequentTrips: { title: string; body: string }[];
+  /** Distingue clairement départ et arrivée quand le lieu couvre les deux
+   * sens (gare, aéroport). Optionnel. */
+  departureArrivalTitle?: string;
+  departure?: { title: string; body: string };
+  arrival?: { title: string; body: string };
+  /** Explication courte du fonctionnement tarifaire réel (aucun prix
+   * inventé) + rappel des catégories. Optionnel : le squelette réutilise le
+   * catalogue véhicules existant, jamais de calculateur concurrent. */
+  pricingTitle?: string;
+  pricingBody?: string;
+  frequentTrips: { title: string; body: string; href?: string }[];
   extraTitle?: string;
   extraBody?: string;
   faq: { q: string; a: string }[];
@@ -74,7 +90,7 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
             <TrustBadge />
           </div>
           <div className="kd-hero-form-card">
-            <HeroSearchForm tone="dark" />
+            <HeroSearchForm tone="dark" prefillAddress={content.prefillAddress} prefillLabel={content.prefillLabel} />
           </div>
         </div>
       </section>
@@ -88,6 +104,27 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
           ))}
         </div>
       </section>
+
+      {content.departureArrivalTitle && content.departure && content.arrival && (
+        <section className="kd-section kd-on-white">
+          <div className="kd-container">
+            <div className="kd-section-head">
+              <p className="kd-eyebrow">Départ et arrivée</p>
+              <h2 className="kd-h2">{content.departureArrivalTitle}</h2>
+            </div>
+            <div className="kd-grid-2">
+              <div className="kd-card kd-card--flat">
+                <h3 className="kd-h4">{content.departure.title}</h3>
+                <p className="kd-body" style={{ marginTop: 8 }}>{content.departure.body}</p>
+              </div>
+              <div className="kd-card kd-card--flat">
+                <h3 className="kd-h4">{content.arrival.title}</h3>
+                <p className="kd-body" style={{ marginTop: 8 }}>{content.arrival.body}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {content.practicalInfoTitle && content.practicalInfoItems && (
         <section className="kd-section kd-section--compact kd-on-white">
@@ -112,7 +149,7 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
           <div className="kd-grid-3">
             {content.frequentTrips.map((trip) => (
               <div key={trip.title} className="kd-card kd-card--flat">
-                <h3 className="kd-h4">{trip.title}</h3>
+                <h3 className="kd-h4">{trip.href ? <Link href={trip.href}>{trip.title}</Link> : trip.title}</h3>
                 <p className="kd-body">{trip.body}</p>
               </div>
             ))}
@@ -125,6 +162,25 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
           <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
             <h2 className="kd-h2">{content.extraTitle}</h2>
             <p className="kd-body">{content.extraBody}</p>
+          </div>
+        </section>
+      )}
+
+      {content.pricingTitle && content.pricingBody && (
+        <section className="kd-section kd-on-cream">
+          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+            <p className="kd-eyebrow">Tarifs</p>
+            <h2 className="kd-h2">{content.pricingTitle}</h2>
+            <p className="kd-body">{content.pricingBody}</p>
+            <div className="kd-grid-3" style={{ marginTop: 8 }}>
+              {vehicleCatalog.map((vehicle) => (
+                <div key={vehicle.slug} className="kd-card kd-card--flat">
+                  <h3 className="kd-h4">{vehicle.label}</h3>
+                  <p className="kd-body" style={{ marginTop: 4, fontWeight: 700, color: "var(--kd-gold-ink)" }}>À partir de {vehicle.fromPriceEuros} €</p>
+                </div>
+              ))}
+            </div>
+            <Link className="kd-card-link" href="/tarifs">Consulter la grille tarifaire <span aria-hidden="true">→</span></Link>
           </div>
         </section>
       )}

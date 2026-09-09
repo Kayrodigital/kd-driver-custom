@@ -805,6 +805,11 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
   font-size: 0.82rem; font-weight: 700; color: var(--kd-muted); cursor: pointer;
 }
 .kd-toggle-group button[aria-pressed="true"] { background: var(--kd-black); color: var(--kd-cream); }
+/* Variante pour un formulaire sur fond sombre (kd-card--dark) : le fond
+   blanc par défaut du groupe tranchait mal avec la carte. */
+.kd-toggle-group--dark { background: rgba(245, 239, 224, 0.08); border-color: var(--kd-line-on-dark); width: 100%; }
+.kd-toggle-group--dark button { flex: 1; color: var(--kd-muted-on-dark); }
+.kd-toggle-group--dark button[aria-pressed="true"] { background: var(--kd-gold); color: var(--kd-black); }
 
 .kd-phone-frame {
   width: 375px; max-width: 100%; margin: 0 auto;

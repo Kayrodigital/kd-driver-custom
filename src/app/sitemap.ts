@@ -12,6 +12,14 @@ const PUBLIC_PATHS = [
   "/tarifs",
   "/transfert-aeroport",
   "/transfert-gare",
+  /**
+   * Nouvelle page de ce sprint (aéroport / gare TGV Saint-Exupéry) —
+   * ajoutée explicitement à la demande du brief, contrairement aux
+   * satellites gare précédents (Part-Dieu, Perrache, Villeurbanne,
+   * Grenoble, Bron, Saint-Priest) dont la publication au sitemap reste
+   * une décision client en attente, hors périmètre de ce sprint.
+   */
+  "/vtc-gare-lyon-saint-exupery-tgv",
   "/vehicules",
 ];
 
