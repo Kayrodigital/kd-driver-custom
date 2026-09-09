@@ -13,6 +13,12 @@ export type LocalPageContent = {
   heroImage: string;
   presentationTitle: string;
   presentationBody: string[];
+  /** Informations factuelles vérifiées sur une source indépendante (adresse,
+   * arrondissement, accès, correspondances) — jamais un usage ou un
+   * fonctionnement KDRIVE inventé. Optionnel : seules les pages gare en ont
+   * besoin pour l'instant. */
+  practicalInfoTitle?: string;
+  practicalInfoItems?: string[];
   frequentTrips: { title: string; body: string }[];
   extraTitle?: string;
   extraBody?: string;
@@ -82,6 +88,20 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
           ))}
         </div>
       </section>
+
+      {content.practicalInfoTitle && content.practicalInfoItems && (
+        <section className="kd-section kd-section--compact kd-on-white">
+          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+            <p className="kd-eyebrow">Informations pratiques</p>
+            <h2 className="kd-h2">{content.practicalInfoTitle}</h2>
+            <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+              {content.practicalInfoItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="kd-section kd-on-white">
         <div className="kd-container">

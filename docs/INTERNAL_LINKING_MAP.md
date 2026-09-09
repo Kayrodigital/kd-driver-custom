@@ -12,10 +12,13 @@ exhaustifs par ailleurs).
 | `/transfert-aeroport` | `/vehicules` | « Voir les véhicules disponibles » | Bloc « Poursuivre votre réservation » | Aide à choisir un véhicule adapté aux bagages/passagers |
 | `/transfert-aeroport` | `/tarifs` | « Consulter la grille tarifaire » | Bloc « Poursuivre votre réservation » | Rassure sur le prix avant réservation |
 | `/transfert-aeroport` | `/longues-distances` | « Trajet au-delà de Lyon » | Bloc « Poursuivre votre réservation » | Oriente les trajets dépassant la zone standard |
-| `/transfert-gare` | `/transfert-aeroport` | « Transfert aéroport » | Bloc « Poursuivre votre réservation » | Pages proches par intention (transferts) |
-| `/transfert-gare` | `/chauffeur-entreprise` | « Déplacements professionnels » | Bloc « Poursuivre votre réservation » | Public voyageant par train souvent professionnel |
-| `/transfert-gare` | `/vehicules` | « Voir les véhicules disponibles » | Bloc « Poursuivre votre réservation » | Aide au choix du véhicule |
-| `/transfert-gare` | `/tarifs` | « Consulter la grille tarifaire » | Bloc « Poursuivre votre réservation » | Rassure sur le prix avant réservation |
+| `/transfert-gare` | `/vtc-lyon-part-dieu` | « En savoir plus » (carte Part-Dieu) | H2 « Quelle gare de Lyon souhaitez-vous rejoindre ou quitter ? » | Oriente vers le satellite gare correspondant, cartes visibles (jamais en accordéon) |
+| `/transfert-gare` | `/vtc-lyon-perrache` | « En savoir plus » (carte Perrache) | H2 « Quelle gare de Lyon souhaitez-vous rejoindre ou quitter ? » | Idem, second satellite gare |
+| `/transfert-gare` | `/tarifs` | « Consulter la grille tarifaire » | H2 « Quel prix pour votre transfert en gare à Lyon ? » | Rassure sur le prix avant réservation, sans dupliquer le calculateur |
+| `/transfert-gare` | `/transfert-aeroport` | « Transfert aéroport » | H2 « Vos correspondances depuis les gares de Lyon » | Pages proches par intention (transferts) |
+| `/transfert-gare` | `/chauffeur-entreprise` | « Déplacements professionnels » | H2 « Vos correspondances depuis les gares de Lyon » | Public voyageant par train souvent professionnel |
+| `/transfert-gare` | `/longues-distances` | « Trajet longue distance » | H2 « Vos correspondances depuis les gares de Lyon » | Complète l'offre de transferts pour les trajets hors zone standard |
+| `/transfert-gare` | `/vehicules` | « Voir les véhicules disponibles » | H2 « Vos correspondances depuis les gares de Lyon » | Aide au choix du véhicule |
 | `/vehicules` | `/tarifs` | « Consulter la grille tarifaire » | Bloc « Poursuivre votre réservation » | Complète la fiche véhicule par le prix détaillé |
 | `/vehicules` | `/transfert-aeroport` | « Transfert aéroport » | Bloc « Poursuivre votre réservation » | Cas d'usage fréquent nécessitant un véhicule |
 | `/vehicules` | `/chauffeur-entreprise` | « Déplacements professionnels » | Bloc « Poursuivre votre réservation » | Cas d'usage fréquent (Confort/Berline) |
@@ -46,6 +49,7 @@ qu'il est effectivement codé dans `local-page-template.tsx` /
 |---|---|---|---|
 | `/vtc-villeurbanne` | `/transfert-aeroport`, `/transfert-gare`, `/chauffeur-entreprise`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | Correspond à la matrice demandée (aéroport, gare, entreprise, réserver) + véhicules/tarifs |
 | `/vtc-lyon-part-dieu` | `/transfert-gare`, `/transfert-aeroport`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | Gare en premier (page dédiée à la gare) |
+| `/vtc-lyon-perrache` | `/transfert-gare`, `/transfert-aeroport`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | Gare en premier, identique à Part-Dieu |
 | `/vtc-lyon-grenoble` | `/longues-distances`, `/vehicules`, `/tarifs`, `/reserver`, `/contact` | Bloc « Poursuivre votre réservation » | Longue distance en premier ; contact ajouté pour les demandes hors barème |
 | `/vtc-bron` | `/transfert-aeroport`, `/chauffeur-entreprise`, `/vehicules`, `/tarifs`, `/reserver` | Bloc « Poursuivre votre réservation » | |
 | `/vtc-saint-priest` | `/transfert-aeroport`, `/longues-distances`, `/reserver`, `/vehicules`, `/tarifs` | Bloc « Poursuivre votre réservation » | |

@@ -341,6 +341,15 @@ consolidée transmise — aucune donnée manquante, aucun réordonnancement
 nécessaire. Aucune nouvelle page locale n'a été créée à cette occasion,
 conformément à la consigne de ce sprint.
 
+**Sprint transfert-gare / Part-Dieu / Perrache (septembre 2026)** :
+« vtc lyon part dieu » (170/mois, difficulté 8) reste la seule requête
+gare disposant d'une donnée Semrush documentée ci-dessus. Aucune donnée
+Semrush n'existe pour « vtc gare perrache », « gare lyon perrache » ou
+variantes — aucun volume/CPC n'a été inventé pour la page
+`/vtc-lyon-perrache` ni pour la page générale `/transfert-gare`
+restructurée. Une recherche de mots-clés dédiée à « perrache » est à
+prévoir si cette page doit être priorisée activement.
+
 ## 4. Philosophie et structure du template
 
 Premium, minimaliste, orienté réservation, mobile-first — même identité que

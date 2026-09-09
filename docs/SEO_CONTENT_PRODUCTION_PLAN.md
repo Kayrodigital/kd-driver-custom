@@ -82,14 +82,26 @@ document avant rédaction.
 
 ## Statut publié ou preview
 
+Mise à jour (sprint transfert-gare / Part-Dieu / Perrache) : les 5 pages
+listées ci-dessous étaient documentées « non mergées » au moment de leur
+production ; elles sont en réalité **mergées sur `main` et en ligne**
+(vérifié : routes présentes et fonctionnelles en production), mais
+**toujours absentes du sitemap**. Ce tableau corrige cette incohérence
+factuelle.
+
 | Page | Statut | Emplacement |
 |---|---|---|
-| `/vtc-villeurbanne` | Preview (branche `feature/autonomous-polish-and-ux-v2`) | Non mergée, non sitemappée |
-| `/vtc-lyon-part-dieu` | Preview | Non mergée, non sitemappée |
-| `/vtc-lyon-grenoble` | Preview | Non mergée, non sitemappée |
-| `/vtc-bron` | Preview | Non mergée, non sitemappée |
-| `/vtc-saint-priest` | Preview | Non mergée, non sitemappée |
+| `/vtc-villeurbanne` | Mergée, en ligne | Non sitemappée |
+| `/vtc-lyon-part-dieu` | Mergée, en ligne | Non sitemappée |
+| `/vtc-lyon-grenoble` | Mergée, en ligne | Non sitemappée |
+| `/vtc-bron` | Mergée, en ligne | Non sitemappée |
+| `/vtc-saint-priest` | Mergée, en ligne | Non sitemappée |
+| `/vtc-lyon-perrache` | Preview (branche `seo/transfert-gares-part-dieu-perrache`) | Non mergée, non sitemappée |
+| `/transfert-gare` (restructurée) | Preview (même branche) | Déjà mergée/sitemappée en tant que route, mais son nouveau contenu attend la validation client avant merge |
 
 Passage à « publié » : merge sur `main` + ajout de la route dans
-`src/app/sitemap.ts` + validation explicite du client — aucune des deux
-actions n'a été faite dans ce sprint.
+`src/app/sitemap.ts` + validation explicite du client. Pour ce sprint,
+aucune des deux dernières actions n'a été faite — voir le compte rendu
+livré au client. La décision de sitemapper (ou non) les 5 pages
+précédentes n'a pas été prise dans ce sprint non plus : hors périmètre
+de la demande, signalé au client plutôt que tranché unilatéralement.
