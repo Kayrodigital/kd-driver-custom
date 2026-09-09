@@ -42,8 +42,15 @@ export const localPages: LocalPageContent[] = [
     heroImage: "/images/service-transferts.jpg",
     presentationTitle: "Un transfert préparé autour de votre horaire de train",
     presentationBody: [
-      "La gare de Lyon Part-Dieu est l'une des principales gares de correspondance de la région lyonnaise. KDRIVE y organise des prises en charge pour les voyageurs, avec ou sans bagages, sur la base de l'horaire indiqué lors de la réservation.",
+      "Premier pôle multimodal de la région lyonnaise, la gare de Lyon Part-Dieu concentre TGV, TER, métro, tramway et Rhônexpress vers l'aéroport. KDRIVE y organise des prises en charge pour les voyageurs, avec ou sans bagages, sur la base de l'horaire indiqué lors de la réservation.",
       "Aucune correspondance n'est suivie automatiquement en temps réel : en cas de changement d'horaire, contactez KDRIVE dès que possible afin d'ajuster la prise en charge.",
+    ],
+    practicalInfoTitle: "Repères pour votre venue à Part-Dieu",
+    practicalInfoItems: [
+      "Adresse : 5 place Charles-Béraudier, 69003 Lyon (3ᵉ arrondissement).",
+      "Deux accès principaux : côté place Charles-Béraudier / boulevard Vivier-Merle (centre commercial, quartier d'affaires) et côté rue de la Villette.",
+      "La gare jouxte le centre commercial de la Part-Dieu, repère pratique pour un point de rendez-vous.",
+      "Métro B, tramways T1/T3/T4 et Rhônexpress (liaison aéroport) desservent directement la gare.",
     ],
     frequentTrips: [
       { title: "Part-Dieu → Aéroport Lyon-Saint Exupéry", body: "Transfert direct vers l'aéroport, catégorie adaptée au nombre de bagages annoncés." },
@@ -54,8 +61,47 @@ export const localPages: LocalPageContent[] = [
     extraBody: "Indiquez le nombre de passagers et de bagages lors de votre demande : KDRIVE confirme la catégorie de véhicule la plus adaptée (Essentiel ou Premium pour les groupes réduits ; Van pour davantage de bagages ou de passagers).",
     faq: [
       { q: "KDRIVE suit-il mon train en temps réel ?", a: "Non, aucun suivi automatique des correspondances n'est en place actuellement ; en cas de retard, contactez KDRIVE pour ajuster l'heure de prise en charge." },
-      { q: "Où se fait la prise en charge à la gare Part-Dieu ?", a: "Le point de prise en charge précis est confirmé avec vous au moment de la réservation, selon les zones d'accès autorisées de la gare." },
-      { q: "Puis-je réserver un Van pour plusieurs bagages ?", a: "Oui, la catégorie Van fait l'objet d'un devis personnalisé pour les groupes ou les trajets avec de nombreux bagages." },
+      { q: "Où se fait la prise en charge à la gare Part-Dieu ?", a: "Le point de prise en charge précis est confirmé avec vous au moment de la réservation, selon les zones d'accès autorisées de la gare (côté Vivier-Merle ou côté Villette)." },
+      { q: "Puis-je réserver un Van pour plusieurs bagages ?", a: "Oui, la catégorie Van est calculée comme les autres catégories. KDRIVE vous contacte par téléphone après votre demande pour confirmer le tarif et la disponibilité." },
+    ],
+    pillarLinksTitle: "Poursuivre votre réservation",
+    pillarLinks: [
+      { href: "/transfert-gare", label: "Transfert gare" },
+      { href: "/transfert-aeroport", label: "Transfert aéroport" },
+      { href: "/vehicules", label: "Nos véhicules" },
+      { href: "/tarifs", label: "Grille tarifaire" },
+      { href: "/reserver", label: "Réserver un trajet" },
+    ],
+  },
+  {
+    slug: "vtc-lyon-perrache",
+    eyebrow: "VTC Lyon Perrache",
+    h1: "Chauffeur privé gare de Lyon Perrache",
+    heroLead: "Une prise en charge organisée pour votre arrivée ou votre départ depuis la gare de Lyon Perrache, sur réservation.",
+    heroImage: "/images/hero-lyon.jpg",
+    presentationTitle: "Un transfert au cœur de la Presqu'île",
+    presentationBody: [
+      "La gare de Lyon Perrache se trouve à la pointe de la Presqu'île, entre Saône et Rhône, à quelques minutes de la Confluence et du centre-ville. KDRIVE y organise des prises en charge pour les voyageurs, avec ou sans bagages, sur la base de l'horaire indiqué lors de la réservation.",
+      "Aucune correspondance n'est suivie automatiquement en temps réel : en cas de changement d'horaire, contactez KDRIVE dès que possible afin d'ajuster la prise en charge.",
+    ],
+    practicalInfoTitle: "Repères pour votre venue à Perrache",
+    practicalInfoItems: [
+      "Adresse : 14 cours de Verdun, 69002 Lyon (2ᵉ arrondissement), quartier de Perrache.",
+      "La gare donne sur la place Carnot au nord ; le centre d'échanges de Perrache (niveau 1) relie la gare au métro, au tramway et aux bus.",
+      "Métro A et tramways T1/T2 desservent directement le pôle d'échanges.",
+      "Depuis janvier 2026, la gare routière longue distance (FlixBus, BlaBlaBus, Itabus) a été transférée à Gerland (7ᵉ arrondissement) : elle ne se trouve plus à Perrache.",
+    ],
+    frequentTrips: [
+      { title: "Perrache → Confluence", body: "Trajet court vers le quartier de la Confluence, en catégorie Essentiel ou Premium selon votre besoin." },
+      { title: "Perrache → Presqu'île / Bellecour", body: "Trajet vers le centre-ville de Lyon, à quelques minutes de la gare." },
+      { title: "Perrache → Aéroport Lyon-Saint Exupéry", body: "Transfert direct vers l'aéroport, sans passer par un autre point de correspondance." },
+    ],
+    extraTitle: "Un point de départ pour vos correspondances longue distance",
+    extraBody: "Si votre trajet se poursuit en car (FlixBus, BlaBlaBus, Itabus), sachez que la gare routière de ces compagnies a quitté Perrache pour Gerland début 2026 : précisez votre point de départ ou d'arrivée exact lors de votre demande, KDRIVE organise la prise en charge en conséquence.",
+    faq: [
+      { q: "KDRIVE suit-il mon train en temps réel ?", a: "Non, aucun suivi automatique des correspondances n'est en place actuellement ; en cas de retard, contactez KDRIVE pour ajuster l'heure de prise en charge." },
+      { q: "Où se fait la prise en charge à la gare Perrache ?", a: "Le point de prise en charge précis est confirmé avec vous au moment de la réservation, selon les zones d'accès autorisées (parvis, place Carnot ou centre d'échanges)." },
+      { q: "Puis-je réserver un VTC pour un départ en car FlixBus ou BlaBlaBus ?", a: "Oui, mais la gare routière de ces compagnies n'est plus à Perrache depuis janvier 2026 : elle se trouve désormais à Gerland. Indiquez l'adresse exacte lors de votre demande." },
     ],
     pillarLinksTitle: "Poursuivre votre réservation",
     pillarLinks: [

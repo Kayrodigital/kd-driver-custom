@@ -57,15 +57,31 @@ Aucun de ces hubs n'existe encore. Tant qu'un hub n'existe pas, ses
 satellites lient directement vers le pilier le plus pertinent (voir
 `INTERNAL_LINKING_MAP.md`) plutôt que vers une route hub inexistante.
 
-## Satellites créés dans ce sprint (branche uniquement)
+## Satellites (mergés sur `main`, statut sitemap au cas par cas — voir `SEO_CONTENT_PRODUCTION_PLAN.md`)
 
 | Satellite | Route | Pilier(s) cible(s) | Futur hub |
 |---|---|---|---|
 | VTC Villeurbanne | `/vtc-villeurbanne` | Transfert aéroport, transfert gare, chauffeur entreprise | VTC Lyon métropole |
 | VTC Lyon Part-Dieu | `/vtc-lyon-part-dieu` | Transfert gare, transfert aéroport | Services |
+| VTC Lyon Perrache | `/vtc-lyon-perrache` | Transfert gare, transfert aéroport | Services |
 | VTC Lyon Grenoble | `/vtc-lyon-grenoble` | Longues distances | Longues distances (pilier + hub) |
 | VTC Bron | `/vtc-bron` | Transfert aéroport, chauffeur entreprise | VTC Lyon métropole |
 | VTC Saint-Priest | `/vtc-saint-priest` | Transfert aéroport, longues distances | VTC Lyon métropole |
+
+### Lot gares (sprint transfert-gare / Part-Dieu / Perrache)
+
+Le pilier `/transfert-gare` a été restructuré (nouveau gabarit
+`gare-hub-template.tsx`) pour jouer pleinement son rôle de hub du silo
+gare : présentation du service, sélection entre les deux satellites
+gare (cartes visibles, jamais en accordéon), étapes de réservation,
+catégories tarifaires, correspondances vers les autres piliers, FAQ à 5
+questions. `/vtc-lyon-perrache` est un nouveau satellite ; `/vtc-lyon-part-dieu`
+a été enrichi (informations pratiques vérifiées, FAQ Van corrigée pour
+refléter le nouveau modèle sans prix public). Recherche de référence
+concurrentielle (lyon-vtc.com) et vérification de faits (adresses,
+arrondissements, gare routière Perrache → Gerland depuis janvier 2026)
+menées avant rédaction — voir le compte rendu livré au client pour le
+détail des sources.
 
 ## Satellites futurs (priorité déjà établie, `SEO_LOCAL_PLAN.md`)
 
