@@ -29,6 +29,30 @@ export const popularDestinations: PopularDestination[] = [
     },
   },
   {
+    label: "Gare Lyon-Saint-Exupéry TGV",
+    secondary: "69125 Colombier-Saugnieu",
+    icon: "🚆",
+    address: {
+      /**
+       * Pas de place_id Google vérifié pour ce point précis (bâtiment gare
+       * distinct des terminaux, à ne pas confondre avec l'entrée aéroport
+       * ci-dessus). Coordonnées issues d'une source publique indépendante
+       * (Wikipédia, 2026-09), converties en degrés décimaux : 45°43′15″N
+       * 5°04′33″E. `source: "manual"` + lat/lng suffisent au calcul
+       * d'itinéraire (cf. google-routes-provider.ts, qui utilise le
+       * placeId s'il existe sinon les coordonnées) — si ce point s'avère
+       * imprécis à l'usage, le repérer via un test manuel plutôt que de
+       * deviner une correction.
+       */
+      address: "Gare de Lyon-Saint-Exupéry TGV, 69125 Colombier-Saugnieu, France",
+      latitude: 45.72083,
+      longitude: 5.07583,
+      placeId: null,
+      source: "manual",
+      accuracyMeters: null,
+    },
+  },
+  {
     label: "Gare Lyon Part-Dieu",
     secondary: "69003 Lyon",
     icon: "🚆",

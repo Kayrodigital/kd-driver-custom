@@ -8,19 +8,35 @@ import { TimeSlotPicker } from "./time-slot-picker";
 import { storeSearchPrefill } from "./use-booking-wizard";
 
 /**
- * Formulaire de recherche affiché en hero (accueil). Ne réserve pas
- * directement : transmet le trajet à /reserver qui poursuit à l'étape 2
- * (véhicules) sans perte de données, via storeSearchPrefill.
+ * Formulaire de recherche affiché en hero (accueil, pages aéroport/gare...).
+ * Ne réserve pas directement : transmet le trajet à /reserver qui poursuit
+ * à l'étape 2 (véhicules) sans perte de données, via storeSearchPrefill.
  *
  * La page d'accueil est statique (générée une fois au build) : la date/heure
  * par défaut ne peut donc pas être calculée dans un initializer (elle
  * dépend de `new Date()`, qui diffère entre le HTML figé au build et
  * l'hydratation côté client — cause d'une erreur d'hydratation #418
  * observée en production). Tout part d'un état vide, posé après montage.
+ *
+ * `prefillAddress` : préremplit le départ ou la destination avec un lieu
+ * connu (aéroport, gare...) — utilisé par les pages qui couvrent à la fois
+ * les départs et les arrivées. L'utilisateur choisit lui-même le sens via
+ * les deux boutons ; les deux champs restent modifiables ensuite comme un
+ * trajet saisi normalement (aucun verrouillage, aucune réservation
+ * confirmée par ce seul choix).
  */
-export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
+export function HeroSearchForm({
+  tone = "dark",
+  prefillAddress,
+  prefillLabel,
+}: {
+  tone?: "light" | "dark";
+  prefillAddress?: AddressValue;
+  prefillLabel?: string;
+}) {
   const [pickup, setPickup] = useState<AddressValue>(emptyAddress);
-  const [destination, setDestination] = useState<AddressValue>(emptyAddress);
+  const [destination, setDestination] = useState<AddressValue>(prefillAddress ?? emptyAddress);
+  const [prefillAs, setPrefillAs] = useState<"pickup" | "destination">("destination");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [today, setToday] = useState("");
@@ -34,6 +50,13 @@ export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
     setToday(toDateInputValue(new Date()));
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
+
+  function choosePrefillAs(as: "pickup" | "destination") {
+    if (!prefillAddress) return;
+    setPrefillAs(as);
+    setPickup(as === "pickup" ? prefillAddress : emptyAddress);
+    setDestination(as === "destination" ? prefillAddress : emptyAddress);
+  }
 
   function openDatePicker() {
     try {
@@ -61,6 +84,17 @@ export function HeroSearchForm({ tone = "dark" }: { tone?: "light" | "dark" }) {
         <p className="kd-eyebrow">Réservation</p>
         <h3 className="kd-h3" style={{ marginTop: 8 }}>Réserver votre trajet</h3>
       </div>
+
+      {prefillAddress && prefillLabel && (
+        <div className="kd-toggle-group kd-toggle-group--dark" role="group" aria-label={`Sens du trajet depuis ou vers ${prefillLabel}`}>
+          <button type="button" aria-pressed={prefillAs === "destination"} onClick={() => choosePrefillAs("destination")}>
+            Je vais à {prefillLabel}
+          </button>
+          <button type="button" aria-pressed={prefillAs === "pickup"} onClick={() => choosePrefillAs("pickup")}>
+            Je pars de {prefillLabel}
+          </button>
+        </div>
+      )}
 
       <div className="kd-fields">
         <AddressAutocomplete label="Départ" value={pickup} onChange={setPickup} allowGeolocation />

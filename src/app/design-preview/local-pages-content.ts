@@ -1,4 +1,7 @@
 import type { LocalPageContent } from "./local-page-template";
+import { popularDestinations } from "@/domain/booking/popular-destinations";
+
+const gareTgvAddress = popularDestinations.find((d) => d.label === "Gare Lyon-Saint-Exupéry TGV")!.address;
 
 export const localPages: LocalPageContent[] = [
   {
@@ -102,6 +105,52 @@ export const localPages: LocalPageContent[] = [
       { q: "KDRIVE suit-il mon train en temps réel ?", a: "Non, aucun suivi automatique des correspondances n'est en place actuellement ; en cas de retard, contactez KDRIVE pour ajuster l'heure de prise en charge." },
       { q: "Où se fait la prise en charge à la gare Perrache ?", a: "Le point de prise en charge précis est confirmé avec vous au moment de la réservation, selon les zones d'accès autorisées (parvis, place Carnot ou centre d'échanges)." },
       { q: "Puis-je réserver un VTC pour un départ en car FlixBus ou BlaBlaBus ?", a: "Oui, mais la gare routière de ces compagnies n'est plus à Perrache depuis janvier 2026 : elle se trouve désormais à Gerland. Indiquez l'adresse exacte lors de votre demande." },
+    ],
+    pillarLinksTitle: "Poursuivre votre réservation",
+    pillarLinks: [
+      { href: "/transfert-gare", label: "Transfert gare" },
+      { href: "/transfert-aeroport", label: "Transfert aéroport" },
+      { href: "/vehicules", label: "Nos véhicules" },
+      { href: "/tarifs", label: "Grille tarifaire" },
+      { href: "/reserver", label: "Réserver un trajet" },
+    ],
+  },
+  {
+    slug: "vtc-gare-lyon-saint-exupery-tgv",
+    eyebrow: "VTC Gare Lyon Saint-Exupéry TGV",
+    h1: "Votre VTC à la gare Lyon Saint-Exupéry TGV",
+    heroLead: "Une prise en charge organisée pour votre arrivée ou votre départ depuis la gare ferroviaire de Lyon Saint-Exupéry TGV, sur réservation.",
+    heroImage: "/images/service-transferts.jpg",
+    prefillAddress: gareTgvAddress,
+    prefillLabel: "la gare TGV",
+    presentationTitle: "Une gare ferroviaire à part entière, distincte des terminaux",
+    presentationBody: [
+      "La gare de Lyon-Saint-Exupéry TGV accueille des trains TGV et Ouigo, dans un bâtiment distinct des terminaux aéroportuaires, relié à eux par une passerelle piétonne. KDRIVE y organise des prises en charge pour les voyageurs, avec ou sans bagages, sur la base de l'horaire indiqué lors de la réservation.",
+      "Aucune correspondance n'est suivie automatiquement en temps réel : en cas de changement d'horaire, contactez KDRIVE dès que possible afin d'ajuster la prise en charge.",
+    ],
+    departureArrivalTitle: "Un chauffeur pour votre départ ou votre arrivée en train",
+    departure: { title: "Au départ", body: "Votre chauffeur vient vous chercher à l'adresse indiquée lors de la réservation, avec la marge nécessaire pour rejoindre la gare avant l'heure de votre train." },
+    arrival: { title: "À l'arrivée", body: "Indiquez l'heure d'arrivée prévue de votre train lors de la demande. Le point de rendez-vous précis à la gare est ensuite confirmé avec vous ; aucun suivi automatique des trains n'est en place, contactez KDRIVE en cas de changement d'horaire." },
+    practicalInfoTitle: "Repères pour votre venue à la gare TGV",
+    practicalInfoItems: [
+      "La gare se trouve à Colombier-Saugnieu, au sein du complexe aéroportuaire mais dans un bâtiment distinct des terminaux, reconnaissable à son architecture (conception Santiago Calatrava).",
+      "Elle est reliée au Terminal 1 par une passerelle piétonne d'environ 250 mètres avec tapis roulant, et au Terminal 2 par un cheminement équivalent.",
+      "La gare dessert des trains TGV et Ouigo, ainsi que la liaison Rhônexpress vers le centre de Lyon.",
+      "Ne confondez pas la gare TGV et les terminaux aéroportuaires lors de votre réservation : précisez votre point de départ ou d'arrivée exact.",
+    ],
+    frequentTrips: [
+      { title: "Gare TGV → Lyon centre", body: "Trajet vers la Presqu'île ou le centre-ville de Lyon." },
+      { title: "Gare TGV → Villeurbanne", body: "Trajet vers Villeurbanne, à proximité du secteur aéroportuaire.", href: "/vtc-villeurbanne" },
+      { title: "Gare TGV → Saint-Priest", body: "Trajet vers la commune de Saint-Priest, à proximité de l'aéroport.", href: "/vtc-saint-priest" },
+    ],
+    pricingTitle: "Estimer et réserver votre trajet",
+    pricingBody: "KDRIVE vous contacte par téléphone après votre demande pour vous communiquer le tarif, calculé selon la catégorie de véhicule et le trajet, avant toute confirmation.",
+    faq: [
+      { q: "Comment préciser qu'il s'agit de la gare TGV et non de l'aéroport ?", a: "La gare TGV et les terminaux aéroportuaires sont deux points distincts au sein du même complexe : indiquez précisément votre lieu de rendez-vous lors de la réservation pour éviter toute confusion." },
+      { q: "Comment signaler un changement d'horaire de mon train ?", a: "Contactez KDRIVE par téléphone dès que possible : aucun suivi automatique des horaires SNCF n'est en place, l'ajustement de la prise en charge se fait par échange direct avec l'équipe." },
+      { q: "Quelles informations de train transmettre lors de la réservation ?", a: "Le numéro de train n'est pas requis ; l'heure d'arrivée ou de départ prévue, le nombre de passagers et de bagages suffisent pour envoyer votre demande." },
+      { q: "Comment sont pris en compte les passagers et les bagages ?", a: "Indiquez le nombre exact de passagers et de bagages dans le formulaire : KDRIVE confirme la catégorie de véhicule la plus adaptée (Essentiel, Premium ou Van)." },
+      { q: "Puis-je réserver un VTC pour rejoindre un terminal depuis la gare TGV ?", a: "Les terminaux sont accessibles à pied depuis la gare TGV via la passerelle piétonne. KDRIVE n'organise pas de transfert motorisé pour ce trajet court ; pour un vol, consultez la page transfert aéroport." },
     ],
     pillarLinksTitle: "Poursuivre votre réservation",
     pillarLinks: [
