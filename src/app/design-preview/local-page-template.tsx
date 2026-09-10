@@ -7,18 +7,45 @@ import { Breadcrumb } from "./breadcrumb";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { AddressValue } from "@/domain/booking/address";
 
+/**
+ * Statut éditorial interne (registre SEO) — piloté depuis les données, pas
+ * affiché sur la page. Sert au rapport de sprint et à la décision
+ * d'indexation (cf. `noIndex`).
+ * - readyForIndexing : contenu jugé suffisant pour une première indexation.
+ * - needsEnrichment : page utile mais pouvant être enrichie (contenu léger,
+ *   sources à consolider).
+ * - needsBusinessConfirmation : contenu dépendant d'une confirmation
+ *   commerciale (ex. prestation non encore confirmée par KDRIVE).
+ * - draftNoIndex : brouillon volontairement non indexable.
+ */
+export type EditorialStatus = "readyForIndexing" | "needsEnrichment" | "needsBusinessConfirmation" | "draftNoIndex";
+
 export type LocalPageContent = {
   slug: string;
+  /** Famille de page — sert au registre/rapport, n'affecte pas le rendu. */
+  family: "arrondissement" | "commune" | "longue-distance" | "ski-station" | "venue" | "gare" | "aeroport";
   eyebrow: string;
   h1: string;
+  /** Title et meta description spécifiques (SEO technique) — distincts du H1/eyebrow. */
+  title: string;
+  metaDescription: string;
   heroLead: string;
   heroImage: string;
   /** Préremplit le formulaire hero (départ ou destination, au choix de
    * l'utilisateur) avec ce lieu — voir hero-search-form.tsx. Optionnel. */
   prefillAddress?: AddressValue;
   prefillLabel?: string;
+  /** Insère un niveau intermédiaire dans le fil d'Ariane (ex. hub géographique parent). Optionnel. */
+  breadcrumbParent?: { label: string; href: string };
   presentationTitle: string;
   presentationBody: string[];
+  /** Quartiers, lieux ou points d'intérêt réellement utiles au motif de
+   * déplacement (jamais un guide touristique générique). Optionnel. */
+  quartiersTitle?: string;
+  quartiers?: { title: string; body: string }[];
+  /** Motifs de prise en charge courants (professionnel, événementiel, etc.). Optionnel. */
+  casUsageTitle?: string;
+  casUsageItems?: string[];
   /** Informations factuelles vérifiées sur une source indépendante (adresse,
    * arrondissement, accès, correspondances) — jamais un usage ou un
    * fonctionnement KDRIVE inventé. Optionnel : seules les pages gare/aéroport
@@ -41,6 +68,18 @@ export type LocalPageContent = {
   faq: { q: string; a: string }[];
   pillarLinksTitle: string;
   pillarLinks: { href: string; label: string }[];
+  /** Liens de proximité (arrondissements limitrophes, communes voisines, hub
+   * géographique parent) — distincts des pillarLinks (services/conversion). Optionnel. */
+  neighborLinksTitle?: string;
+  neighborLinks?: { href: string; label: string }[];
+  /** Statut éditorial interne + décision d'indexation prévue. Sert au
+   * registre et au rapport de sprint ; `noIndex` est branché sur les
+   * métadonnées de la page (robots). */
+  editorialStatus: EditorialStatus;
+  noIndex?: boolean;
+  /** Sources consultées pour vérifier les faits locaux (nom, date) — usage
+   * interne / documentation, non rendu sur la page. */
+  sources?: string[];
 };
 
 function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
@@ -83,7 +122,13 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner">
           <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: content.h1 }]} />
+            <Breadcrumb
+              items={[
+                { label: "Accueil", href: "/" },
+                ...(content.breadcrumbParent ? [content.breadcrumbParent] : []),
+                { label: content.h1 },
+              ]}
+            />
             <p className="kd-eyebrow">{content.eyebrow}</p>
             <h1 className="kd-h1">{content.h1}</h1>
             <p className="kd-lead">{content.heroLead}</p>
@@ -122,6 +167,39 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
                 <p className="kd-body" style={{ marginTop: 8 }}>{content.arrival.body}</p>
               </div>
             </div>
+          </div>
+        </section>
+      )}
+
+      {content.quartiersTitle && content.quartiers && (
+        <section className="kd-section kd-on-white">
+          <div className="kd-container">
+            <div className="kd-section-head">
+              <p className="kd-eyebrow">Contexte local</p>
+              <h2 className="kd-h2">{content.quartiersTitle}</h2>
+            </div>
+            <div className="kd-grid-3">
+              {content.quartiers.map((item) => (
+                <div key={item.title} className="kd-card kd-card--flat">
+                  <h3 className="kd-h4">{item.title}</h3>
+                  <p className="kd-body" style={{ marginTop: 8 }}>{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {content.casUsageTitle && content.casUsageItems && (
+        <section className="kd-section kd-section--compact kd-on-cream">
+          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+            <p className="kd-eyebrow">Motifs de prise en charge</p>
+            <h2 className="kd-h2">{content.casUsageTitle}</h2>
+            <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+              {content.casUsageItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
         </section>
       )}
@@ -183,6 +261,10 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
             <Link className="kd-card-link" href="/tarifs">Consulter la grille tarifaire <span aria-hidden="true">→</span></Link>
           </div>
         </section>
+      )}
+
+      {content.neighborLinksTitle && content.neighborLinks && (
+        <RelatedLinks title={content.neighborLinksTitle} links={content.neighborLinks} />
       )}
 
       <RelatedLinks title={content.pillarLinksTitle} links={content.pillarLinks} />

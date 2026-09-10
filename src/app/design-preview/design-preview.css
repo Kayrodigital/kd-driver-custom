@@ -776,7 +776,7 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 .kd-trust-badge a { cursor: pointer; }
 
 .kd-footer { padding: var(--kd-space-6) 0 var(--kd-space-5); font-size: 0.85rem; }
-.kd-footer-grid { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }
+.kd-footer-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr)); gap: var(--kd-space-5); margin-bottom: var(--kd-space-6); }
 .kd-footer-grid > * { min-width: 0; }
 .kd-footer-col h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--kd-gold); margin-bottom: var(--kd-space-3); font-family: var(--kd-font-sans); font-weight: 700; }
 .kd-footer-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; color: var(--kd-muted-on-dark); }

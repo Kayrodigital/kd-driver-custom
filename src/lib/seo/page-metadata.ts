@@ -5,15 +5,19 @@ export function buildMetadata({
   title,
   description,
   path,
+  noIndex,
 }: {
   title: string;
   description: string;
   path: string;
+  /** Brouillon volontairement non indexable (cf. registre SEO, editorialStatus "draftNoIndex"). */
+  noIndex?: boolean;
 }): Metadata {
   return {
     title,
     description,
     alternates: { canonical: path },
+    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       title,
       description,

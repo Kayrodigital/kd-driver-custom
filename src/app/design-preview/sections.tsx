@@ -194,6 +194,9 @@ export function ZonesSection() {
             <span key={zone} className={`kd-zone-chip${index === 0 ? " kd-zone-chip--primary" : ""}`}>{zone}</span>
           ))}
         </div>
+        <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
+          <Link href="/zones-desservies" className="kd-card-link">Voir toutes les zones et destinations desservies <span aria-hidden="true">→</span></Link>
+        </p>
       </div>
     </section>
   );
@@ -284,7 +287,18 @@ export function FooterSection() {
               <li><Link href="/transfert-gare">Transfert gare</Link></li>
               <li><Link href="/mise-a-disposition">Mise à disposition</Link></li>
               <li><Link href="/longues-distances">Longues distances</Link></li>
+              <li><Link href="/transfert-stations-ski-depuis-lyon">Transferts stations de ski</Link></li>
               <li><Link href="/vehicules">Nos véhicules</Link></li>
+            </ul>
+          </div>
+          <div className="kd-footer-col">
+            <h4>Zones desservies</h4>
+            <ul>
+              <li><Link href="/zones-desservies">Toutes les zones et destinations</Link></li>
+              <li><Link href="/vtc-banlieue-nord-lyon">Banlieue nord</Link></li>
+              <li><Link href="/vtc-banlieue-ouest-lyon">Banlieue ouest</Link></li>
+              <li><Link href="/vtc-banlieue-est-lyon">Banlieue est</Link></li>
+              <li><Link href="/vtc-banlieue-sud-lyon">Banlieue sud</Link></li>
             </ul>
           </div>
           <div className="kd-footer-col">
