@@ -22,6 +22,11 @@ const stationCards = [
     label: "Gare de Lyon Saint-Exupéry TGV",
     body: "Une gare ferroviaire à part entière, distincte des terminaux aéroportuaires auxquels elle est reliée à pied.",
   },
+  {
+    href: "/vtc-gare-routiere-lyon-gerland",
+    label: "Gare routière de Lyon Gerland",
+    body: "La gare routière longue distance de Lyon (FlixBus, BlaBlaBus, Itabus), dans le 7ᵉ arrondissement, depuis janvier 2026.",
+  },
 ];
 
 const organizeSteps = [
@@ -89,7 +94,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       <section className="kd-section kd-on-cream">
         <div className="kd-container">
           <div className="kd-section-head">
-            <p className="kd-eyebrow">Trois gares desservies</p>
+            <p className="kd-eyebrow">Quatre gares desservies</p>
             <h2 className="kd-h2">Quelle gare de Lyon souhaitez-vous rejoindre ou quitter ?</h2>
           </div>
           <div className="kd-grid-3">
