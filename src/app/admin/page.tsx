@@ -3,6 +3,7 @@ import { createAdminClient } from "@/infrastructure/supabase/admin-client";
 import { formatEuros } from "@/domain/pricing/money";
 import { formatDateTimeParis } from "@/lib/format-date";
 import { statusFilterOptions, statusLabel, statusPillClassName } from "./status-labels";
+import { cancellationReasonLabel, isCancellationReasonCode } from "@/domain/dispatch/cancellation-reasons";
 import { archiveReservation, restoreReservation } from "./actions";
 import {
   PAGE_SIZES,
@@ -33,9 +34,15 @@ type ReservationRow = {
   pickup_address: string;
   destination_address: string;
   archived_at: string | null;
+  cancellation_reason_code: string | null;
   customers: Customer | Customer[] | null;
   vehicles: Vehicle | Vehicle[] | null;
 };
+
+function cancellationReasonCell(row: ReservationRow): string | null {
+  if (row.status !== "cancelled" || !row.cancellation_reason_code || !isCancellationReasonCode(row.cancellation_reason_code)) return null;
+  return cancellationReasonLabel(row.cancellation_reason_code);
+}
 
 const VIEW_LABELS: Record<ReservationView, string> = {
   todo: "À traiter",
@@ -207,7 +214,10 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                       <td>{customerName(customer)}<small>{customer?.phone}</small></td>
                       <td>{vehicle?.label ?? "—"}</td>
                       <td>{priceCell(row)}</td>
-                      <td><span className={statusPillClassName(row.status)}>{statusLabel(row.status)}</span></td>
+                      <td>
+                        <span className={statusPillClassName(row.status)}>{statusLabel(row.status)}</span>
+                        {cancellationReasonCell(row) && <><br /><small>{cancellationReasonCell(row)}</small></>}
+                      </td>
                       <td style={{ display: "flex", gap: 6 }}>
                         <Link href={`/admin/reservations/${row.id}`} className="kd-btn kd-btn--sm kd-btn--outline">Ouvrir</Link>
                         {row.archived_at ? (
@@ -234,6 +244,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <strong>{row.public_reference}</strong>
                     <span className={statusPillClassName(row.status)}>{statusLabel(row.status)}</span>
                   </div>
+                  {cancellationReasonCell(row) && <p className="kd-body" style={{ margin: 0, color: "var(--kd-muted)" }}>Motif : {cancellationReasonCell(row)}</p>}
                   <p className="kd-admin-card-phone">{customerName(customer)} · {customer?.phone}</p>
                   <p className="kd-admin-card-route">{row.pickup_address} → {row.destination_address}</p>
                   <p className="kd-body" style={{ margin: 0 }}>Créée le {formatDateTime(row.created_at)}</p>

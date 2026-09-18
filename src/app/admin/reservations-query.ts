@@ -97,7 +97,7 @@ const SORT_COLUMNS: Record<SortOption, { column: string; ascending: boolean }> =
 };
 
 export const RESERVATIONS_SELECT =
-  "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,pricing_mode,pickup_address,destination_address,archived_at,notes,passengers,luggage,assigned_driver_name,customers(first_name,last_name,phone,email),vehicles(label)";
+  "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,pricing_mode,pickup_address,destination_address,archived_at,notes,passengers,luggage,assigned_driver_name,cancellation_reason_code,customers(first_name,last_name,phone,email),vehicles(label)";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function applyReservationsQuery(supabase: any, params: ReservationsQueryParams, options: { paginate?: boolean } = {}) {

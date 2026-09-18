@@ -6,6 +6,7 @@ import { eurosToCents, formatEuros } from "@/domain/pricing/money";
 import { calculatePrice } from "@/domain/pricing/pricing-engine";
 import { pricingConfig } from "@/domain/pricing/pricing-config";
 import { declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
+import { cancellationReasonLabel, validateCancellationReason } from "@/domain/dispatch/cancellation-reasons";
 import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
 import { BrevoClientNotifier } from "@/infrastructure/notifications/client-notifier";
 import { notifyClientOfBookingConfirmed } from "@/infrastructure/notifications/notify-client-of-booking";
@@ -331,18 +332,32 @@ export async function declineReservation(id: string, formData: FormData) {
     backTo(id, { error: "decline_reason_required" });
     return;
   }
+  const cancellationReason = validateCancellationReason({
+    code: String(formData.get("cancellationReasonCode") ?? ""),
+    note: String(formData.get("cancellationReasonNote") ?? ""),
+  });
+  if (!cancellationReason.ok) {
+    backTo(id, { error: cancellationReason.error });
+    return;
+  }
   const supabase = createAdminClient();
   const now = new Date().toISOString();
   const history = appendHistory(row.history, {
     action: "reservation_declined",
-    message: `Course refusée (motif : ${declineReasonLabel(reasonCode)})`,
+    message: `Course refusée (motif client : ${declineReasonLabel(reasonCode)} — motif : ${cancellationReasonLabel(cancellationReason.code)}${cancellationReason.note ? ` — ${cancellationReason.note}` : ""})`,
     from_status: row.status,
     to_status: "cancelled",
     reason: reasonCode,
   });
   const { data: updated, error } = await supabase
     .from("reservations")
-    .update({ status: "cancelled", cancelled_at: now, history })
+    .update({
+      status: "cancelled",
+      cancelled_at: now,
+      cancellation_reason_code: cancellationReason.code,
+      cancellation_reason_note: cancellationReason.note,
+      history,
+    })
     .eq("id", id)
     .eq("status", row.status)
     .select("id")
@@ -358,19 +373,31 @@ export async function cancelConfirmedReservation(id: string, formData: FormData)
     backTo(id, { error: "invalid_transition" });
     return;
   }
-  const reason = String(formData.get("reason") ?? "").trim() || undefined;
+  const cancellationReason = validateCancellationReason({
+    code: String(formData.get("cancellationReasonCode") ?? ""),
+    note: String(formData.get("cancellationReasonNote") ?? ""),
+  });
+  if (!cancellationReason.ok) {
+    backTo(id, { error: cancellationReason.error });
+    return;
+  }
   const supabase = createAdminClient();
   const now = new Date().toISOString();
   const history = appendHistory(row.history, {
     action: "reservation_cancelled",
-    message: reason ? `Course annulée (motif : ${reason})` : "Course annulée",
+    message: `Course annulée (motif : ${cancellationReasonLabel(cancellationReason.code)}${cancellationReason.note ? ` — ${cancellationReason.note}` : ""})`,
     from_status: "confirmed",
     to_status: "cancelled",
-    reason,
   });
   const { data: updated, error } = await supabase
     .from("reservations")
-    .update({ status: "cancelled", cancelled_at: now, history })
+    .update({
+      status: "cancelled",
+      cancelled_at: now,
+      cancellation_reason_code: cancellationReason.code,
+      cancellation_reason_note: cancellationReason.note,
+      history,
+    })
     .eq("id", id)
     .eq("status", "confirmed")
     .select("id")

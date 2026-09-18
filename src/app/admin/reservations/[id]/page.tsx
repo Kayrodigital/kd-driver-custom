@@ -6,6 +6,7 @@ import { formatEuros } from "@/domain/pricing/money";
 import { formatDateTimeParis } from "@/lib/format-date";
 import type { PricingResult } from "@/domain/pricing/pricing-types";
 import { DECLINE_REASON_CODES, buildDeclineClientMessage, declineReasonLabel, isDeclineReasonCode } from "@/domain/dispatch/decline-reasons";
+import { cancellationReasonLabel, isCancellationReasonCode } from "@/domain/dispatch/cancellation-reasons";
 import { getOwnerDriverProfile } from "@/domain/dispatch/owner-driver-profile";
 import { generateClientVoucher, generateInternalDispatchSheet, type ReservationForDocuments } from "@/domain/dispatch/vouchers";
 import { buildJustificatif, type ReservationForJustificatif } from "@/domain/justificatif/justificatif";
@@ -28,6 +29,7 @@ import {
 } from "./actions";
 import { canAccept, canCancelConfirmed, canComplete, canDecline, canMarkContacted, priceIsConfirmed } from "./transitions";
 import { CopyButton } from "./copy-button";
+import { CancellationReasonField } from "./cancellation-reason-field";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Fiche réservation | Administration KDRIVE", robots: { index: false, follow: false } };
@@ -49,6 +51,8 @@ type ReservationDetail = {
   confirmed_at: string | null;
   cancelled_at: string | null;
   completed_at: string | null;
+  cancellation_reason_code: string | null;
+  cancellation_reason_note: string | null;
   pricing_mode: string;
   pricing_rule_version: string;
   pricing_snapshot: PricingResult | null;
@@ -83,6 +87,8 @@ const pricingStatusLabels: Record<string, string> = {
 
 const errorMessages: Record<string, string> = {
   reason_required: "Le motif est obligatoire pour ajuster un tarif.",
+  cancellation_reason_required: "Choisissez un motif d’annulation ou de refus dans la liste.",
+  cancellation_reason_note_required: "Précisez le motif dans le champ commentaire (motif « Autre »).",
   decline_reason_required: "Choisissez un motif de refus dans la liste.",
   driver_fields_required: "Renseignez le nom, le téléphone, le véhicule et la plaque du chauffeur.",
   invalid_amount: "Le montant saisi est invalide.",
@@ -137,7 +143,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
   const { data, error } = await supabase
     .from("reservations")
     .select(
-      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,contacted_at,confirmed_at,cancelled_at,completed_at,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,assigned_driver_name,assigned_driver_phone,assigned_vehicle_label,assigned_vehicle_plate,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
+      "id,public_reference,created_at,pickup_at,status,pricing_status,estimated_price_cents,confirmed_price_cents,price_adjustment_reason,price_confirmed_at,contacted_at,confirmed_at,cancelled_at,completed_at,cancellation_reason_code,cancellation_reason_note,pricing_mode,pricing_rule_version,pricing_snapshot,pickup_address,pickup_latitude,pickup_longitude,destination_address,destination_latitude,destination_longitude,distance_meters,duration_seconds,is_airport_trip,passengers,luggage,notes,history,assigned_driver_name,assigned_driver_phone,assigned_vehicle_label,assigned_vehicle_plate,customers(first_name,last_name,phone,email),vehicles(label,max_passengers,max_luggage)",
     )
     .eq("id", id)
     .maybeSingle();
@@ -311,6 +317,9 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
             {reservation.confirmed_at && <p className="kd-admin-fiche-row"><span>Confirmée le</span><span>{formatDateTime(reservation.confirmed_at)}</span></p>}
             {reservation.completed_at && <p className="kd-admin-fiche-row"><span>Terminée le</span><span>{formatDateTime(reservation.completed_at)}</span></p>}
             {reservation.cancelled_at && <p className="kd-admin-fiche-row"><span>Annulée le</span><span>{formatDateTime(reservation.cancelled_at)}</span></p>}
+            {reservation.cancellation_reason_code && isCancellationReasonCode(reservation.cancellation_reason_code) && (
+              <p className="kd-admin-fiche-row"><span>Motif d’annulation/refus</span><span>{cancellationReasonLabel(reservation.cancellation_reason_code)}{reservation.cancellation_reason_note ? ` — ${reservation.cancellation_reason_note}` : ""}</span></p>
+            )}
 
             <h2 className="kd-h4" style={{ marginTop: 8 }}>Historique</h2>
             {history.length === 0 ? (
@@ -435,7 +444,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                     <form action={declineReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
                       <p className="kd-field-hint">La réservation sera conservée avec le statut « Annulée ». Un message client sera généré à partir du motif choisi.</p>
                       <label className="kd-field">
-                        <span className="kd-field-label">Motif (obligatoire)</span>
+                        <span className="kd-field-label">Motif de refus — message client (obligatoire)</span>
                         <select className="kd-input kd-select" name="reasonCode" required defaultValue="">
                           <option value="" disabled>Choisir un motif…</option>
                           {DECLINE_REASON_CODES.map((code) => (
@@ -443,6 +452,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                           ))}
                         </select>
                       </label>
+                      <CancellationReasonField />
                       <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer le refus</button>
                     </form>
                   </details>
@@ -528,10 +538,7 @@ export default async function ReservationDetailPage({ params, searchParams }: { 
                   <summary className="kd-more-toggle kd-more-toggle--danger">Annuler la course</summary>
                   <form action={cancelConfirmedReservationWithId} style={{ marginTop: 10, display: "grid", gap: 10 }}>
                     <p className="kd-field-hint">Cette course est confirmée. L’annulation est définitive ; les données restent conservées.</p>
-                    <label className="kd-field">
-                      <span className="kd-field-label">Motif interne (facultatif)</span>
-                      <input className="kd-input" type="text" name="reason" maxLength={300} />
-                    </label>
+                    <CancellationReasonField />
                     <button type="submit" className="kd-btn kd-btn--outline kd-btn--block">Confirmer l’annulation</button>
                   </form>
                 </details>
