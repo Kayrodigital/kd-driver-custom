@@ -21,6 +21,31 @@ const PUBLIC_PATHS = [
    */
   "/vtc-gare-lyon-saint-exupery-tgv",
   "/vehicules",
+  /**
+   * Pages enrichies et vérifiées (dossier documentaire sourcé), passées à
+   * `readyForIndexing` — 9 arrondissements de Lyon + 7 communes
+   * périurbaines. Ne pas y ajouter les autres communes de
+   * `communes-content.ts` restées `needsEnrichment` (sourcing générique à
+   * consolider), ni les pages satellites (Villeurbanne, Bron, Saint-Priest,
+   * Part-Dieu, Perrache, Grenoble) dont la publication au sitemap reste une
+   * décision client en attente, cf. note ci-dessus.
+   */
+  "/vtc-lyon-1er-arrondissement",
+  "/vtc-lyon-2e-arrondissement",
+  "/vtc-lyon-3e-arrondissement",
+  "/vtc-lyon-4e-arrondissement",
+  "/vtc-lyon-5e-arrondissement",
+  "/vtc-lyon-6e-arrondissement",
+  "/vtc-lyon-7e-arrondissement",
+  "/vtc-lyon-8e-arrondissement",
+  "/vtc-lyon-9e-arrondissement",
+  "/vtc-vaulx-en-velin",
+  "/vtc-meyzieu",
+  "/vtc-caluire-et-cuire",
+  "/vtc-ecully",
+  "/vtc-tassin-la-demi-lune",
+  "/vtc-venissieux",
+  "/vtc-oullins-pierre-benite",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
