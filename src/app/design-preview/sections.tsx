@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MobileNavTrigger } from "./mobile-nav-trigger";
 import { NavDropdown } from "./nav-dropdown";
 import { SceneImage } from "./scene-image";
+import { ArticleCard } from "./blog-cards";
+import { upcomingArticles } from "@/domain/blog/registry";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 const serviceNavItems = [
@@ -202,6 +204,35 @@ export function ZonesSection() {
   );
 }
 
+/**
+ * Section homepage "Prochains événements à Lyon" — teaser discret vers le
+ * blog (max 3 événements à venir, jamais d'événement terminé). Ne s'affiche
+ * pas si aucun événement à venir n'est publié.
+ */
+export function UpcomingEventsSection() {
+  const events = upcomingArticles().slice(0, 3);
+  if (events.length === 0) return null;
+
+  return (
+    <section id="evenements" className="kd-section kd-on-cream">
+      <div className="kd-container">
+        <div className="kd-section-head">
+          <p className="kd-eyebrow">Blog</p>
+          <h2 className="kd-h2">Prochains événements à Lyon</h2>
+        </div>
+        <div className="kd-grid-3">
+          {events.map((article) => (
+            <ArticleCard key={article.slug} article={article} />
+          ))}
+        </div>
+        <p className="kd-body" style={{ marginTop: "var(--kd-space-4)" }}>
+          <Link href="/blog/evenements-lyon" className="kd-card-link">Voir tous les événements à Lyon <span aria-hidden="true">→</span></Link>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function CtaSection() {
   return (
     <section id="reserver" className="kd-section kd-on-white">
@@ -317,7 +348,7 @@ export function FooterSection() {
         </div>
         <div className="kd-footer-bottom">
           <span>© {new Date().getFullYear()} KDRIVE</span>
-          <span>Mentions légales · <Link href="/politique-de-confidentialite">Confidentialité</Link></span>
+          <span>Mentions légales · <Link href="/politique-de-confidentialite">Confidentialité</Link> · <Link href="/blog">Blog</Link></span>
         </div>
       </div>
     </footer>

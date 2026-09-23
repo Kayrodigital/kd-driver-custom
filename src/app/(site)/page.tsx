@@ -12,6 +12,7 @@ import {
   ImmediateRideSection,
   ServicesSection,
   SiteNav,
+  UpcomingEventsSection,
   VehiclesSection,
   ZonesSection,
 } from "@/app/design-preview/sections";
@@ -67,6 +68,7 @@ export default function HomePage() {
       <CorporateSection />
       <ZonesSection />
       <ReviewsSection />
+      <UpcomingEventsSection />
       <CtaSection />
       <FooterSection />
     </>

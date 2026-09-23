@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo/site";
+import { blogCategories, indexableArticles } from "@/domain/blog/registry";
 
 const PUBLIC_PATHS = [
   "/",
@@ -49,8 +50,22 @@ const PUBLIC_PATHS = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return PUBLIC_PATHS.map((path) => ({
+  const staticEntries = PUBLIC_PATHS.map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified: new Date(),
   }));
+
+  /**
+   * Blog : page d'accueil + catégories + articles indexables uniquement
+   * (`indexableArticles()` exclut les brouillons/`noIndex`, dont l'article
+   * de test). Généré depuis le registre — aucun ajout manuel requis pour un
+   * nouvel article.
+   */
+  const blogEntries = [
+    { url: `${SITE_URL}/blog`, lastModified: new Date() },
+    ...blogCategories.map((category) => ({ url: `${SITE_URL}/blog/${category.slug}`, lastModified: new Date() })),
+    ...indexableArticles().map((article) => ({ url: `${SITE_URL}/blog/${article.slug}`, lastModified: new Date(article.updatedAt) })),
+  ];
+
+  return [...staticEntries, ...blogEntries];
 }
