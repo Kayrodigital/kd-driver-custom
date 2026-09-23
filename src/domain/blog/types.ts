@@ -48,4 +48,8 @@ export type BlogArticle = {
   noIndex?: boolean;
   /** Contenu de test clairement identifié comme placeholder — à ne jamais laisser passer en indexation. */
   isPlaceholder?: boolean;
+  /** Sources consultées pour vérifier les faits de l'événement — usage interne, non affiché sur la page. */
+  sources?: string[];
+  /** Note éditoriale pour le recyclage annuel de la page (slug conservé d'une édition à l'autre) — usage interne, non affiché. */
+  annualUpdate?: { keepSlug: boolean; note: string };
 };
