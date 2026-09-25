@@ -54,7 +54,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/airport-transfer.jpg" alt="" className="kd-hero-photo" priority sizes="100vw" />
+        <SceneImage src="/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner">
           <div className="kd-hero-copy">
             <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Services" }, { label: "Transfert aéroport" }]} />
@@ -190,7 +190,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
           <h2 className="kd-h2">Votre transfert aéroport, en quelques secondes</h2>
-          <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+          <Link className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></Link>
           <p className="kd-field-hint" style={{ marginTop: 8 }}>
             Une question avant de réserver ? <Link href="/contact">Contactez KDRIVE</Link>.
           </p>

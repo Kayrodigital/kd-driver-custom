@@ -10,6 +10,7 @@ import {
   CtaSection,
   FooterSection,
   ImmediateRideSection,
+  MobilityFlowSection,
   ServicesSection,
   SiteNav,
   UpcomingEventsSection,
@@ -31,12 +32,12 @@ export default function HomePage() {
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" priority sizes="100vw" />
+        <SceneImage src="/images/site/kdrive-dirigeant-hotel-business-lyon.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner">
           <div className="kd-hero-copy">
             <p className="kd-eyebrow">Chauffeur privé · Lyon</p>
-            <h1 className="kd-h1">Votre trajet, réservé en toute sérénité.</h1>
-            <p className="kd-lead">Réservez votre trajet à Lyon en quelques instants. KDRIVE confirme ensuite la disponibilité et le tarif.</p>
+            <h1 className="kd-h1">Votre chauffeur privé pour Lyon, sans compromis.</h1>
+            <p className="kd-lead">Aéroport, gares, rendez-vous professionnels, salons : réservez en quelques instants, KDRIVE confirme la disponibilité et le tarif.</p>
           </div>
           <div className="kd-hero-form-card">
             <HeroSearchForm tone="dark" />
@@ -65,6 +66,7 @@ export default function HomePage() {
       <VehiclesSection />
       <ImmediateRideSection />
       <AirportSection />
+      <MobilityFlowSection />
       <CorporateSection />
       <ZonesSection />
       <ReviewsSection />

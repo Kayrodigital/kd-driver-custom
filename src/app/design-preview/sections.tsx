@@ -99,21 +99,22 @@ export function ServicesSection() {
 export function AdvantagesSection() {
   return (
     <section className="kd-section kd-on-white">
-      <div className="kd-container">
-        <div className="kd-section-head">
+      <div className="kd-container kd-grid-2" style={{ alignItems: "center" }}>
+        <SceneImage src="/images/site/kdrive-quartier-affaires-part-dieu-lyon.webp" alt="Quartier d’affaires de la Part-Dieu à Lyon" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
+        <div className="kd-stack">
           <p className="kd-eyebrow">Pourquoi KDRIVE</p>
           <h2 className="kd-h2">L’exigence d’un service premium, l’ancrage local en plus</h2>
-        </div>
-        <div className="kd-grid-2">
-          {advantages.map((advantage) => (
-            <div key={advantage.num} className="kd-advantage">
-              <span className="kd-advantage-num">{advantage.num}</span>
-              <div>
-                <h3 className="kd-h4">{advantage.title}</h3>
-                <p className="kd-body">{advantage.body}</p>
+          <div style={{ display: "grid", gap: "var(--kd-space-4)" }}>
+            {advantages.map((advantage) => (
+              <div key={advantage.num} className="kd-advantage">
+                <span className="kd-advantage-num">{advantage.num}</span>
+                <div>
+                  <h3 className="kd-h4">{advantage.title}</h3>
+                  <p className="kd-body">{advantage.body}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -155,13 +156,51 @@ export function AirportSection() {
   return (
     <section className="kd-section kd-on-white">
       <div className="kd-container kd-grid-2" style={{ alignItems: "center" }}>
-        <SceneImage src="/images/airport-transfer.jpg" alt="Transfert aéroport" note="photo à venir" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
+        <SceneImage src="/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp" alt="Transfert aéroport Lyon-Saint-Exupéry" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
         <div className="kd-stack">
           <p className="kd-eyebrow">Aéroport &amp; gares</p>
           <h2 className="kd-h2">Votre chauffeur, prêt pour votre vol ou votre train</h2>
           <p className="kd-lead">Renseignez votre numéro de vol ou l’heure de votre train : KDRIVE prépare votre prise en charge et reste joignable en cas de changement.</p>
           <Link className="kd-btn kd-btn--outline" href="/transfert-aeroport">Réserver un transfert</Link>
         </div>
+      </div>
+    </section>
+  );
+}
+
+const mobilityFlowSteps = [
+  { num: "01", title: "Aéroport ou gare", body: "Lyon-Saint-Exupéry, Part-Dieu, Perrache : votre chauffeur suit votre vol ou votre train." },
+  { num: "02", title: "Rendez-vous ou salon", body: "Centre de Congrès, Eurexpo, siège client : dépose au plus près de votre créneau." },
+  { num: "03", title: "Hôtel ou restaurant", body: "Entre deux rendez-vous ou en soirée, un trajet supplémentaire sans nouvelle réservation." },
+  { num: "04", title: "Retour gare ou aéroport", body: "Un départ calculé pour ne jamais courir après votre train ou votre vol." },
+];
+
+/**
+ * Illustre la chaîne de déplacements d'une journée professionnelle type
+ * (aéroport/gare → rendez-vous/salon → hôtel → retour) plutôt qu'un trajet
+ * isolé — KDRIVE vend une solution de mobilité, pas une simple course.
+ */
+export function MobilityFlowSection() {
+  return (
+    <section className="kd-section kd-section--compact kd-on-cream">
+      <div className="kd-container kd-grid-2" style={{ alignItems: "center" }}>
+        <div className="kd-stack">
+          <p className="kd-eyebrow">Mobilité professionnelle</p>
+          <h2 className="kd-h2">Une journée, plusieurs étapes, un seul chauffeur</h2>
+          <p className="kd-lead">KDRIVE accompagne vos déplacements du début à la fin de votre journée à Lyon, pas seulement un aller simple.</p>
+          <div style={{ display: "grid", gap: "var(--kd-space-3)" }}>
+            {mobilityFlowSteps.map((step) => (
+              <div key={step.num} className="kd-advantage">
+                <span className="kd-advantage-num">{step.num}</span>
+                <div>
+                  <h3 className="kd-h4" style={{ fontSize: "1.1rem" }}>{step.title}</h3>
+                  <p className="kd-body">{step.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <SceneImage src="/images/site/kdrive-chauffeur-centre-congres-lyon.webp" alt="Chauffeur privé Kdrive devant le Centre de Congrès de Lyon" className="kd-scene--tall" sizes="(max-width: 680px) 100vw, 50vw" />
       </div>
     </section>
   );

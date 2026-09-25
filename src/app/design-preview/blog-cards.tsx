@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { BlogArticle } from "@/domain/blog/types";
 import { endedStatusLabel } from "@/domain/blog/registry";
+import { SceneImage } from "./scene-image";
 
 function formatEventDate(iso?: string): string | undefined {
   if (!iso) return undefined;
@@ -26,7 +27,8 @@ export function StatusPill({ article }: { article: BlogArticle }) {
 export function ArticleCard({ article }: { article: BlogArticle }) {
   const dateRange = formatEventDateRange(article);
   return (
-    <Link href={`/blog/${article.slug}`} className="kd-card kd-card--hover" style={{ display: "grid", gap: 10 }}>
+    <Link href={`/blog/${article.slug}`} className="kd-card kd-card--hover kd-service-card" style={{ gap: 10 }}>
+      <SceneImage src={article.heroImage} alt={article.heroImageAlt} className="kd-service-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
       <StatusPill article={article} />
       <h3 className="kd-h4">{article.h1}</h3>
       {(dateRange || article.eventLocation) && (
