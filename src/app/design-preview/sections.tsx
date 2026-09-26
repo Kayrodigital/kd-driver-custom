@@ -22,13 +22,13 @@ const aboutNavItems = [
 ];
 
 const services = [
-  { title: "Transferts aéroports", body: "Lyon-Saint-Exupéry et autres aéroports : prise en charge préparée à l’avance.", image: "/images/service-transferts.jpg", href: "/transfert-aeroport" },
-  { title: "Transferts gares", body: "Part-Dieu, Perrache et autres gares, sur réservation.", image: "/images/service-transferts.jpg", href: "/transfert-gare" },
+  { title: "Transferts aéroports", body: "Lyon-Saint-Exupéry et autres aéroports : prise en charge préparée à l’avance.", image: "/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp", href: "/transfert-aeroport" },
+  { title: "Transferts gares", body: "Part-Dieu, Perrache et autres gares, sur réservation.", image: "/images/site/kdrive-transfert-gare-lyon-part-dieu.webp", href: "/transfert-gare" },
   { title: "Déplacements professionnels", body: "Rendez-vous, équipes en déplacement : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
   { title: "Transferts hôtels & destinations privées", body: "Un chauffeur dédié pour vos arrivées, départs et déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
-  { title: "Événements & sorties", body: "Soirées, événements privés ou professionnels : réservez votre trajet en ligne.", image: "/images/service-affaires.jpg", href: "/reserver" },
+  { title: "Événements & sorties", body: "Soirées, événements privés ou professionnels : réservez votre trajet en ligne.", image: "/images/service-vip.jpg", href: "/reserver" },
   { title: "Transport de groupes", body: "Familles, groupes et bagages nombreux : la catégorie Van s’adapte à vos besoins.", image: "/images/vehicle-van.jpg", href: "/vehicules" },
-  { title: "Course immédiate", body: "Besoin d’un chauffeur maintenant ? Appelez-nous directement.", image: "/images/service-transferts.jpg", href: "/#course-immediate" },
+  { title: "Course immédiate", body: "Besoin d’un chauffeur maintenant ? Appelez-nous directement.", image: "/images/site/kdrive-berline-autoroute-lyon.webp", href: "/#course-immediate" },
 ];
 
 const advantages = [
