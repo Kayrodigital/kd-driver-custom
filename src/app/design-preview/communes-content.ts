@@ -52,10 +52,14 @@ export const communesPages: LocalPageContent[] = [
       { title: "Vaulx-en-Velin → Aéroport Lyon-Saint Exupéry", body: "Transfert vers l'aéroport, à l'est de la métropole.", href: "/transfert-aeroport" },
       { title: "Vaulx-en-Velin → Gare Part-Dieu", body: "Trajet vers la gare de la Part-Dieu.", href: "/vtc-lyon-part-dieu" },
     ],
+    extraTitle: "Pourquoi réserver votre VTC depuis Vaulx-en-Velin ?",
+    extraBody: "Que le départ se fasse depuis le pôle La Soie, le Mas du Taureau ou un point plus proche du canal de Jonage, indiquer l'adresse précise facilite la prise en charge, en particulier pendant les travaux du tramway T9. Pour un trajet étudiant avec sac à dos et matériel, un départ vers l'aéroport avec bagages en soute, ou un rendez-vous professionnel à horaire fixe à Villeurbanne ou dans Lyon, KDRIVE confirme la catégorie de véhicule et le tarif par téléphone avant la course. Une réservation anticipée reste recommandée dès que l'horaire est connu.",
     faq: [
       { q: "Qu'est-ce que le pôle La Soie ?", a: "Un carrefour multimodal réunissant métro A, tramway T3, Rhônexpress et un réseau étendu de bus." },
       { q: "Le chantier du tramway T9 perturbe-t-il la circulation ?", a: "Oui, le centre-ville et les axes Salengro connaissent des déviations jusqu'à la mise en service commerciale annoncée en 2026." },
       { q: "Quel délai pour rejoindre l'aéroport depuis Vaulx-en-Velin ?", a: "Aucun délai n'est garanti à l'avance ; la durée dépend du trafic au moment du trajet." },
+      { q: "Peut-on réserver un VTC de Vaulx-en-Velin vers l'aéroport Lyon-Saint Exupéry ?", a: "Oui, un transfert direct est possible ; indiquez votre numéro de vol lors de la réservation pour faciliter le suivi de votre horaire." },
+      { q: "Kdrive réalise-t-il des trajets longue distance depuis Vaulx-en-Velin ?", a: "Oui, un trajet longue distance est traité comme toute autre demande de ce type : le tarif est calculé sur la distance réelle et confirmé avant votre départ." },
     ],
     neighborLinksTitle: "Communes voisines",
     neighborLinks: [
@@ -246,10 +250,14 @@ export const communesPages: LocalPageContent[] = [
       { title: "Caluire-et-Cuire → Gare Part-Dieu", body: "Trajet vers la gare de la Part-Dieu.", href: "/vtc-lyon-part-dieu" },
       { title: "Caluire-et-Cuire → Aéroport Lyon-Saint Exupéry", body: "Transfert vers l'aéroport.", href: "/transfert-aeroport" },
     ],
+    extraTitle: "Pourquoi réserver votre VTC depuis Caluire-et-Cuire ?",
+    extraBody: "Le relief marqué entre les berges de la Saône et le plateau, ajouté à la congestion récurrente au nœud de Saint-Clair, rend utile une prise en charge à l'adresse exacte plutôt qu'à un point de rendez-vous approximatif. Pour un rendez-vous à l'Infirmerie Protestante ou à l'Hôpital Dugoujon, une sortie de spectacle au Radiant-Bellevue, ou un départ vers une gare ou l'aéroport avec bagages, KDRIVE confirme la catégorie de véhicule et le tarif par téléphone avant la course, sur la base de l'adresse et de l'horaire indiqués lors de la demande.",
     faq: [
       { q: "Comment accéder au Radiant-Bellevue un soir de spectacle ?", a: "KDRIVE vous dépose directement au 1 rue Jean-Moulin, sans recherche de stationnement." },
       { q: "Le relief de Caluire complique-t-il un trajet en voiture ?", a: "Oui, la dénivellation entre Cuire-le-Bas et le plateau sommital est marquée, avec des lacets étroits et une congestion fréquente au nœud de Saint-Clair." },
       { q: "Le centre de Lyon est-il proche depuis Caluire-et-Cuire ?", a: "Oui, la commune jouxte directement le 1er arrondissement ; aucun délai n'est garanti à l'avance." },
+      { q: "Peut-on réserver un VTC de Caluire-et-Cuire vers une gare de Lyon ?", a: "Oui, un transfert vers la gare de la Part-Dieu ou de Perrache peut être réservé, sur la base de votre horaire de train." },
+      { q: "Peut-on réserver un chauffeur à l'avance depuis Caluire-et-Cuire ?", a: "Oui, la réservation anticipée est recommandée, en particulier pour un trajet lié à un horaire de train, de vol ou de spectacle." },
     ],
     neighborLinksTitle: "Communes voisines",
     neighborLinks: [
@@ -436,10 +444,14 @@ export const communesPages: LocalPageContent[] = [
       { title: "Tassin-la-Demi-Lune → Écully", body: "Trajet vers la commune voisine.", href: "/vtc-ecully" },
       { title: "Tassin-la-Demi-Lune → Aéroport Lyon-Saint Exupéry", body: "Transfert vers l'aéroport.", href: "/transfert-aeroport" },
     ],
+    extraTitle: "Pourquoi réserver votre VTC depuis Tassin-la-Demi-Lune ?",
+    extraBody: "Entre les sept axes qui convergent place Vauboin et les horaires parfois serrés d'un séminaire au Domaine de Montcelard ou d'une soirée à L'Atrium, préciser l'adresse de départ et l'heure souhaitée permet à KDRIVE d'organiser la prise en charge sans dépendre d'un point de repère approximatif. Le service convient aussi bien à un trajet résidentiel vers Lyon qu'à un déplacement professionnel vers une entreprise de l'ouest lyonnais ou un transfert avec bagages vers une gare ou l'aéroport. Le tarif est confirmé par téléphone avant la course, quelle que soit la nature du trajet.",
     faq: [
       { q: "Pourquoi la place Vauboin est-elle un point sensible de circulation ?", a: "Sept axes départementaux et métropolitains y convergent, provoquant des embouteillages notables aux heures de pointe." },
       { q: "Où se trouve le Domaine de Montcelard ?", a: "113 route de Paris, un parc dédié aux séminaires et à la formation d'entreprise, appartenant à Mérieux Université." },
       { q: "Combien de temps pour rejoindre Lyon depuis Tassin-la-Demi-Lune ?", a: "Aucun délai n'est garanti à l'avance ; la durée dépend du trafic au moment du trajet." },
+      { q: "Peut-on réserver un VTC pour rejoindre une gare de Lyon depuis Tassin-la-Demi-Lune ?", a: "Oui, un transfert vers la gare de la Part-Dieu ou de Perrache peut être réservé, sur la base de votre horaire de train." },
+      { q: "Peut-on réserver un chauffeur pour un séminaire au Domaine de Montcelard ?", a: "Oui, KDRIVE peut assurer un trajet ponctuel ou une mise à disposition pour un événement professionnel à cette adresse, sur demande." },
     ],
     neighborLinksTitle: "Communes voisines",
     neighborLinks: [
@@ -798,10 +810,14 @@ export const communesPages: LocalPageContent[] = [
       { title: "Oullins-Pierre-Bénite → Gare Perrache", body: "Trajet vers la gare de Perrache.", href: "/vtc-lyon-perrache" },
       { title: "Oullins-Pierre-Bénite → Aéroport Lyon-Saint Exupéry", body: "Transfert vers l'aéroport.", href: "/transfert-aeroport" },
     ],
+    extraTitle: "Pourquoi réserver votre VTC depuis Oullins-Pierre-Bénite ?",
+    extraBody: "Que le départ se fasse du secteur Oullins, du tissu industriel de Pierre-Bénite ou d'un rendez-vous au Centre Hospitalier Lyon Sud, indiquer l'adresse précise et le code postal (69600 ou 69310) facilite la préparation du trajet. KDRIVE convient aussi bien à un déplacement résidentiel vers la Confluence qu'à un trajet professionnel vers le secteur industriel, un rendez-vous médical ou un transfert avec bagages vers une gare ou l'aéroport. Le tarif, calculé selon la catégorie de véhicule et le trajet réel, est confirmé par téléphone avant la course.",
     faq: [
       { q: "Pourquoi deux codes postaux pour une seule commune ?", a: "Oullins-Pierre-Bénite, née de la fusion de 2024, a conservé les codes postaux historiques 69600 (Oullins) et 69310 (Pierre-Bénite)." },
       { q: "Où se trouve l'accès au Centre Hospitalier Lyon Sud ?", a: "Au 165 chemin du Grand Revoyet, via la station de métro Hôpitaux Sud (ligne B)." },
       { q: "Le centre de Lyon est-il proche depuis Oullins ?", a: "Oui, la commune est limitrophe de la Confluence (2e arrondissement) ; aucun délai n'est garanti à l'avance." },
+      { q: "Peut-on réserver un VTC d'Oullins-Pierre-Bénite vers l'aéroport Lyon-Saint Exupéry ?", a: "Oui, un transfert direct est possible ; indiquez votre numéro de vol lors de la réservation pour faciliter le suivi de votre horaire." },
+      { q: "Peut-on réserver un chauffeur à l'avance depuis Oullins-Pierre-Bénite ?", a: "Oui, la réservation anticipée est recommandée, notamment pour un rendez-vous médical ou un trajet lié à un horaire de train ou de vol." },
     ],
     neighborLinksTitle: "Communes voisines",
     neighborLinks: [
