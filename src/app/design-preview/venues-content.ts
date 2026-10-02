@@ -31,6 +31,8 @@ export const venuesPages: LocalPageContent[] = [
     slug: "vtc-eurexpo-lyon",
     family: "venue",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "VTC Eurexpo Lyon | Chauffeur privé | KDRIVE",
     metaDescription: "Chauffeur privé pour rejoindre Eurexpo Lyon (Chassieu) : trajets pour salons, congrès et événements professionnels.",
     eyebrow: "VTC Eurexpo",
@@ -74,6 +76,8 @@ export const venuesPages: LocalPageContent[] = [
     slug: "vtc-groupama-stadium",
     family: "venue",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "VTC Groupama Stadium | Chauffeur privé | KDRIVE",
     metaDescription: "Chauffeur privé pour rejoindre le Groupama Stadium (Décines-Charpieu) : trajets pour matchs et concerts.",
     eyebrow: "VTC Groupama Stadium",
@@ -117,6 +121,8 @@ export const venuesPages: LocalPageContent[] = [
     slug: "vtc-ldlc-arena",
     family: "venue",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "VTC LDLC Arena | Chauffeur privé | KDRIVE",
     metaDescription: "Chauffeur privé pour rejoindre la LDLC Arena (Décines-Charpieu) : trajets pour matchs de basket et concerts.",
     eyebrow: "VTC LDLC Arena",
@@ -158,6 +164,8 @@ export const venuesPages: LocalPageContent[] = [
     slug: "vtc-centre-congres-lyon",
     family: "venue",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "VTC Centre de Congrès de Lyon | Chauffeur privé | KDRIVE",
     metaDescription: "Chauffeur privé pour rejoindre le Centre de Congrès de Lyon (Cité Internationale, 6e arrondissement) : trajets professionnels.",
     eyebrow: "VTC Centre de Congrès",
@@ -199,6 +207,8 @@ export const venuesPages: LocalPageContent[] = [
     slug: "vtc-halle-tony-garnier",
     family: "venue",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "VTC Halle Tony Garnier | Chauffeur privé | KDRIVE",
     metaDescription: "Chauffeur privé pour rejoindre la Halle Tony Garnier (Lyon 7e, Gerland) : trajets pour concerts et spectacles.",
     eyebrow: "VTC Halle Tony Garnier",

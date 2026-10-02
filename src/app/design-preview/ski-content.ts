@@ -36,6 +36,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-courchevel",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Courchevel | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Courchevel (Les 3 Vallées) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -76,6 +78,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-meribel",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Méribel | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Méribel (Les 3 Vallées) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -116,6 +120,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-val-thorens",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Val Thorens | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Val Thorens (Les 3 Vallées) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -154,6 +160,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-les-menuires",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Les Menuires | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Les Menuires (Les 3 Vallées) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -192,6 +200,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-les-arcs",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Les Arcs | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Les Arcs (Paradiski) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -230,6 +240,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-la-plagne",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – La Plagne | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et La Plagne (Paradiski) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -269,6 +281,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-tignes",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Tignes | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Tignes (Espace Killy) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -307,6 +321,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-val-disere",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Val d'Isère | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Val d'Isère (Espace Killy) : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -345,6 +361,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-les-deux-alpes",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Les Deux Alpes | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Les Deux Alpes : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -383,6 +401,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-alpe-dhuez",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Alpe d'Huez | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et l'Alpe d'Huez : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -420,6 +440,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-chamonix",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Chamonix | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Chamonix-Mont-Blanc : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",
@@ -458,6 +480,8 @@ export const skiPages: LocalPageContent[] = [
     slug: "transfert-lyon-megeve",
     family: "ski-station",
     editorialStatus: "needsEnrichment",
+    /** Override : contenu jugé suffisant pour indexation malgré le statut interne — cf. audit SEO du 02/10/2026. */
+    noIndex: false,
     title: "Transfert Lyon – Megève | Chauffeur privé | KDRIVE",
     metaDescription: "Transfert avec chauffeur privé entre Lyon et Megève : tarif calculé sur la distance réelle, confirmé avant votre départ.",
     eyebrow: "Transfert ski",

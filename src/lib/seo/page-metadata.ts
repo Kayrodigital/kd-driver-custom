@@ -17,7 +17,13 @@ export function buildMetadata({
     title,
     description,
     alternates: { canonical: path },
-    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    /**
+     * `follow: true` même en noindex : une page encore trop légère pour être
+     * indexée (brouillon, contenu à enrichir) continue de transmettre le
+     * maillage interne vers les pages qu'elle référence, plutôt que de
+     * couper ce lien — cf. audit SEO du 02/10/2026.
+     */
+    ...(noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,
