@@ -3,7 +3,7 @@ import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form"
 import { SceneImage } from "./scene-image";
 import { TrustBadge } from "./trust-badge";
 import { SiteNav, FooterSection, ReassuranceList } from "./sections";
-import { KdAccordion } from "@/components/kd-accordion";
+import { KdAccordion, KdLearnMoreAccordion, type KdLearnMoreItem } from "@/components/kd-accordion";
 import { Breadcrumb } from "./breadcrumb";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { AddressValue } from "@/domain/booking/address";
@@ -72,7 +72,7 @@ export type LocalPageContent = {
    * texte n'a été rédigé (cf. audit densité visuelle du 02/10/2026).
    * N'affiche rien tant que ce champ n'est pas renseigné. */
   learnMoreTitle?: string;
-  learnMoreItems?: { q: string; a: string }[];
+  learnMoreItems?: KdLearnMoreItem[];
   pillarLinksTitle: string;
   pillarLinks: { href: string; label: string }[];
   /** Liens de proximité (arrondissements limitrophes, communes voisines, hub
@@ -293,7 +293,7 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
               <p className="kd-eyebrow">En savoir plus</p>
               <h2 className="kd-h2">{content.learnMoreTitle}</h2>
             </div>
-            <KdAccordion items={content.learnMoreItems} />
+            <KdLearnMoreAccordion items={content.learnMoreItems} />
           </div>
         </section>
       )}

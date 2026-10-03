@@ -27,3 +27,42 @@ export function KdAccordion({ items }: { items: KdAccordionItem[] }) {
     </>
   );
 }
+
+/**
+ * Variante "En savoir plus" (distincte de la FAQ, qui doit rester en texte
+ * simple q/a pour le JSON-LD FAQPage) : plusieurs paragraphes et des liens
+ * internes optionnels par volet. Mêmes principes — Server Component,
+ * <details>/<summary> natifs, contenu présent dans le HTML dès le
+ * chargement.
+ */
+export type KdLearnMoreItem = {
+  title: string;
+  paragraphs: string[];
+  links?: { label: string; href: string }[];
+};
+
+export function KdLearnMoreAccordion({ items }: { items: KdLearnMoreItem[] }) {
+  return (
+    <>
+      {items.map((item) => (
+        <details key={item.title} className="kd-faq-item">
+          <summary className="kd-h4">{item.title}</summary>
+          {item.paragraphs.map((paragraph, index) => (
+            <p key={index} className="kd-body">{paragraph}</p>
+          ))}
+          {item.links && item.links.length > 0 && (
+            <ul style={{ listStyle: "none", padding: 0, margin: "10px 0 0", display: "grid", gap: 6 }}>
+              {item.links.map((link) => (
+                <li key={link.href}>
+                  <Link className="kd-card-link" href={link.href}>
+                    {link.label} <span aria-hidden="true">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </details>
+      ))}
+    </>
+  );
+}
