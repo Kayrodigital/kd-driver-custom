@@ -40,7 +40,7 @@
   --kd-space-7: 72px;
   --kd-space-8: 112px;
 
-  --kd-section-y: clamp(56px, 9vw, 128px);
+  --kd-section-y: clamp(48px, 6vw, 88px);
   --kd-section-y-compact: clamp(40px, 5vw, 72px);
   --kd-container: min(1200px, 100% - 48px);
 
@@ -104,7 +104,7 @@
 
 .kd-lead { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--kd-muted); line-height: 1.6; max-width: 52ch; }
 .kd-on-dark .kd-lead { color: var(--kd-muted-on-dark); }
-.kd-body { font-size: 0.98rem; line-height: 1.65; color: var(--kd-muted); }
+.kd-body { font-size: 0.98rem; line-height: 1.65; color: var(--kd-muted); max-width: 68ch; }
 
 /* ---------- layout ---------- */
 .kd-container { width: var(--kd-container); margin: 0 auto; }
@@ -739,6 +739,22 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 .kd-zone-chip--primary { background: var(--kd-gold); border-color: var(--kd-gold); color: var(--kd-black); font-weight: 700; }
 
 .kd-cta { text-align: center; display: grid; gap: var(--kd-space-4); justify-items: center; }
+
+/* Variante 2 colonnes des sections CTA à bloc unique (densité visuelle,
+   cf. audit Semrush ratio texte/HTML) : texte à gauche, réassurance à
+   droite, repasse à 1 colonne sous 768px — seuil propre à cette variante,
+   distinct de .kd-grid-2 (680px) pour ne rien changer aux grilles déjà
+   en place ailleurs. */
+.kd-cta-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 320px); gap: var(--kd-space-6); align-items: center; text-align: left; }
+.kd-cta-split .kd-cta { text-align: left; justify-items: start; }
+.kd-cta-list { display: grid; gap: var(--kd-space-3); list-style: none; padding: 0; margin: 0; font-size: 0.92rem; font-weight: 600; }
+.kd-cta-list li { display: flex; align-items: center; gap: 10px; }
+.kd-cta-list svg { width: 18px; height: 18px; flex: none; color: var(--kd-gold-ink); }
+.kd-on-dark .kd-cta-list svg { color: var(--kd-gold); }
+@media (max-width: 768px) {
+  .kd-cta-split { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  .kd-cta-split .kd-cta { text-align: center; justify-items: center; }
+}
 
 /* Widget Trustindex (avis Google) : min-height pour limiter le saut de
    mise en page pendant le chargement différé (strategy="lazyOnload"). */

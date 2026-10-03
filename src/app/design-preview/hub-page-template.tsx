@@ -5,6 +5,7 @@ import { TrustBadge } from "./trust-badge";
 import { SiteNav, FooterSection } from "./sections";
 import { Breadcrumb } from "./breadcrumb";
 import type { EditorialStatus } from "./local-page-template";
+import { KdAccordion } from "@/components/kd-accordion";
 
 export type HubCard = { label: string; href: string; body: string };
 
@@ -108,12 +109,7 @@ export function HubPageTemplate({ content, framed = true }: { content: HubPageCo
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes</h2>
           </div>
-          {content.faq.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-            </details>
-          ))}
+          <KdAccordion items={content.faq} />
         </div>
       </section>
 

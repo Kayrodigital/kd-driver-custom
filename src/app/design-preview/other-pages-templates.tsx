@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
-import { SiteNav, FooterSection } from "./sections";
+import { SiteNav, FooterSection, ReassuranceList } from "./sections";
+import { KdAccordion } from "@/components/kd-accordion";
 import { TrustBadge } from "./trust-badge";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
@@ -140,11 +141,14 @@ export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: 
         </div>
       </section>
       <section id="reserver" className="kd-section kd-on-cream">
-        <div className="kd-container kd-cta">
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Demandez votre tarif</h2>
-          <a className="kd-btn kd-btn--primary" href="/reserver">Demander mon tarif <span aria-hidden="true">→</span></a>
-          <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>📞 06 88 86 34 19</p>
+        <div className="kd-container kd-cta-split">
+          <div className="kd-cta">
+            <p className="kd-eyebrow">Réservation</p>
+            <h2 className="kd-h2">Demandez votre tarif</h2>
+            <a className="kd-btn kd-btn--primary" href="/reserver">Demander mon tarif <span aria-hidden="true">→</span></a>
+            <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>📞 06 88 86 34 19</p>
+          </div>
+          <ReassuranceList />
         </div>
       </section>
       <RelatedLinks
@@ -156,10 +160,13 @@ export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: 
         ]}
       />
       <section id="reserver" className="kd-section kd-on-dark">
-        <div className="kd-container kd-cta">
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Obtenez votre tarif en quelques secondes</h2>
-          <a className="kd-btn kd-btn--gold" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+        <div className="kd-container kd-cta-split">
+          <div className="kd-cta">
+            <p className="kd-eyebrow">Réservation</p>
+            <h2 className="kd-h2">Obtenez votre tarif en quelques secondes</h2>
+            <a className="kd-btn kd-btn--gold" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+          </div>
+          <ReassuranceList />
         </div>
       </section>
     </PageShell>
@@ -326,17 +333,7 @@ export function FaqPage({ framed = true, showTrustBadge = true }: { framed?: boo
       />
       <section className="kd-section kd-on-cream">
         <div className="kd-container" style={{ maxWidth: 720 }}>
-          {faqItems.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-              {item.link && (
-                <Link className="kd-card-link" href={item.link.href}>
-                  {item.link.label} <span aria-hidden="true">→</span>
-                </Link>
-              )}
-            </details>
-          ))}
+          <KdAccordion items={faqItems} />
         </div>
       </section>
       <section id="reserver" className="kd-section kd-on-white">
