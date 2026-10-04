@@ -78,9 +78,17 @@ export function SignatureLocalPageTemplate({ content, framed = false }: { conten
 
         <section className="kd-section kd-signature-intro kd-on-cream">
           <div className="kd-container kd-signature-editorial-grid">
-            <div className="kd-signature-section-marker">
-              <span>02</span>
-              <p className="kd-eyebrow">Présentation</p>
+            <div className="kd-signature-intro-aside">
+              <SceneImage
+                src={featureImage}
+                alt=""
+                className="kd-signature-intro-photo"
+                sizes="(max-width: 760px) 1px, 34vw"
+              />
+              <div className="kd-signature-section-marker">
+                <span>02</span>
+                <p className="kd-eyebrow">Présentation</p>
+              </div>
             </div>
             <div className="kd-signature-editorial-copy">
               <h2 className="kd-h2">{content.presentationTitle}</h2>
@@ -146,6 +154,17 @@ export function SignatureLocalPageTemplate({ content, framed = false }: { conten
                   <p className="kd-eyebrow">Informations pratiques</p>
                   <h2 className="kd-h2">{content.practicalInfoTitle}</h2>
                   <ul>{content.practicalInfoItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                </div>
+              )}
+              {Boolean(content.casUsageItems) !== Boolean(content.practicalInfoItems) && (
+                <div className="kd-signature-facts-visual" aria-hidden="true">
+                  <SceneImage
+                    src={content.heroImage}
+                    alt=""
+                    className="kd-signature-facts-photo"
+                    sizes="(max-width: 760px) 1px, 45vw"
+                  />
+                  <span>{content.eyebrow} · KDRIVE</span>
                 </div>
               )}
             </div>
