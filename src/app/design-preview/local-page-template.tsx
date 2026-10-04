@@ -7,6 +7,7 @@ import { KdAccordion, KdLearnMoreAccordion, type KdLearnMoreItem } from "@/compo
 import { Breadcrumb } from "./breadcrumb";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { AddressValue } from "@/domain/booking/address";
+import { SignatureLocalPageTemplate } from "./villeurbanne-signature-page";
 
 /**
  * Statut éditorial interne (registre SEO) — piloté depuis les données, pas
@@ -108,7 +109,7 @@ function RelatedLinks({ title, links }: { title: string; links: { href: string; 
   );
 }
 
-export function LocalPageTemplate({ content, framed = true }: { content: LocalPageContent; framed?: boolean }) {
+export function LegacyLocalPageTemplate({ content, framed = true }: { content: LocalPageContent; framed?: boolean }) {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -313,4 +314,8 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     </div>
   );
+}
+
+export function LocalPageTemplate({ content, framed = true }: { content: LocalPageContent; framed?: boolean }) {
+  return <SignatureLocalPageTemplate content={content} framed={framed} />;
 }

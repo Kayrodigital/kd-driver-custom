@@ -1,5 +1,5 @@
-import { LocalPageTemplate } from "@/app/design-preview/local-page-template";
 import { localPages } from "@/app/design-preview/local-pages-content";
+import { LocalPageTemplate } from "@/app/design-preview/local-page-template";
 import { buildMetadata } from "@/lib/seo/page-metadata";
 
 export const metadata = buildMetadata({
