@@ -19,10 +19,10 @@ export function articlesByCategory(categorySlug: string): BlogArticle[] {
   return allBlogArticles.filter((article) => article.categorySlug === categorySlug);
 }
 
-/** Articles visibles dans les listings publics (accueil, page catégorie) — exclut les brouillons. */
+/** Articles visibles dans les listings publics (accueil, page catégorie). */
 export function publishedArticles(categorySlug?: string): BlogArticle[] {
   const list = categorySlug ? articlesByCategory(categorySlug) : allBlogArticles;
-  return list.filter((article) => !article.noIndex);
+  return list.filter((article) => !article.noIndex && !article.hiddenFromListings);
 }
 
 function eventSortKey(article: BlogArticle): string {

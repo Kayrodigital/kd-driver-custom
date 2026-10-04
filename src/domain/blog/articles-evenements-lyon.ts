@@ -23,7 +23,7 @@ export const blogArticlesEvenementsLyon: BlogArticle[] = [
     eventStartDate: "2026-09-30",
     eventEndDate: "2026-10-01",
     eventLocation: "Centre de Congrès de Lyon (Cité Internationale)",
-    status: "a-venir",
+    status: "termine",
     heroImage: "/images/blog/evenements/centre-congres-lyon-exterieur.webp",
     heroImageAlt: "Centre de Congrès de Lyon pour les déplacements VTC à Patrimonia",
     body: [
@@ -87,7 +87,7 @@ export const blogArticlesEvenementsLyon: BlogArticle[] = [
     eventStartDate: "2026-10-06",
     eventEndDate: "2026-10-08",
     eventLocation: "Eurexpo Lyon (Chassieu)",
-    status: "a-venir",
+    status: "termine",
     heroImage: "/images/blog/evenements/eurexpo-lyon-exterieur.webp",
     heroImageAlt: "Eurexpo Lyon pour les visiteurs de Préventica en chauffeur privé",
     body: [
@@ -136,6 +136,7 @@ export const blogArticlesEvenementsLyon: BlogArticle[] = [
       { href: "/chauffeur-entreprise", label: "chauffeur privé entreprise" },
       { href: "/mise-a-disposition", label: "mise à disposition avec chauffeur" },
     ],
+    hiddenFromListings: true,
     sources: ["https://www.preventica.com/salon/lyon-2026/evenements"],
     annualUpdate: { keepSlug: true, note: "Mettre à jour chaque année le millésime dans le Title/H1, les dates, horaires, lieu si changement, chiffres de fréquentation, programme et informations d'accès. Conserver l'URL evergreen et le maillage si les services Kdrive restent identiques." },
   },
