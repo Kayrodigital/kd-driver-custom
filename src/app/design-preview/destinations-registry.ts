@@ -4,7 +4,7 @@ import { communesPages } from "./communes-content";
 import { longueDistancePages } from "./longue-distance-content";
 import { skiPages } from "./ski-content";
 import { venuesPages } from "./venues-content";
-import { learnMoreBySlug } from "./en-savoir-plus";
+import { learnMoreBySlug } from "@/content/en-savoir-plus";
 
 /**
  * Registre central des nouvelles pages destinationnelles (sprint
