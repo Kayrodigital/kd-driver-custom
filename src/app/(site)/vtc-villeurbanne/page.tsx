@@ -1,5 +1,5 @@
 import { localPages } from "@/app/design-preview/local-pages-content";
-import { VilleurbanneSignaturePage } from "@/app/design-preview/villeurbanne-signature-page";
+import { LocalPageTemplate } from "@/app/design-preview/local-page-template";
 import { buildMetadata } from "@/lib/seo/page-metadata";
 
 export const metadata = buildMetadata({
@@ -10,5 +10,5 @@ export const metadata = buildMetadata({
 
 export default function VtcVilleurbannePage() {
   const content = localPages.find((page) => page.slug === "vtc-villeurbanne")!;
-  return <VilleurbanneSignaturePage content={content} />;
+  return <LocalPageTemplate content={content} framed={false} />;
 }

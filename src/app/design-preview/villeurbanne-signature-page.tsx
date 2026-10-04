@@ -6,6 +6,7 @@ import type { LocalPageContent } from "./local-page-template";
 import { SceneImage } from "./scene-image";
 import { FooterSection, ReassuranceList, SiteNav } from "./sections";
 import { TrustBadge } from "./trust-badge";
+import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 
 function SignatureLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
@@ -22,7 +23,7 @@ function SignatureLinks({ title, links }: { title: string; links: { href: string
   );
 }
 
-export function VilleurbanneSignaturePage({ content }: { content: LocalPageContent }) {
+export function SignatureLocalPageTemplate({ content, framed = false }: { content: LocalPageContent; framed?: boolean }) {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -33,15 +34,26 @@ export function VilleurbanneSignaturePage({ content }: { content: LocalPageConte
     })),
   };
 
+  const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
+  const featureImage = {
+    arrondissement: "/images/site/kdrive-quartier-affaires-part-dieu-lyon.webp",
+    commune: "/images/site/kdrive-berline-autoroute-lyon.webp",
+    "longue-distance": "/images/hero-longues-distances.jpg",
+    "ski-station": "/images/hero-longues-distances.jpg",
+    venue: "/images/service-vip.jpg",
+    gare: "/images/site/kdrive-transfert-gare-lyon-part-dieu.webp",
+    aeroport: "/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp",
+  }[content.family];
+
   return (
-    <div className="kd-signature">
+    <div className="kd-signature" style={frameStyle}>
       <header className="kd-signature-header kd-on-dark"><SiteNav /></header>
 
       <main>
         <section className="kd-signature-hero kd-on-dark">
           <SceneImage src={content.heroImage} alt="" className="kd-signature-hero-photo" priority sizes="100vw" />
           <div className="kd-container kd-signature-hero-layout">
-            <div className="kd-signature-hero-copy">
+            <div className={`kd-signature-hero-copy${content.h1.length > 38 ? " kd-signature-hero-copy--long" : ""}`}>
               <Breadcrumb
                 items={[
                   { label: "Accueil", href: "/" },
@@ -79,6 +91,67 @@ export function VilleurbanneSignaturePage({ content }: { content: LocalPageConte
           </div>
         </section>
 
+        {content.departureArrivalTitle && content.departure && content.arrival && (
+          <section className="kd-section kd-signature-paired kd-on-white">
+            <div className="kd-container">
+              <div className="kd-signature-inline-head">
+                <p className="kd-eyebrow">Départ et arrivée</p>
+                <h2 className="kd-h2">{content.departureArrivalTitle}</h2>
+              </div>
+              <div className="kd-signature-paired-grid">
+                {[content.departure, content.arrival].map((item, index) => (
+                  <article key={item.title} className="kd-signature-paired-item">
+                    <span>0{index + 1}</span>
+                    <h3 className="kd-h3">{item.title}</h3>
+                    <p className="kd-body">{item.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {content.quartiersTitle && content.quartiers && (
+          <section className="kd-section kd-signature-places kd-on-cream">
+            <div className="kd-container">
+              <div className="kd-signature-inline-head">
+                <p className="kd-eyebrow">Contexte local</p>
+                <h2 className="kd-h2">{content.quartiersTitle}</h2>
+              </div>
+              <div className="kd-signature-places-grid">
+                {content.quartiers.map((item, index) => (
+                  <article key={item.title}>
+                    <span className="kd-signature-place-index">0{index + 1}</span>
+                    <h3 className="kd-h3">{item.title}</h3>
+                    <p className="kd-body">{item.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {(content.casUsageItems || content.practicalInfoItems) && (
+          <section className="kd-section kd-signature-facts kd-on-white">
+            <div className="kd-container kd-signature-facts-grid">
+              {content.casUsageTitle && content.casUsageItems && (
+                <div>
+                  <p className="kd-eyebrow">Motifs de prise en charge</p>
+                  <h2 className="kd-h2">{content.casUsageTitle}</h2>
+                  <ul>{content.casUsageItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                </div>
+              )}
+              {content.practicalInfoTitle && content.practicalInfoItems && (
+                <div>
+                  <p className="kd-eyebrow">Informations pratiques</p>
+                  <h2 className="kd-h2">{content.practicalInfoTitle}</h2>
+                  <ul>{content.practicalInfoItems.map((item) => <li key={item}>{item}</li>)}</ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         <section className="kd-section kd-signature-routes kd-on-dark">
           <div className="kd-container">
             <div className="kd-signature-dark-head">
@@ -107,12 +180,12 @@ export function VilleurbanneSignaturePage({ content }: { content: LocalPageConte
             <div className="kd-container kd-signature-feature-grid">
               <div className="kd-signature-feature-image-wrap">
                 <SceneImage
-                  src="/images/site/kdrive-quartier-affaires-part-dieu-lyon.webp"
-                  alt="Berline avec chauffeur dans la métropole de Lyon"
+                  src={featureImage}
+                  alt="Service de chauffeur privé KDRIVE"
                   className="kd-signature-feature-image"
                   sizes="(max-width: 760px) 100vw, 48vw"
                 />
-                <span className="kd-signature-image-caption">Villeurbanne · Métropole de Lyon</span>
+                <span className="kd-signature-image-caption">{content.eyebrow} · KDRIVE</span>
               </div>
               <div className="kd-signature-feature-copy">
                 <span className="kd-signature-large-index" aria-hidden="true">03</span>
@@ -120,6 +193,27 @@ export function VilleurbanneSignaturePage({ content }: { content: LocalPageConte
                 <h2 className="kd-h2">{content.extraTitle}</h2>
                 <p className="kd-body">{content.extraBody}</p>
                 <Link className="kd-card-link" href="/reserver">Réserver un trajet <span aria-hidden="true">→</span></Link>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {content.pricingTitle && content.pricingBody && (
+          <section className="kd-section kd-signature-pricing kd-on-cream">
+            <div className="kd-container kd-signature-pricing-grid">
+              <div className="kd-signature-pricing-copy">
+                <p className="kd-eyebrow">Tarifs</p>
+                <h2 className="kd-h2">{content.pricingTitle}</h2>
+                <p className="kd-body">{content.pricingBody}</p>
+                <Link className="kd-card-link" href="/tarifs">Consulter la grille tarifaire <span aria-hidden="true">→</span></Link>
+              </div>
+              <div className="kd-signature-pricing-list">
+                {vehicleCatalog.map((vehicle) => (
+                  <div key={vehicle.slug}>
+                    <span>{vehicle.label}</span>
+                    <strong>À partir de {vehicle.fromPriceEuros} €</strong>
+                  </div>
+                ))}
               </div>
             </div>
           </section>

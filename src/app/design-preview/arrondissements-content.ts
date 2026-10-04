@@ -243,7 +243,7 @@ export const arrondissementsPages: LocalPageContent[] = [
     eyebrow: "VTC Lyon 5e",
     h1: "Chauffeur VTC dans le 5e arrondissement de Lyon",
     breadcrumbParent: { label: "Zones desservies", href: "/zones-desservies" },
-    heroImage: "/images/about-lyon.jpg",
+    heroImage: "/images/site/kdrive-vieux-lyon-fourviere-hero.png",
     heroLead: "KDRIVE prend en charge vos trajets au départ ou à destination du 5e arrondissement de Lyon, du Vieux Lyon à Fourvière.",
     presentationTitle: "Le Lyon historique, entre Vieux Lyon et colline de Fourvière",
     presentationBody: [
