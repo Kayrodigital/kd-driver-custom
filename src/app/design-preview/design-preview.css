@@ -977,9 +977,25 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 .kd-signature-facts-grid li { position: relative; padding: 17px 0 17px 26px; border-bottom: 1px solid var(--kd-line); color: var(--kd-muted); line-height: 1.55; }
 .kd-signature-facts-grid li::before { content: "—"; position: absolute; left: 0; color: var(--kd-gold-ink); }
 
-.kd-signature-routes { position: relative; }
+.kd-signature-routes { position: relative; overflow: hidden; isolation: isolate; }
+.kd-signature-routes > .kd-container { position: relative; z-index: 2; }
+.kd-signature-routes-photo {
+  position: absolute; z-index: 0; inset: 0 0 0 auto;
+  width: min(58vw, 860px); height: 100%; min-height: 0; border-radius: 0;
+  opacity: 0.42;
+}
+.kd-signature-routes-photo .kd-scene-photo {
+  object-position: center; filter: grayscale(0.22) saturate(0.72) contrast(1.08);
+}
+.kd-signature-routes-photo::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(90deg, var(--kd-black) 0%, rgba(14,13,12,0.94) 20%, rgba(14,13,12,0.58) 62%, rgba(14,13,12,0.32) 100%),
+    linear-gradient(0deg, rgba(14,13,12,0.88) 0%, transparent 46%, rgba(14,13,12,0.54) 100%);
+}
+.kd-signature-routes-photo::after { z-index: 2; opacity: 0.26; }
 .kd-signature-routes::after {
-  content: ""; position: absolute; width: 440px; height: 440px; right: -220px; top: -220px;
+  content: ""; position: absolute; z-index: 1; width: 440px; height: 440px; right: -220px; top: -220px;
   border: 1px solid rgba(176,141,79,0.22); border-radius: 50%;
 }
 .kd-signature-dark-head { display: grid; gap: 48px; align-items: end; margin-bottom: clamp(44px, 6vw, 78px); }
@@ -991,7 +1007,7 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
   padding: clamp(25px, 3vw, 38px) 0; border-bottom: 1px solid var(--kd-line-on-dark);
   transition: padding-left 0.25s var(--kd-ease), background 0.25s var(--kd-ease);
 }
-.kd-signature-route-list li:hover { padding-left: 18px; background: linear-gradient(90deg, rgba(176,141,79,0.09), transparent 78%); }
+.kd-signature-route-list li:hover { padding-left: 18px; background: linear-gradient(90deg, rgba(176,141,79,0.12), rgba(14,13,12,0.22) 78%); }
 .kd-signature-route-index { color: var(--kd-gold); font-size: 0.72rem; letter-spacing: 0.14em; }
 .kd-signature-route-list h3 { font-size: clamp(1.55rem, 2.6vw, 2.45rem); }
 .kd-signature-route-list h3 a { text-decoration: none; }
@@ -1081,6 +1097,8 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
   .kd-signature-dark-head { gap: 20px; }
   .kd-signature-route-list li { grid-template-columns: 38px minmax(0, 1fr) 22px; gap: 12px; }
   .kd-signature-route-list li:hover { padding-left: 8px; }
+  .kd-signature-routes-photo { width: 100%; opacity: 0.3; }
+  .kd-signature-routes-photo::before { background: linear-gradient(90deg, rgba(14,13,12,0.92), rgba(14,13,12,0.58)), linear-gradient(0deg, rgba(14,13,12,0.92), transparent 52%, rgba(14,13,12,0.68)); }
   .kd-signature-feature-image-wrap { padding: 0 0 22px 22px; }
   .kd-signature-feature-image { min-height: 400px; }
   .kd-signature-feature-copy { padding-top: 8px; }

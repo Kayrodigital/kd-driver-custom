@@ -39,7 +39,7 @@ export function SignatureLocalPageTemplate({ content, framed = false }: { conten
     arrondissement: "/images/site/kdrive-quartier-affaires-part-dieu-lyon.webp",
     commune: "/images/site/kdrive-berline-autoroute-lyon.webp",
     "longue-distance": "/images/hero-longues-distances.jpg",
-    "ski-station": "/images/hero-longues-distances.jpg",
+    "ski-station": "/images/site/kdrive-transfert-station-ski-alpes.jpg",
     venue: "/images/service-vip.jpg",
     gare: "/images/site/kdrive-transfert-gare-lyon-part-dieu.webp",
     aeroport: "/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp",
@@ -153,6 +153,12 @@ export function SignatureLocalPageTemplate({ content, framed = false }: { conten
         )}
 
         <section className="kd-section kd-signature-routes kd-on-dark">
+          <SceneImage
+            src={featureImage}
+            alt=""
+            className="kd-signature-routes-photo"
+            sizes="(max-width: 760px) 100vw, 58vw"
+          />
           <div className="kd-container">
             <div className="kd-signature-dark-head">
               <div>
