@@ -1,6 +1,6 @@
 import type { LocalPageContent } from "./local-page-template";
 import { popularDestinations } from "@/domain/booking/popular-destinations";
-import { learnMoreBySlug } from "./en-savoir-plus";
+import { learnMoreBySlug } from "@/content/en-savoir-plus";
 
 const gareTgvAddress = popularDestinations.find((d) => d.label === "Gare Lyon-Saint-Exupéry TGV")!.address;
 

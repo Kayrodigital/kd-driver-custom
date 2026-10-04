@@ -5,6 +5,9 @@ import { communesEstNordLearnMore } from "./communes-est-nord";
 import { communesOuestSudLearnMore } from "./communes-ouest-sud";
 import { pagesPrincipalesLearnMore } from "./pages-principales";
 import { faqLocales } from "./faq-locales";
+import { garesLonguesDistancesLearnMore } from "./gares-longues-distances";
+import { stationsSkiLearnMore } from "./stations-ski";
+import { lieuxEvenementsLearnMore } from "./lieux-evenements";
 
 const base: Record<string, LearnMorePage> = {
   "vtc-villeurbanne": { title: villeurbanneLearnMoreTitle, items: villeurbanneLearnMoreItems },
@@ -12,6 +15,9 @@ const base: Record<string, LearnMorePage> = {
   ...communesEstNordLearnMore,
   ...communesOuestSudLearnMore,
   ...pagesPrincipalesLearnMore,
+  ...garesLonguesDistancesLearnMore,
+  ...stationsSkiLearnMore,
+  ...lieuxEvenementsLearnMore,
 };
 
 // Ajoute le volet « Questions pratiques » juste avant le volet de réservation.
