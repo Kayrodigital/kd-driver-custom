@@ -4,6 +4,7 @@ import { communesPages } from "./communes-content";
 import { longueDistancePages } from "./longue-distance-content";
 import { skiPages } from "./ski-content";
 import { venuesPages } from "./venues-content";
+import { learnMoreBySlug } from "./en-savoir-plus";
 
 /**
  * Registre central des nouvelles pages destinationnelles (sprint
@@ -16,13 +17,20 @@ import { venuesPages } from "./venues-content";
  * URL existantes sont conservées telles quelles, sans doublon, conformément
  * à l'audit de ce sprint.
  */
-export const allDestinationPages: LocalPageContent[] = [
+const destinationPagesBase: LocalPageContent[] = [
   ...arrondissementsPages,
   ...communesPages,
   ...longueDistancePages,
   ...skiPages,
   ...venuesPages,
 ];
+
+export const allDestinationPages: LocalPageContent[] = destinationPagesBase.map((page) => {
+  const learnMore = learnMoreBySlug[page.slug];
+  return learnMore
+    ? { ...page, learnMoreTitle: learnMore.title, learnMoreItems: learnMore.items }
+    : page;
+});
 
 export function findDestinationPage(slug: string): LocalPageContent | undefined {
   return allDestinationPages.find((page) => page.slug === slug);

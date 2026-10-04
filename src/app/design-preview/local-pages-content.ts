@@ -1,10 +1,10 @@
 import type { LocalPageContent } from "./local-page-template";
 import { popularDestinations } from "@/domain/booking/popular-destinations";
-import { villeurbanneLearnMoreTitle, villeurbanneLearnMoreItems } from "./villeurbanne-en-savoir-plus";
+import { learnMoreBySlug } from "./en-savoir-plus";
 
 const gareTgvAddress = popularDestinations.find((d) => d.label === "Gare Lyon-Saint-Exupéry TGV")!.address;
 
-export const localPages: LocalPageContent[] = [
+const localPagesBase: LocalPageContent[] = [
   {
     slug: "vtc-villeurbanne",
     family: "commune",
@@ -49,8 +49,6 @@ export const localPages: LocalPageContent[] = [
       { href: "/tarifs", label: "Grille tarifaire" },
       { href: "/reserver", label: "Réserver un trajet" },
     ],
-    learnMoreTitle: villeurbanneLearnMoreTitle,
-    learnMoreItems: villeurbanneLearnMoreItems,
   },
   {
     slug: "vtc-lyon-part-dieu",
@@ -379,3 +377,10 @@ export const localPages: LocalPageContent[] = [
     ],
   },
 ];
+
+export const localPages: LocalPageContent[] = localPagesBase.map((page) => {
+  const learnMore = learnMoreBySlug[page.slug];
+  return learnMore
+    ? { ...page, learnMoreTitle: learnMore.title, learnMoreItems: learnMore.items }
+    : page;
+});
