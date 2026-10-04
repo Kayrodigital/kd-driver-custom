@@ -40,6 +40,8 @@ export type BlogArticle = {
   faq?: { q: string; a: string }[];
   /** Liens internes vers les pages commerciales pertinentes (maillage). */
   internalLinks: { href: string; label: string }[];
+  /** Masque l'article des listes publiques sans supprimer sa page ni son indexation SEO. */
+  hiddenFromListings?: boolean;
   /**
    * Brouillon / contenu temporaire : exclu des listings publics (accueil,
    * page catégorie) et du sitemap, et marqué `robots: noindex` sur sa page.
