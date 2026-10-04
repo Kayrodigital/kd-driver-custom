@@ -1,7 +1,28 @@
 import Link from "next/link";
 import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
-import { SiteNav, FooterSection } from "./sections";
+import { SiteNav, FooterSection, ReassuranceList } from "./sections";
+import { KdAccordion, KdLearnMoreAccordion, type KdLearnMoreItem } from "@/components/kd-accordion";
+
+/**
+ * Emplacement "En savoir plus" (4-5 volets), optionnel et vide tant
+ * qu'aucun contenu n'a été rédigé par page — cf. audit densité visuelle du
+ * 02/10/2026. N'affiche rien si `items` est vide/non fourni.
+ */
+function LearnMoreSection({ title, items }: { title?: string; items?: KdLearnMoreItem[] }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <section className="kd-section kd-section--compact kd-on-cream">
+      <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-section-head">
+          <p className="kd-eyebrow">En savoir plus</p>
+          <h2 className="kd-h2">{title}</h2>
+        </div>
+        <KdLearnMoreAccordion items={items} />
+      </div>
+    </section>
+  );
+}
 import { TrustBadge } from "./trust-badge";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
@@ -60,7 +81,12 @@ const vehiclesRelatedLinks = [
   { href: "/chauffeur-entreprise", label: "Déplacements professionnels" },
 ];
 
-export function VehiclesPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
+export function VehiclesPage({
+  framed = true,
+  showTrustBadge = true,
+  learnMoreTitle,
+  learnMoreItems,
+}: { framed?: boolean; showTrustBadge?: boolean; learnMoreTitle?: string; learnMoreItems?: KdLearnMoreItem[] } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero eyebrow="Nos véhicules" title="Une catégorie claire pour chaque besoin" lead="Essentiel, Premium ou Van : choisissez votre catégorie, KDRIVE vous contacte ensuite pour confirmer le tarif et la réservation." showTrustBadge={showTrustBadge} />
@@ -86,6 +112,7 @@ export function VehiclesPage({ framed = true, showTrustBadge = true }: { framed?
         </p>
       </section>
       <RelatedLinks title="Poursuivre votre réservation" links={vehiclesRelatedLinks} />
+      <LearnMoreSection title={learnMoreTitle} items={learnMoreItems} />
       <section id="reserver" className="kd-section kd-on-white">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -105,7 +132,12 @@ const tarifsSteps = [
   "Vous confirmez votre réservation",
 ];
 
-export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
+export function TarifsPage({
+  framed = true,
+  showTrustBadge = true,
+  learnMoreTitle,
+  learnMoreItems,
+}: { framed?: boolean; showTrustBadge?: boolean; learnMoreTitle?: string; learnMoreItems?: KdLearnMoreItem[] } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero eyebrow="Tarifs" title="Nos catégories" lead="Un tarif est communiqué par téléphone après étude de votre trajet — jamais avant." showTrustBadge={showTrustBadge} />
@@ -140,11 +172,14 @@ export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: 
         </div>
       </section>
       <section id="reserver" className="kd-section kd-on-cream">
-        <div className="kd-container kd-cta">
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Demandez votre tarif</h2>
-          <a className="kd-btn kd-btn--primary" href="/reserver">Demander mon tarif <span aria-hidden="true">→</span></a>
-          <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>📞 06 88 86 34 19</p>
+        <div className="kd-container kd-cta-split">
+          <div className="kd-cta">
+            <p className="kd-eyebrow">Réservation</p>
+            <h2 className="kd-h2">Demandez votre tarif</h2>
+            <a className="kd-btn kd-btn--primary" href="/reserver">Demander mon tarif <span aria-hidden="true">→</span></a>
+            <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>📞 06 88 86 34 19</p>
+          </div>
+          <ReassuranceList />
         </div>
       </section>
       <RelatedLinks
@@ -155,18 +190,27 @@ export function TarifsPage({ framed = true, showTrustBadge = true }: { framed?: 
           { href: "/contact", label: "Nous contacter" },
         ]}
       />
+      <LearnMoreSection title={learnMoreTitle} items={learnMoreItems} />
       <section id="reserver" className="kd-section kd-on-dark">
-        <div className="kd-container kd-cta">
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Obtenez votre tarif en quelques secondes</h2>
-          <a className="kd-btn kd-btn--gold" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+        <div className="kd-container kd-cta-split">
+          <div className="kd-cta">
+            <p className="kd-eyebrow">Réservation</p>
+            <h2 className="kd-h2">Obtenez votre tarif en quelques secondes</h2>
+            <a className="kd-btn kd-btn--gold" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+          </div>
+          <ReassuranceList />
         </div>
       </section>
     </PageShell>
   );
 }
 
-export function AboutPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
+export function AboutPage({
+  framed = true,
+  showTrustBadge = true,
+  learnMoreTitle,
+  learnMoreItems,
+}: { framed?: boolean; showTrustBadge?: boolean; learnMoreTitle?: string; learnMoreItems?: KdLearnMoreItem[] } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
@@ -203,6 +247,7 @@ export function AboutPage({ framed = true, showTrustBadge = true }: { framed?: b
           { href: "/contact", label: "Nous contacter" },
         ]}
       />
+      <LearnMoreSection title={learnMoreTitle} items={learnMoreItems} />
       <section id="reserver" className="kd-section kd-on-cream">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -214,7 +259,12 @@ export function AboutPage({ framed = true, showTrustBadge = true }: { framed?: b
   );
 }
 
-export function ContactPage({ framed = true, showTrustBadge = true }: { framed?: boolean; showTrustBadge?: boolean } = {}) {
+export function ContactPage({
+  framed = true,
+  showTrustBadge = true,
+  learnMoreTitle,
+  learnMoreItems,
+}: { framed?: boolean; showTrustBadge?: boolean; learnMoreTitle?: string; learnMoreItems?: KdLearnMoreItem[] } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
@@ -247,6 +297,7 @@ export function ContactPage({ framed = true, showTrustBadge = true }: { framed?:
           { href: "/reserver", label: "Réserver en ligne" },
         ]}
       />
+      <LearnMoreSection title={learnMoreTitle} items={learnMoreItems} />
       <section id="reserver" className="kd-section kd-on-white">
         <div className="kd-container kd-cta">
           <p className="kd-eyebrow">Réservation</p>
@@ -326,17 +377,7 @@ export function FaqPage({ framed = true, showTrustBadge = true }: { framed?: boo
       />
       <section className="kd-section kd-on-cream">
         <div className="kd-container" style={{ maxWidth: 720 }}>
-          {faqItems.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-              {item.link && (
-                <Link className="kd-card-link" href={item.link.href}>
-                  {item.link.label} <span aria-hidden="true">→</span>
-                </Link>
-              )}
-            </details>
-          ))}
+          <KdAccordion items={faqItems} />
         </div>
       </section>
       <section id="reserver" className="kd-section kd-on-white">

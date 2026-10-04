@@ -2,7 +2,8 @@ import Link from "next/link";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { SceneImage } from "./scene-image";
 import { TrustBadge } from "./trust-badge";
-import { SiteNav, FooterSection } from "./sections";
+import { SiteNav, FooterSection, ReassuranceList } from "./sections";
+import { KdAccordion, KdLearnMoreAccordion, type KdLearnMoreItem } from "@/components/kd-accordion";
 import { Breadcrumb } from "./breadcrumb";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
 import type { AddressValue } from "@/domain/booking/address";
@@ -66,6 +67,12 @@ export type LocalPageContent = {
   extraTitle?: string;
   extraBody?: string;
   faq: { q: string; a: string }[];
+  /** Emplacement "En savoir plus" (4 à 5 volets), distinct de la FAQ —
+   * contenu fourni séparément par page, volontairement vide tant qu'aucun
+   * texte n'a été rédigé (cf. audit densité visuelle du 02/10/2026).
+   * N'affiche rien tant que ce champ n'est pas renseigné. */
+  learnMoreTitle?: string;
+  learnMoreItems?: KdLearnMoreItem[];
   pillarLinksTitle: string;
   pillarLinks: { href: string; label: string }[];
   /** Liens de proximité (arrondissements limitrophes, communes voisines, hub
@@ -275,20 +282,30 @@ export function LocalPageTemplate({ content, framed = true }: { content: LocalPa
             <p className="kd-eyebrow">FAQ locale</p>
             <h2 className="kd-h2">Questions fréquentes</h2>
           </div>
-          {content.faq.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-            </details>
-          ))}
+          <KdAccordion items={content.faq} />
         </div>
       </section>
 
+      {content.learnMoreItems && content.learnMoreItems.length > 0 && (
+        <section className="kd-section kd-section--compact kd-on-cream">
+          <div className="kd-container" style={{ maxWidth: 720 }}>
+            <div className="kd-section-head">
+              <p className="kd-eyebrow">En savoir plus</p>
+              <h2 className="kd-h2">{content.learnMoreTitle}</h2>
+            </div>
+            <KdLearnMoreAccordion items={content.learnMoreItems} />
+          </div>
+        </section>
+      )}
+
       <section id="reserver" className="kd-section kd-on-cream">
-        <div className="kd-container kd-cta">
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Réservez votre chauffeur privé KDRIVE</h2>
-          <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+        <div className="kd-container kd-cta-split">
+          <div className="kd-cta">
+            <p className="kd-eyebrow">Réservation</p>
+            <h2 className="kd-h2">Réservez votre chauffeur privé KDRIVE</h2>
+            <a className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation <span aria-hidden="true">→</span></a>
+          </div>
+          <ReassuranceList />
         </div>
       </section>
 

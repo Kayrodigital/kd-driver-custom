@@ -272,18 +272,45 @@ export function UpcomingEventsSection() {
   );
 }
 
+/**
+ * Réassurance courte réutilisée dans les sections CTA à bloc unique
+ * (densité visuelle, cf. audit Semrush) : mêmes 3 items et mêmes icônes que
+ * la réassurance du hero (page.tsx), aucun texte nouveau inventé.
+ */
+export function ReassuranceList() {
+  return (
+    <ul className="kd-cta-list">
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+        Tarif par téléphone
+      </li>
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M3 11l4-4 4 3 3-3 4 4" /><path d="M3 11l3 5 4 2 5-2 3-5" /></svg>
+        Confirmation humaine
+      </li>
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg>
+        Contact direct
+      </li>
+    </ul>
+  );
+}
+
 export function CtaSection() {
   return (
     <section id="reserver" className="kd-section kd-on-white">
-      <div className="kd-container kd-cta">
-        <p className="kd-eyebrow">Réservation</p>
-        <h2 className="kd-h2">Votre chauffeur, en quelques secondes</h2>
-        <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
-        <Link className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation</Link>
-        <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>
-          Après votre demande, KDRIVE vérifie la disponibilité et confirme le tarif de la course. Une question ?
-          Consultez notre <Link href="/faq">FAQ</Link>.
-        </p>
+      <div className="kd-container kd-cta-split">
+        <div className="kd-cta">
+          <p className="kd-eyebrow">Réservation</p>
+          <h2 className="kd-h2">Votre chauffeur, en quelques secondes</h2>
+          <p className="kd-lead">Départ, destination, date et téléphone suffisent pour envoyer votre demande.</p>
+          <Link className="kd-btn kd-btn--primary" href="/reserver">Demander une réservation</Link>
+          <p className="kd-field-hint" style={{ marginTop: "var(--kd-space-3)" }}>
+            Après votre demande, KDRIVE vérifie la disponibilité et confirme le tarif de la course. Une question ?
+            Consultez notre <Link href="/faq">FAQ</Link>.
+          </p>
+        </div>
+        <ReassuranceList />
       </div>
     </section>
   );

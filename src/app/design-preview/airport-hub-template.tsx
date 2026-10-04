@@ -6,6 +6,7 @@ import { TrustBadge } from "./trust-badge";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 import { popularDestinations } from "@/domain/booking/popular-destinations";
+import { KdAccordion } from "@/components/kd-accordion";
 
 const airportAddress = popularDestinations.find((d) => d.label === "Aéroport Lyon-Saint-Exupéry")!.address;
 
@@ -177,12 +178,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes</h2>
           </div>
-          {faqItems.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-            </details>
-          ))}
+          <KdAccordion items={faqItems} />
         </div>
       </section>
 

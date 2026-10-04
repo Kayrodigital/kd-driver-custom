@@ -3,6 +3,7 @@ import { Breadcrumb } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 import { TrustBadge } from "./trust-badge";
+import { KdAccordion } from "@/components/kd-accordion";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
@@ -214,12 +215,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes sur les transferts en gare</h2>
           </div>
-          {faqItems.map((item) => (
-            <details key={item.q} className="kd-faq-item">
-              <summary className="kd-h4">{item.q}</summary>
-              <p className="kd-body">{item.a}</p>
-            </details>
-          ))}
+          <KdAccordion items={faqItems} />
         </div>
       </section>
 

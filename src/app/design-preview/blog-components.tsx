@@ -5,6 +5,7 @@ import { Breadcrumb } from "./breadcrumb";
 import { SceneImage } from "./scene-image";
 import { SiteNav, FooterSection } from "./sections";
 import { StatusPill, formatEventDateRange } from "./blog-cards";
+import { KdAccordion } from "@/components/kd-accordion";
 
 export { ArticleCard, StatusPill, formatEventDateRange } from "./blog-cards";
 
@@ -122,12 +123,7 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
               <p className="kd-eyebrow">FAQ</p>
               <h2 className="kd-h2">Questions fréquentes</h2>
             </div>
-            {article.faq.map((item) => (
-              <details key={item.q} className="kd-faq-item">
-                <summary className="kd-h4">{item.q}</summary>
-                <p className="kd-body">{item.a}</p>
-              </details>
-            ))}
+            <KdAccordion items={article.faq} />
           </div>
         </section>
       )}
