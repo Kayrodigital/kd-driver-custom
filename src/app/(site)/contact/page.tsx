@@ -1,5 +1,6 @@
 import { ContactPage } from "@/app/design-preview/other-pages-templates";
 import { buildMetadata } from "@/lib/seo/page-metadata";
+import { learnMoreBySlug } from "@/app/design-preview/en-savoir-plus";
 
 export const metadata = buildMetadata({
   title: "Contact | KDRIVE",
@@ -8,5 +9,6 @@ export const metadata = buildMetadata({
 });
 
 export default function Contact() {
-  return <ContactPage framed={false} />;
+  const learnMore = learnMoreBySlug.contact;
+  return <ContactPage framed={false} learnMoreTitle={learnMore.title} learnMoreItems={learnMore.items} />;
 }
