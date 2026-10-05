@@ -6,6 +6,7 @@ import { SiteNav } from "@/app/design-preview/sections";
 import { EnglishSiteNav } from "@/app/design-preview/en/english-site-components";
 import { formatDateTimeParis } from "@/lib/format-date";
 import { vehicleCatalog } from "@/domain/pricing/vehicle-catalog";
+import { getEnglishVehicleLabel } from "@/content/en/vehicle-copy";
 import { trackEvent } from "@/lib/analytics/gtag";
 
 type Summary = {
@@ -25,7 +26,8 @@ export function ConfirmationSummary({ reference, locale = "fr" }: { reference: s
   const en = locale === "en";
   const stored = useSyncExternalStore(() => () => undefined, () => sessionStorage.getItem(`reservation:${reference}`), () => null);
   const summary = useMemo(() => stored ? JSON.parse(stored) as Summary : null, [stored]);
-  const vehicleLabel = vehicleCatalog.find((v) => v.slug === summary?.vehicleSlug)?.label ?? summary?.vehicleSlug;
+  const vehicle = vehicleCatalog.find((v) => v.slug === summary?.vehicleSlug);
+  const vehicleLabel = vehicle ? (en ? getEnglishVehicleLabel(vehicle) : vehicle.label) : summary?.vehicleSlug;
 
   const tracked = useRef(false);
   useEffect(() => {

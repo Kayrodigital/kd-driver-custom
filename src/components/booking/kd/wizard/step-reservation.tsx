@@ -2,6 +2,7 @@
 
 import { SceneImage } from "@/app/design-preview/scene-image";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER, type VehicleSlug } from "@/domain/pricing/vehicle-catalog";
+import { getEnglishVehicleExamples, getEnglishVehicleLabel } from "@/content/en/vehicle-copy";
 import { RouteMap } from "./route-map";
 import type { useBookingWizard } from "./use-booking-wizard";
 
@@ -13,6 +14,7 @@ import type { useBookingWizard } from "./use-booking-wizard";
 export function StepReservation({ wizard, locale = "fr" }: { wizard: ReturnType<typeof useBookingWizard>; locale?: "fr" | "en" }) {
   const en = locale === "en";
   const vehicle = vehicleCatalog.find((v) => v.slug === wizard.vehicleSlug);
+  const vehicleLabel = vehicle ? (en ? getEnglishVehicleLabel(vehicle) : vehicle.label) : undefined;
   const capacityExceeded = Boolean(vehicle && (wizard.passengers > vehicle.passengers || wizard.luggage > vehicle.luggage));
 
   return (
@@ -44,13 +46,13 @@ export function StepReservation({ wizard, locale = "fr" }: { wizard: ReturnType<
               style={{ textAlign: "left", cursor: "pointer", border: isSelected ? "2px solid var(--kd-gold)" : undefined }}
               onClick={() => wizard.selectVehicle(option.slug as VehicleSlug)}
             >
-              <SceneImage className="kd-wizard-vehicle-card-image" src={option.image} alt={option.label} note="photo à venir" style={{ minHeight: 80, borderRadius: "var(--kd-radius-md)", margin: 0 }} />
+              <SceneImage className="kd-wizard-vehicle-card-image" src={option.image} alt={en ? getEnglishVehicleLabel(option) : option.label} note={en ? "photo coming soon" : "photo à venir"} style={{ minHeight: 80, borderRadius: "var(--kd-radius-md)", margin: 0 }} />
               <div className="kd-wizard-vehicle-card-body" style={{ minWidth: 0 }}>
                 <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
-                  <b>{option.label}</b>
+                  <b>{en ? getEnglishVehicleLabel(option) : option.label}</b>
                   <span style={{ color: "var(--kd-gold)", fontWeight: 700, fontSize: "0.88rem" }}>{en ? "From" : "À partir de"} {option.fromPriceEuros} €</span>
                 </div>
-                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>{option.examples.join(" · ")}</p>
+                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>{(en ? getEnglishVehicleExamples(option) : option.examples).join(" · ")}</p>
                 <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "2px 0 0" }}>{option.passengers} {en ? "passengers" : "passagers"} · {option.luggage} {en ? "bags" : "bagages"}</p>
               </div>
             </button>
@@ -73,7 +75,7 @@ export function StepReservation({ wizard, locale = "fr" }: { wizard: ReturnType<
 
       {capacityExceeded && (
         <p className="kd-field-error" role="alert">
-          {en ? `${vehicle?.label}: recommended capacity ${vehicle?.passengers} passengers / ${vehicle?.luggage} bags. You may continue and KDRIVE will confirm if needed.` : `${vehicle?.label} : capacité conseillée ${vehicle?.passengers} passagers / ${vehicle?.luggage} bagages. Vous pouvez continuer, KDRIVE confirmera si besoin.`}
+          {en ? `${vehicleLabel}: recommended capacity ${vehicle?.passengers} passengers / ${vehicle?.luggage} bags. You may continue and KDRIVE will confirm if needed.` : `${vehicle?.label} : capacité conseillée ${vehicle?.passengers} passagers / ${vehicle?.luggage} bagages. Vous pouvez continuer, KDRIVE confirmera si besoin.`}
         </p>
       )}
 
