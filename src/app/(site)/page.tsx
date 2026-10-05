@@ -65,12 +65,12 @@ export default function HomePage() {
       <ServicesSection />
       <AdvantagesSection />
       <VehiclesSection />
+      <ReviewsSection />
       <ImmediateRideSection />
       <AirportSection />
       <MobilityFlowSection />
       <CorporateSection />
       <ZonesSection />
-      <ReviewsSection />
       <UpcomingEventsSection />
       <CtaSection />
       <FooterSection />

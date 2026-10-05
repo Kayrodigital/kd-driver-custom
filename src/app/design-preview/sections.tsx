@@ -15,10 +15,11 @@ const serviceNavItems = [
   { label: "Longues distances", href: "/longues-distances" },
 ];
 
-const aboutNavItems = [
+const infoNavItems = [
   { label: "À propos", href: "/a-propos" },
   { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const services = [
@@ -58,7 +59,7 @@ export function SiteNav() {
         <li><NavDropdown label="Services" items={serviceNavItems} /></li>
         <li><Link href="/vehicules">Véhicules</Link></li>
         <li><Link href="/tarifs">Tarifs</Link></li>
-        <li><NavDropdown label="À propos" items={aboutNavItems} /></li>
+        <li><NavDropdown label="Infos" items={infoNavItems} /></li>
       </ul>
       <div className="kd-nav-actions">
         <Link className="kd-language-switch" href="/en" hrefLang="en" aria-label="View the website in English">🇬🇧 EN</Link>
