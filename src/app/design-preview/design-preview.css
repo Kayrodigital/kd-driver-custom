@@ -108,6 +108,16 @@
 
 /* ---------- layout ---------- */
 .kd-container { width: var(--kd-container); margin: 0 auto; }
+/* Remplace les dizaines de `style={{ maxWidth: 720 }}` inline répétés sur
+   les sections à colonne de texte unique (audit poids HTML du 05/10/2026) —
+   même valeur, aucun changement visuel. */
+.kd-container--narrow { max-width: 720px; }
+/* Mêmes remplacements, pour trois blocs `style={{ ... }}` répétés tels
+   quels dans de nombreux templates (header de page, listes de liens
+   connexes, listes à puces) — aucun changement visuel. */
+.kd-site-header { border-bottom: 1px solid var(--kd-line-on-dark); }
+.kd-related-links-list { margin-top: 16px; list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; }
+.kd-bullet-list { margin: 0; padding-left: 1.2em; list-style: disc; display: grid; gap: 8px; }
 .kd-section { padding: var(--kd-section-y) 0; }
 /* Variante pour les sections à contenu court (texte seul, peu de blocs) :
    respiration réduite mais volontaire, pas une suppression des marges. */

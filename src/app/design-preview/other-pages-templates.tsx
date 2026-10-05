@@ -13,7 +13,7 @@ function LearnMoreSection({ title, items }: { title?: string; items?: KdLearnMor
   if (!items || items.length === 0) return null;
   return (
     <section className="kd-section kd-section--compact kd-on-cream">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
+      <div className="kd-container kd-container--narrow">
         <div className="kd-section-head">
           <p className="kd-eyebrow">En savoir plus</p>
           <h2 className="kd-h2">{title}</h2>
@@ -29,9 +29,9 @@ import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/ve
 function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
     <section className="kd-section kd-section--compact kd-on-cream">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
+      <div className="kd-container kd-container--narrow">
         <p className="kd-eyebrow">{title}</p>
-        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+        <ul className="kd-stack kd-related-links-list">
           {links.map((link) => (
             <li key={link.href}>
               <Link className="kd-card-link" href={link.href}>
@@ -49,7 +49,7 @@ function PageShell({ children, framed = true }: { children: React.ReactNode; fra
   const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
       {children}
       <FooterSection />
     </div>
@@ -59,7 +59,7 @@ function PageShell({ children, framed = true }: { children: React.ReactNode; fra
 function PageHero({ eyebrow, title, lead, breadcrumb, showTrustBadge = true }: { eyebrow: string; title: string; lead: string; breadcrumb?: BreadcrumbItem[]; showTrustBadge?: boolean }) {
   return (
     <section className="kd-section kd-on-dark" style={{ paddingBottom: "var(--kd-space-6)" }}>
-      <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+      <div className="kd-container kd-stack kd-container--narrow">
         {breadcrumb && <Breadcrumb items={breadcrumb} />}
         <p className="kd-eyebrow">{eyebrow}</p>
         <h1 className="kd-h1">{title}</h1>
@@ -376,7 +376,7 @@ export function FaqPage({ framed = true, showTrustBadge = true }: { framed?: boo
         showTrustBadge={showTrustBadge}
       />
       <section className="kd-section kd-on-cream">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <KdAccordion items={faqItems} />
         </div>
       </section>
@@ -402,7 +402,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Politique de confidentialité" }]}
       />
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-legal" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-legal kd-container--narrow">
           <p>
             KD Driver / KDRIVE accorde une importance particulière à la protection de la vie privée
             et des données personnelles de ses clients, prospects et visiteurs.

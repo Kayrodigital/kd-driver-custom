@@ -32,7 +32,7 @@ const advantages = [
 export default function EnglishHomePage() {
   return (
     <div lang="en">
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><EnglishSiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><EnglishSiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src="/images/site/kdrive-dirigeant-hotel-business-lyon.webp" alt="Private driver welcoming an international traveller in Lyon" className="kd-hero-photo" priority sizes="100vw" />
