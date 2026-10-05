@@ -13,9 +13,13 @@ const frenchMenuLinks = [
   { href: "/longues-distances", label: "Longues distances" },
   { href: "/vehicules", label: "Véhicules" },
   { href: "/tarifs", label: "Tarifs" },
-  { href: "/faq", label: "FAQ" },
+];
+
+const frenchInfoLinks = [
   { href: "/a-propos", label: "À propos" },
   { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/blog", label: "Blog" },
 ];
 
 const englishMenuLinks = [
@@ -76,7 +80,7 @@ export function MobileMenu({ open, onClose, locale = "fr" }: { open: boolean; on
   }, [open, onClose]);
 
   if (!open) return null;
-  const menuLinks = locale === "en" ? englishMenuLinks : [...frenchMenuLinks, { href: "/en", label: "🇬🇧 English" }];
+  const menuLinks = locale === "en" ? englishMenuLinks : frenchMenuLinks;
 
   return (
     <div
@@ -95,6 +99,21 @@ export function MobileMenu({ open, onClose, locale = "fr" }: { open: boolean; on
             </li>
           ))}
         </ul>
+        {locale === "fr" && (
+          <div className="kd-mobile-menu-group">
+            <p id="kd-mobile-infos-label" className="kd-mobile-menu-group-label">Infos</p>
+            <ul className="kd-mobile-menu-links kd-mobile-menu-links--grouped" aria-labelledby="kd-mobile-infos-label">
+              {frenchInfoLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} onClick={onClose}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {locale === "fr" && (
+          <Link className="kd-mobile-menu-language" href="/en" hrefLang="en" onClick={onClose}>🇬🇧 English</Link>
+        )}
       </nav>
       <div className="kd-mobile-menu-actions">
         <Link className="kd-btn kd-btn--gold kd-btn--block" href={locale === "en" ? "/en/book" : "/reserver"} onClick={onClose}>
