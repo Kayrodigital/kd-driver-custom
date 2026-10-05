@@ -22,9 +22,9 @@ const englishMenuLinks = [
   { href: "/en", label: "Home" },
   { href: "/en/airport-transfer", label: "Airport transfers" },
   { href: "/en/train-station-transfer", label: "Train station transfers" },
-  { href: "/en/corporate-chauffeur", label: "Corporate chauffeur" },
-  { href: "/en/chauffeur-service", label: "Hourly chauffeur service" },
-  { href: "/en/long-distance-transfers", label: "Long-distance transfers" },
+  { href: "/en/corporate-chauffeur", label: "Business driver service" },
+  { href: "/en/chauffeur-service", label: "Private driver by the hour" },
+  { href: "/en/long-distance-transfers", label: "Long-distance private transfers" },
   { href: "/en/vehicles", label: "Vehicles" },
   { href: "/en/rates", label: "Rates" },
   { href: "/en/contact", label: "Contact" },
@@ -98,7 +98,7 @@ export function MobileMenu({ open, onClose, locale = "fr" }: { open: boolean; on
       </nav>
       <div className="kd-mobile-menu-actions">
         <Link className="kd-btn kd-btn--gold kd-btn--block" href={locale === "en" ? "/en/book" : "/reserver"} onClick={onClose}>
-          {locale === "en" ? "Book a chauffeur" : "Réserver"}
+          {locale === "en" ? "Book a private driver" : "Réserver"}
         </Link>
         <a className="kd-btn kd-btn--ghost-dark kd-btn--block" href="tel:+33688863419">
           {locale === "en" ? "Call KDRIVE" : "Appeler KDRIVE"}

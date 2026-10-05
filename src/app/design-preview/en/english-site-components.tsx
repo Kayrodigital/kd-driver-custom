@@ -22,7 +22,7 @@ export function EnglishSiteNav() {
         {navItems.map((item) => <li key={item.href}><Link href={item.href}>{item.label}</Link></li>)}
       </ul>
       <div className="kd-nav-actions">
-        <Link className="kd-language-switch" href="/" hrefLang="fr" aria-label="Afficher le site en français">🇫🇷 FR</Link>
+        <Link className="kd-language-switch" href="/" hrefLang="fr" aria-label="View the site in French">🇫🇷 FR</Link>
         <a className="kd-nav-phone" href="tel:+33688863419">+33 6 88 86 34 19</a>
         <Link className="kd-btn kd-btn--sm kd-btn--gold" href="/en/book">Book</Link>
       </div>
@@ -38,16 +38,16 @@ export function EnglishFooter() {
         <div className="kd-footer-grid">
           <div className="kd-footer-col">
             <Logo size={30} />
-            <p className="kd-body" style={{ color: "var(--kd-muted-on-dark)", marginTop: 12 }}>Private chauffeur service in Lyon and the surrounding region.</p>
+            <p className="kd-body" style={{ color: "var(--kd-muted-on-dark)", marginTop: 12 }}>Private driver service in Lyon and the surrounding region.</p>
           </div>
           <div className="kd-footer-col">
             <h4>Services</h4>
             <ul>
               <li><Link href="/en/airport-transfer">Airport transfers</Link></li>
               <li><Link href="/en/train-station-transfer">Station transfers</Link></li>
-              <li><Link href="/en/corporate-chauffeur">Corporate chauffeur</Link></li>
-              <li><Link href="/en/chauffeur-service">Hourly chauffeur service</Link></li>
-              <li><Link href="/en/long-distance-transfers">Long-distance transfers</Link></li>
+              <li><Link href="/en/corporate-chauffeur">Business driver service</Link></li>
+              <li><Link href="/en/chauffeur-service">Private driver by the hour</Link></li>
+              <li><Link href="/en/long-distance-transfers">Long-distance private transfers</Link></li>
             </ul>
           </div>
           <div className="kd-footer-col">
@@ -56,7 +56,7 @@ export function EnglishFooter() {
               <li><Link href="/en/vehicles">Vehicles</Link></li>
               <li><Link href="/en/rates">Rates</Link></li>
               <li><Link href="/en/contact">Contact</Link></li>
-              <li><Link href="/">Français</Link></li>
+              <li><Link href="/">French site</Link></li>
             </ul>
           </div>
           <div className="kd-footer-col">
@@ -66,7 +66,7 @@ export function EnglishFooter() {
         </div>
         <div className="kd-footer-bottom">
           <span>© {new Date().getFullYear()} KDRIVE</span>
-          <span><Link href="/politique-de-confidentialite">Privacy policy</Link></span>
+          <span><Link href="/politique-de-confidentialite">Privacy policy (French)</Link></span>
         </div>
       </div>
     </footer>
@@ -81,7 +81,7 @@ export function EnglishContactCta({ title = "Plan your journey with KDRIVE" }: {
           <p className="kd-eyebrow">Booking request</p>
           <h2 className="kd-h2">{title}</h2>
           <p className="kd-lead">Send us your itinerary or call the team. Availability and the fare are confirmed directly before your journey.</p>
-          <Link className="kd-btn kd-btn--primary" href="/en/book">Request a chauffeur</Link>
+          <Link className="kd-btn kd-btn--primary" href="/en/book">Request a private driver</Link>
         </div>
         <ul className="kd-cta-list">
           <li>Fare confirmed in advance</li>
@@ -106,7 +106,7 @@ export function EnglishServicePageTemplate({ content }: { content: EnglishServic
             <p className="kd-eyebrow">{content.eyebrow}</p>
             <h1 className="kd-h1">{content.title}</h1>
             <p className="kd-lead">{content.lead}</p>
-            <Link className="kd-btn kd-btn--gold" href="/en/book" style={{ marginTop: 8, alignSelf: "start" }}>Request a chauffeur <span aria-hidden="true">→</span></Link>
+            <Link className="kd-btn kd-btn--gold" href="/en/book" style={{ marginTop: 8, alignSelf: "start" }}>Request a private driver <span aria-hidden="true">→</span></Link>
           </div>
         </div>
       </section>
