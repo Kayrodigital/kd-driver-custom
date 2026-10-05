@@ -23,28 +23,124 @@ const partDieuAddress = popularDestinations.find((d) => d.label === "Gare Lyon P
 
 function TaxiShell({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
-      {children}
+    <div className="kd-signature">
+      <header className="kd-signature-header kd-on-dark"><SiteNav /></header>
+      <main>{children}</main>
       <FooterSection />
-    </>
+    </div>
+  );
+}
+
+function TaxiHero({
+  breadcrumbs,
+  eyebrow,
+  title,
+  lead,
+  image,
+  prefillAddress,
+  prefillLabel,
+}: {
+  breadcrumbs: { label: string; href?: string }[];
+  eyebrow: string;
+  title: string;
+  lead: string;
+  image: string;
+  prefillAddress?: typeof airportAddress;
+  prefillLabel?: string;
+}) {
+  return (
+    <section className="kd-signature-hero kd-on-dark">
+      <SceneImage src={image} alt="" className="kd-signature-hero-photo" priority sizes="100vw" />
+      <div className="kd-container kd-signature-hero-layout">
+        <div className="kd-signature-hero-copy kd-signature-hero-copy--long">
+          <Breadcrumb items={breadcrumbs} />
+          <p className="kd-eyebrow">{eyebrow}</p>
+          <h1 className="kd-h1">{title}</h1>
+          <p className="kd-lead">{lead}</p>
+          <TrustBadge />
+        </div>
+        <div className="kd-signature-booking">
+          <span className="kd-signature-booking-index">01</span>
+          <HeroSearchForm tone="dark" prefillAddress={prefillAddress} prefillLabel={prefillLabel} />
+        </div>
+        <div className="kd-signature-hero-footer" aria-hidden="true">
+          <span>Chauffeur privé</span><span>Lyon &amp; métropole</span><span>Sur réservation</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EditorialList({
+  eyebrow,
+  title,
+  image,
+  children,
+  items,
+  note,
+}: {
+  eyebrow: string;
+  title: string;
+  image: string;
+  children?: React.ReactNode;
+  items: React.ReactNode[];
+  note?: React.ReactNode;
+}) {
+  return (
+    <section className="kd-section kd-signature-intro kd-on-cream">
+      <div className="kd-container kd-signature-editorial-grid">
+        <div className="kd-signature-intro-aside">
+          <SceneImage src={image} alt="" className="kd-signature-intro-photo" sizes="(max-width: 760px) 1px, 36vw" />
+          <div className="kd-signature-section-marker"><span>02</span><p className="kd-eyebrow">{eyebrow}</p></div>
+        </div>
+        <div className="kd-signature-editorial-copy">
+          <h2 className="kd-h2">{title}</h2>
+          {children}
+          <ul className="kd-signature-editorial-list">{items.map((item, index) => <li key={index}>{item}</li>)}</ul>
+          {note}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function NumberedCards({ eyebrow, title, items }: { eyebrow: string; title: string; items: { title: string; text: React.ReactNode; href?: string }[] }) {
+  return (
+    <section className="kd-section kd-signature-places kd-on-white">
+      <div className="kd-container">
+        <div className="kd-signature-inline-head"><p className="kd-eyebrow">{eyebrow}</p><h2 className="kd-h2">{title}</h2></div>
+        <div className={`kd-signature-places-grid kd-signature-places-grid--${Math.min(items.length, 4)}`}>
+          {items.map((item, index) => {
+            const content = <><span className="kd-signature-place-index">0{index + 1}</span><h3 className="kd-h3">{item.title}</h3><div className="kd-body">{item.text}</div>{item.href && <span className="kd-card-link">Découvrir →</span>}</>;
+            return item.href ? <Link key={item.title} href={item.href} className="kd-signature-place-card">{content}</Link> : <article key={item.title}>{content}</article>;
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureSplit({ eyebrow, title, image, children, index = "03" }: { eyebrow: string; title: string; image: string; children: React.ReactNode; index?: string }) {
+  return (
+    <section className="kd-section kd-on-cream">
+      <div className="kd-container kd-signature-feature-grid">
+        <div className="kd-signature-feature-image-wrap"><SceneImage src={image} alt="" className="kd-signature-feature-image" sizes="(max-width: 760px) 100vw, 52vw" /></div>
+        <div className="kd-signature-feature-copy"><span className="kd-signature-large-index">{index}</span><p className="kd-eyebrow">{eyebrow}</p><h2 className="kd-h2">{title}</h2>{children}</div>
+      </div>
+    </section>
   );
 }
 
 function RelatedLinksRow({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
-    <section className="kd-section kd-section--compact kd-on-cream">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
-        <p className="kd-eyebrow">{title}</p>
-        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+    <section className="kd-section kd-signature-navigation kd-on-cream">
+      <div className="kd-container kd-signature-navigation-grid">
+        <div><p className="kd-eyebrow">Navigation</p><h2 className="kd-h2">Continuer votre parcours</h2></div>
+        <div className="kd-signature-links-group"><p className="kd-eyebrow">{title}</p><ul className="kd-signature-links">
           {links.map((link) => (
-            <li key={link.href}>
-              <Link className="kd-card-link" href={link.href}>
-                {link.label} <span aria-hidden="true">→</span>
-              </Link>
-            </li>
+            <li key={link.href}><Link href={link.href}>{link.label} <span aria-hidden="true">↗</span></Link></li>
           ))}
-        </ul>
+        </ul></div>
       </div>
     </section>
   );
@@ -61,10 +157,10 @@ function FaqSection({ eyebrow, title, items }: { eyebrow: string; title: string;
     })),
   };
   return (
-    <section className="kd-section kd-on-white">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
-        <div className="kd-section-head"><p className="kd-eyebrow">{eyebrow}</p><h2 className="kd-h2">{title}</h2></div>
-        <KdAccordion items={items} />
+    <section className="kd-section kd-signature-faq kd-on-white">
+      <div className="kd-container kd-signature-faq-grid">
+        <div className="kd-signature-faq-heading"><span className="kd-signature-large-index">04</span><p className="kd-eyebrow">{eyebrow}</p><h2 className="kd-h2">{title}</h2></div>
+        <div className="kd-signature-accordion"><KdAccordion items={items} /></div>
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     </section>
@@ -73,13 +169,13 @@ function FaqSection({ eyebrow, title, items }: { eyebrow: string; title: string;
 
 function FinalCta({ title, primaryLabel, primaryHref = "/reserver" }: { title: string; primaryLabel: string; primaryHref?: string }) {
   return (
-    <section id="reserver" className="kd-section kd-on-cream">
-      <div className="kd-container kd-cta-split">
+    <section id="reserver" className="kd-section kd-signature-cta kd-on-dark">
+      <div className="kd-container kd-signature-cta-grid">
         <div className="kd-cta">
           <p className="kd-eyebrow">Réservation</p>
           <h2 className="kd-h2">{title}</h2>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link className="kd-btn kd-btn--primary" href={primaryHref}>{primaryLabel} <span aria-hidden="true">→</span></Link>
+            <Link className="kd-btn kd-btn--gold" href={primaryHref}>{primaryLabel} <span aria-hidden="true">→</span></Link>
             <a className="kd-btn kd-btn--outline" href="https://wa.me/33688863419" target="_blank" rel="noopener">WhatsApp</a>
           </div>
         </div>
@@ -115,65 +211,33 @@ const taxiLyonFaq: KdAccordionItem[] = [
 export function TaxiLyonPage() {
   return (
     <TaxiShell>
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
-          <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon" }]} />
-            <p className="kd-eyebrow">Taxi Lyon</p>
-            <h1 className="kd-h1">Besoin d&apos;un taxi à Lyon ? Choisissez un chauffeur privé KDRIVE</h1>
-            <p className="kd-lead">Un trajet en ville, un rendez-vous important, un retour de soirée : réservez un VTC avec chauffeur en quelques clics. Le tarif est communiqué avant le départ, le véhicule est impeccable, le chauffeur est à l&apos;heure.</p>
-            <TrustBadge />
-          </div>
-          <div className="kd-hero-form-card"><HeroSearchForm tone="dark" /></div>
-        </div>
-      </section>
+      <TaxiHero breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon" }]} eyebrow="Taxi Lyon" title="Besoin d'un taxi à Lyon ? Choisissez un chauffeur privé KDRIVE" lead="Un trajet en ville, un rendez-vous important, un retour de soirée : réservez un VTC avec chauffeur en quelques clics. Le tarif est communiqué avant le départ, le véhicule est impeccable, le chauffeur est à l'heure." image="/images/hero-lyon.jpg" />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <p className="kd-eyebrow">VTC ou taxi</p>
-          <h2 className="kd-h2">Pourquoi choisir un VTC plutôt qu&apos;un taxi à Lyon</h2>
+      <EditorialList eyebrow="VTC ou taxi" title="Pourquoi choisir un VTC plutôt qu'un taxi à Lyon" image="/images/site/kdrive-chauffeur-centre-congres-lyon.webp" items={[
+        <><strong>Tarif confirmé avant la course</strong>, communiqué par téléphone.</>,
+        <><strong>Chauffeur professionnel</strong> : titulaire de la carte VTC, conduite souple.</>,
+        <><strong>Véhicules Essentiel, Premium ou Van</strong>, propres et climatisés.</>,
+        <><strong>Réservation par téléphone, WhatsApp ou formulaire</strong>, pour un trajet planifié ou le jour même selon disponibilité.</>,
+      ]}>
           <p className="kd-body">Avec KDRIVE, le tarif est communiqué par téléphone avant la course, sans compteur qui tourne dans les bouchons du périphérique ou du tunnel de Fourvière. Vous savez qui vient vous chercher, avec quel véhicule, et à quelle heure.</p>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li><strong>Tarif confirmé avant la course</strong>, communiqué par téléphone.</li>
-            <li><strong>Chauffeur professionnel</strong> : titulaire de la carte VTC, conduite souple.</li>
-            <li><strong>Véhicules Essentiel, Premium ou Van</strong>, propres et climatisés.</li>
-            <li><strong>Réservation par téléphone, WhatsApp ou formulaire</strong>, pour un trajet planifié ou le jour même selon disponibilité.</li>
-          </ul>
-        </div>
-      </section>
+      </EditorialList>
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container">
-          <div className="kd-section-head"><p className="kd-eyebrow">Trajets</p><h2 className="kd-h2">Nos trajets les plus demandés à Lyon</h2></div>
-          <div className="kd-grid-3">
-            <Link href="/taxi-aeroport-lyon" className="kd-card kd-card--hover kd-card--flat"><h3 className="kd-h4">Aéroport Lyon-Saint Exupéry</h3><p className="kd-body">Dépose et accueil, suivi de votre vol.</p><span className="kd-card-link">Voir la page →</span></Link>
-            <Link href="/taxi-gare-lyon" className="kd-card kd-card--hover kd-card--flat"><h3 className="kd-h4">Gares Part-Dieu et Perrache</h3><p className="kd-body">Prise en charge synchronisée sur l&apos;horaire de votre train.</p><span className="kd-card-link">Voir la page →</span></Link>
-            <Link href="/taxi-van-lyon" className="kd-card kd-card--hover kd-card--flat"><h3 className="kd-h4">Groupes et familles</h3><p className="kd-body">Van jusqu&apos;à 7 passagers et leurs bagages.</p><span className="kd-card-link">Voir la page →</span></Link>
-          </div>
-          <p className="kd-body" style={{ marginTop: 16 }}>Trajets professionnels (rendez-vous clients, séminaires, facture au nom de votre société) et sorties : Eurexpo, Groupama Stadium, LDLC Arena, Halle Tony Garnier, restaurants de la Presqu&apos;île.</p>
-        </div>
-      </section>
+      <NumberedCards eyebrow="Trajets" title="Nos trajets les plus demandés à Lyon" items={[
+        { title: "Aéroport Lyon-Saint Exupéry", text: "Dépose et accueil, suivi de votre vol.", href: "/taxi-aeroport-lyon" },
+        { title: "Gares Part-Dieu et Perrache", text: "Prise en charge synchronisée sur l'horaire de votre train.", href: "/taxi-gare-lyon" },
+        { title: "Groupes et familles", text: "Van jusqu'à 7 passagers et leurs bagages.", href: "/taxi-van-lyon" },
+      ]} />
 
-      <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Partout dans Lyon et la métropole</h2>
+      <FeatureSplit eyebrow="Couverture locale" title="Partout dans Lyon et la métropole" image="/images/site/kdrive-vieux-lyon-fourviere-hero.png">
           <p className="kd-body">Nos chauffeurs interviennent dans les 9 arrondissements de Lyon et les communes voisines : Villeurbanne, Bron, Vénissieux, Caluire-et-Cuire, Écully, Saint-Priest, Meyzieu, Vaulx-en-Velin, Oullins-Pierre-Bénite, Tassin-la-Demi-Lune. Trajets longue distance sur demande.</p>
-        </div>
-      </section>
+          <p className="kd-body">Trajets professionnels (rendez-vous clients, séminaires, facture au nom de votre société) et sorties : Eurexpo, Groupama Stadium, LDLC Arena, Halle Tony Garnier, restaurants de la Presqu&apos;île.</p>
+      </FeatureSplit>
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <p className="kd-eyebrow">Réservation</p>
-          <h2 className="kd-h2">Comment ça marche</h2>
-          <ol className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", display: "grid", gap: 8 }}>
-            <li>Indiquez votre adresse de départ, votre destination, la date et l&apos;heure.</li>
-            <li>Choisissez votre véhicule et vos options (siège enfant, bagages).</li>
-            <li>Recevez votre confirmation avec le tarif et les coordonnées du chauffeur.</li>
-          </ol>
-          <PricingNote />
-        </div>
-      </section>
+      <NumberedCards eyebrow="Réservation" title="Comment ça marche" items={[
+        { title: "Votre trajet", text: "Indiquez votre adresse de départ, votre destination, la date et l'heure." },
+        { title: "Votre véhicule", text: "Choisissez votre véhicule et vos options (siège enfant, bagages)." },
+        { title: "Votre confirmation", text: <>Recevez votre confirmation avec le tarif et les coordonnées du chauffeur. <PricingNote /></> },
+      ]} />
 
       <FaqSection eyebrow="FAQ" title="Questions fréquentes" items={taxiLyonFaq} />
       <RelatedLinksRow title="Nos services" links={[
@@ -202,48 +266,24 @@ const taxiAeroportFaq: KdAccordionItem[] = [
 export function TaxiAeroportLyonPage() {
   return (
     <TaxiShell>
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
-          <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Aéroport" }]} />
-            <p className="kd-eyebrow">Taxi aéroport Lyon</p>
-            <h1 className="kd-h1">Taxi aéroport Lyon Saint-Exupéry : votre VTC réservé</h1>
-            <p className="kd-lead">Vol tôt le matin ou atterrissage tardif, votre chauffeur est là. Indiquez votre numéro de vol à la réservation pour que KDRIVE prépare au mieux votre prise en charge.</p>
-            <TrustBadge />
-          </div>
-          <div className="kd-hero-form-card"><HeroSearchForm tone="dark" prefillAddress={airportAddress} prefillLabel="l'aéroport" /></div>
-        </div>
-      </section>
+      <TaxiHero breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Aéroport" }]} eyebrow="Taxi aéroport Lyon" title="Taxi aéroport Lyon Saint-Exupéry : votre VTC réservé" lead="Vol tôt le matin ou atterrissage tardif, votre chauffeur est là. Indiquez votre numéro de vol à la réservation pour que KDRIVE prépare au mieux votre prise en charge." image="/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp" prefillAddress={airportAddress} prefillLabel="l'aéroport" />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <p className="kd-eyebrow">Transfert aéroport</p>
-          <h2 className="kd-h2">Un transfert préparé, de la porte au terminal</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li><strong>Numéro de vol pris en compte</strong> à la réservation pour mieux préparer votre prise en charge.</li>
-            <li><strong>Accueil en zone arrivées</strong>, au point confirmé avec vous.</li>
-            <li><strong>Tarif confirmé par téléphone</strong> avant la course, quel que soit le trafic sur l&apos;A43 ou la rocade Est.</li>
-            <li><strong>Aide aux bagages</strong> et véhicule adapté à votre volume : berline ou van.</li>
-          </ul>
-        </div>
-      </section>
+      <EditorialList eyebrow="Transfert aéroport" title="Un transfert préparé, de la porte au terminal" image="/images/site/kdrive-voyageur-affaires-aeroport-lyon.webp" items={[
+        <><strong>Numéro de vol pris en compte</strong> à la réservation pour mieux préparer votre prise en charge.</>,
+        <><strong>Accueil en zone arrivées</strong>, au point confirmé avec vous.</>,
+        <><strong>Tarif confirmé par téléphone</strong> avant la course, quel que soit le trafic sur l&apos;A43 ou la rocade Est.</>,
+        <><strong>Aide aux bagages</strong> et véhicule adapté à votre volume : berline ou van.</>,
+      ]} />
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Lyon ↔ Saint-Exupéry dans les deux sens</h2>
-          <p className="kd-body"><strong>Aller à l&apos;aéroport</strong> : nous vous récupérons à votre domicile, hôtel ou bureau et vous déposons devant votre terminal. Comptez en moyenne 30 à 45 minutes depuis le centre de Lyon selon l&apos;heure et la circulation.</p>
-          <p className="kd-body"><strong>Retour de l&apos;aéroport</strong> : indiquez votre numéro de vol à la réservation. En cas de retard, contactez-nous dès que possible par téléphone pour ajuster la prise en charge.</p>
-        </div>
-      </section>
+      <NumberedCards eyebrow="Aller & retour" title="Lyon ↔ Saint-Exupéry dans les deux sens" items={[
+        { title: "Aller à l'aéroport", text: "Nous vous récupérons à votre domicile, hôtel ou bureau et vous déposons devant votre terminal. Comptez en moyenne 30 à 45 minutes depuis le centre de Lyon selon l'heure et la circulation." },
+        { title: "Retour de l'aéroport", text: "Indiquez votre numéro de vol à la réservation. En cas de retard, contactez-nous dès que possible par téléphone pour ajuster la prise en charge." },
+      ]} />
 
-      <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Une alternative au Rhônexpress et au taxi</h2>
+      <FeatureSplit eyebrow="Porte à porte" title="Une alternative au Rhônexpress et au taxi" image="/images/airport-transfer.jpg">
           <p className="kd-body">Avec des bagages, en famille ou à plusieurs, le VTC permet un trajet porte à porte sans correspondance, avec un tarif confirmé avant le départ — contrairement au taxi, où le prix dépend du compteur.</p>
           <PricingNote />
-        </div>
-      </section>
+      </FeatureSplit>
 
       <FaqSection eyebrow="FAQ" title="Questions fréquentes" items={taxiAeroportFaq} />
       <RelatedLinksRow title="Poursuivre" links={[
@@ -270,54 +310,25 @@ const taxiGareFaq: KdAccordionItem[] = [
 export function TaxiGareLyonPage() {
   return (
     <TaxiShell>
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/site/kdrive-transfert-gare-lyon-part-dieu.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
-          <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Gare" }]} />
-            <p className="kd-eyebrow">Taxi gare de Lyon</p>
-            <h1 className="kd-h1">Taxi gare de Lyon : votre chauffeur VTC à Part-Dieu et Perrache</h1>
-            <p className="kd-lead">Descendez du train sans chercher de taxi ni attendre dans une file. Indiquez votre numéro de train à la réservation : votre chauffeur reste joignable à votre arrivée.</p>
-            <TrustBadge />
-          </div>
-          <div className="kd-hero-form-card"><HeroSearchForm tone="dark" prefillAddress={partDieuAddress} prefillLabel="la gare" /></div>
-        </div>
-      </section>
+      <TaxiHero breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Gare" }]} eyebrow="Taxi gare de Lyon" title="Taxi gare de Lyon : votre chauffeur VTC à Part-Dieu et Perrache" lead="Descendez du train sans chercher de taxi ni attendre dans une file. Indiquez votre numéro de train à la réservation : votre chauffeur reste joignable à votre arrivée." image="/images/site/kdrive-transfert-gare-lyon-part-dieu.webp" prefillAddress={partDieuAddress} prefillLabel="la gare" />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <p className="kd-eyebrow">Pourquoi réserver</p>
-          <h2 className="kd-h2">Pourquoi réserver votre VTC en gare</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li><strong>Véhicule réservé</strong>, pas de file d&apos;attente à chercher.</li>
-            <li><strong>Numéro de train pris en compte</strong> à la réservation.</li>
-            <li><strong>Point de rendez-vous confirmé</strong> avec vous avant votre trajet.</li>
-            <li><strong>Tarif confirmé par téléphone</strong> avant la course.</li>
-            <li><strong>Facture</strong> au nom de votre société pour vos déplacements professionnels.</li>
-          </ul>
-        </div>
-      </section>
+      <EditorialList eyebrow="Pourquoi réserver" title="Pourquoi réserver votre VTC en gare" image="/images/site/kdrive-arrivee-business-gare-lyon.webp" items={[
+        <><strong>Véhicule réservé</strong>, pas de file d&apos;attente à chercher.</>,
+        <><strong>Numéro de train pris en compte</strong> à la réservation.</>,
+        <><strong>Point de rendez-vous confirmé</strong> avec vous avant votre trajet.</>,
+        <><strong>Tarif confirmé par téléphone</strong> avant la course.</>,
+        <><strong>Facture</strong> au nom de votre société pour vos déplacements professionnels.</>,
+      ]} />
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Gare de Lyon Part-Dieu</h2>
-          <p className="kd-body">Première gare de correspondance de la région lyonnaise, la Part-Dieu connaît un chantier permanent autour du pôle d&apos;échanges. Le point de prise en charge précis (côté Villette ou côté Vivier-Merle) vous est confirmé à la réservation. Dépose possible pour vos départs, au plus près du hall.</p>
-        </div>
-      </section>
+      <NumberedCards eyebrow="Gares desservies" title="Vos rendez-vous ferroviaires à Lyon" items={[
+        { title: "Gare de Lyon Part-Dieu", text: "Première gare de correspondance de la région lyonnaise, la Part-Dieu connaît un chantier permanent autour du pôle d'échanges. Le point de prise en charge précis (côté Villette ou côté Vivier-Merle) vous est confirmé à la réservation. Dépose possible pour vos départs, au plus près du hall." },
+        { title: "Gare de Lyon Perrache", text: "Au sud de la Presqu'île, Perrache dessert les TER et une partie des TGV. Votre chauffeur vous attend au point convenu, pour rejoindre rapidement Confluence, Bellecour ou les quartiers ouest." },
+        { title: "Autres gares", text: <>Gare Saint-Exupéry TGV, Lyon Jean-Macé, Vaise et Saint-Paul, sur réservation. <PricingNote /></> },
+      ]} />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Gare de Lyon Perrache</h2>
-          <p className="kd-body">Au sud de la Presqu&apos;île, Perrache dessert les TER et une partie des TGV. Votre chauffeur vous attend au point convenu, pour rejoindre rapidement Confluence, Bellecour ou les quartiers ouest.</p>
-        </div>
-      </section>
-
-      <section className="kd-section kd-section--compact kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <p className="kd-body">Autres gares desservies sur réservation : gare Saint-Exupéry TGV, Lyon Jean-Macé, Vaise, Saint-Paul.</p>
-          <PricingNote />
-        </div>
-      </section>
+      <FeatureSplit eyebrow="Arrivée sereine" title="Du quai à votre destination" image="/images/site/kdrive-quartier-affaires-part-dieu-lyon.webp">
+        <p className="kd-body">Votre point de rendez-vous est confirmé avant le trajet. Votre chauffeur reste joignable à l&apos;arrivée de votre train et vous conduit directement à votre hôtel, votre bureau ou votre prochain rendez-vous.</p>
+      </FeatureSplit>
 
       <FaqSection eyebrow="FAQ" title="Questions fréquentes" items={taxiGareFaq} />
       <RelatedLinksRow title="Poursuivre" links={[
@@ -345,64 +356,32 @@ const taxiVanFaq: KdAccordionItem[] = [
 export function TaxiVanLyonPage() {
   return (
     <TaxiShell>
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/site/kdrive-berline-autoroute-lyon.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
-          <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Van" }]} />
-            <p className="kd-eyebrow">Taxi van Lyon</p>
-            <h1 className="kd-h1">Taxi van à Lyon : un VTC spacieux pour vos groupes et vos bagages</h1>
-            <p className="kd-lead">Voyagez à plusieurs sans réserver deux voitures. Notre van {vanEntry.examples[0]} accueille jusqu&apos;à {vanEntry.passengers} passagers et leurs bagages, avec un seul chauffeur et un seul tarif.</p>
-            <TrustBadge />
-          </div>
-          <div className="kd-hero-form-card"><HeroSearchForm tone="dark" /></div>
-        </div>
-      </section>
+      <TaxiHero breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Van" }]} eyebrow="Taxi van Lyon" title="Taxi van à Lyon : un VTC spacieux pour vos groupes et vos bagages" lead={`Voyagez à plusieurs sans réserver deux voitures. Notre van ${vanEntry.examples[0]} accueille jusqu'à ${vanEntry.passengers} passagers et leurs bagages, avec un seul chauffeur et un seul tarif.`} image="/images/vehicle-van.jpg" />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container">
-          <div className="kd-section-head"><p className="kd-eyebrow">Pour qui</p><h2 className="kd-h2">Pour qui ?</h2></div>
-          <div className="kd-grid-3">
-            <div className="kd-card kd-card--flat"><h3 className="kd-h4">Familles</h3><p className="kd-body">Vers l&apos;aéroport avec poussette, valises et sièges enfant sur demande.</p></div>
-            <div className="kd-card kd-card--flat"><h3 className="kd-h4">Groupes d&apos;amis</h3><p className="kd-body">Soirée, concert ou match au Groupama Stadium.</p></div>
-            <div className="kd-card kd-card--flat"><h3 className="kd-h4">Équipes d&apos;entreprise</h3><p className="kd-body">Séminaire, salon à Eurexpo, navette clients — facture au nom de votre société.</p></div>
-            <div className="kd-card kd-card--flat"><h3 className="kd-h4">Événements privés</h3><p className="kd-body">Mariages, anniversaires, transferts d&apos;invités.</p></div>
-          </div>
-        </div>
-      </section>
+      <NumberedCards eyebrow="Pour qui" title="Un seul véhicule, plusieurs façons de voyager" items={[
+        { title: "Familles", text: "Vers l'aéroport avec poussette, valises et sièges enfant sur demande." },
+        { title: "Groupes d'amis", text: "Soirée, concert ou match au Groupama Stadium." },
+        { title: "Équipes d'entreprise", text: "Séminaire, salon à Eurexpo, navette clients — facture au nom de votre société." },
+        { title: "Événements privés", text: "Mariages, anniversaires, transferts d'invités." },
+      ]} />
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Notre van</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li><strong>Modèle :</strong> {vanEntry.examples.join(", ")}.</li>
-            <li><strong>Passagers :</strong> {vanEntry.passengers}.</li>
-            <li><strong>Bagages :</strong> {vanEntry.luggage} valises.</li>
-            <li><strong>Équipements :</strong> climatisation, sièges enfant sur demande.</li>
-          </ul>
-          <p className="kd-field-hint">{VEHICLE_EXAMPLES_DISCLAIMER}</p>
-        </div>
-      </section>
+      <EditorialList eyebrow="Le véhicule" title="Notre van" image="/images/vehicle-van.jpg" items={[
+        <><strong>Modèle :</strong> {vanEntry.examples.join(", ")}.</>,
+        <><strong>Passagers :</strong> {vanEntry.passengers}.</>,
+        <><strong>Bagages :</strong> {vanEntry.luggage} valises.</>,
+        <><strong>Équipements :</strong> climatisation, sièges enfant sur demande.</>,
+      ]} note={<p className="kd-field-hint">{VEHICLE_EXAMPLES_DISCLAIMER}</p>} />
 
-      <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Moins cher que deux taxis</h2>
+      <FeatureSplit eyebrow="Voyager ensemble" title="Moins cher que deux taxis" image="/images/site/kdrive-berline-autoroute-lyon.webp">
           <p className="kd-body">Un seul véhicule, un seul chauffeur, un seul tarif confirmé à l&apos;avance. Ramené par personne, le van est souvent plus économique que deux voitures séparées, et tout le monde arrive en même temps.</p>
-        </div>
-      </section>
+      </FeatureSplit>
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Trajets courants en van</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li>Lyon ↔ Aéroport Saint-Exupéry</li>
-            <li>Gare Part-Dieu ↔ Eurexpo pour les salons</li>
-            <li>Lyon ↔ stations des Alpes (sur demande)</li>
-            <li>Lyon ↔ Genève, Annecy, Grenoble (sur demande)</li>
-          </ul>
-          <PricingNote />
-        </div>
-      </section>
+      <NumberedCards eyebrow="Trajets" title="Trajets courants en van" items={[
+        { title: "Aéroport", text: "Lyon ↔ Aéroport Saint-Exupéry" },
+        { title: "Salons", text: "Gare Part-Dieu ↔ Eurexpo pour les salons" },
+        { title: "Alpes", text: "Lyon ↔ stations des Alpes (sur demande)" },
+        { title: "Longue distance", text: <>Lyon ↔ Genève, Annecy, Grenoble (sur demande). <PricingNote /></> },
+      ]} />
 
       <FaqSection eyebrow="FAQ" title="Questions fréquentes" items={taxiVanFaq} />
       <RelatedLinksRow title="Poursuivre" links={[
@@ -429,60 +408,30 @@ const reserverTaxiFaq: KdAccordionItem[] = [
 export function ReserverTaxiLyonPage() {
   return (
     <TaxiShell>
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src="/images/hero-lyon.jpg" alt="" className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
-          <div className="kd-hero-copy">
-            <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Réserver" }]} />
-            <p className="kd-eyebrow">Réserver un taxi à Lyon</p>
-            <h1 className="kd-h1">Réserver un taxi à Lyon : votre VTC en quelques minutes</h1>
-            <p className="kd-lead">Renseignez votre trajet, choisissez votre véhicule : KDRIVE vous recontacte pour confirmer le tarif. Aucun compte à créer.</p>
-            <TrustBadge />
-          </div>
-          <div className="kd-hero-form-card"><HeroSearchForm tone="dark" /></div>
-        </div>
-      </section>
+      <TaxiHero breadcrumbs={[{ label: "Accueil", href: "/" }, { label: "Taxi Lyon", href: "/taxi-lyon" }, { label: "Réserver" }]} eyebrow="Réserver un taxi à Lyon" title="Réserver un taxi à Lyon : votre VTC en quelques minutes" lead="Renseignez votre trajet, choisissez votre véhicule : KDRIVE vous recontacte pour confirmer le tarif. Aucun compte à créer." image="/images/hero-lyon.jpg" />
 
-      <section className="kd-section kd-on-cream">
-        <div className="kd-container" style={{ maxWidth: 720, textAlign: "center" }}>
-          <p className="kd-body">Tarif confirmé par téléphone · Facture sur demande · Siège enfant sur demande</p>
-        </div>
-      </section>
+      <NumberedCards eyebrow="Réservation" title="Réserver en 3 étapes" items={[
+        { title: "Votre trajet", text: "Adresse de départ, destination, date et heure. Pour un vol ou un train, ajoutez son numéro." },
+        { title: "Votre véhicule", text: "Essentiel, Premium ou Van. Ajoutez vos options (siège enfant, bagages)." },
+        { title: "Votre confirmation", text: "KDRIVE vous contacte par téléphone pour confirmer le tarif et les détails." },
+      ]} />
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Réserver en 3 étapes</h2>
-          <ol className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", display: "grid", gap: 8 }}>
-            <li><strong>Votre trajet</strong> : adresse de départ, destination, date et heure. Pour un vol ou un train, ajoutez son numéro.</li>
-            <li><strong>Votre véhicule</strong> : Essentiel, Premium ou Van. Ajoutez vos options (siège enfant, bagages).</li>
-            <li><strong>Votre confirmation</strong> : KDRIVE vous contacte par téléphone pour confirmer le tarif et les détails.</li>
-          </ol>
-        </div>
-      </section>
-
-      <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Vous préférez parler à quelqu&apos;un ?</h2>
+      <FeatureSplit eyebrow="Contact direct" title="Vous préférez parler à quelqu'un ?" image="/images/site/kdrive-dirigeant-hotel-business-lyon.webp">
           <p className="kd-body">Pour une demande de dernière minute, un trajet spécial ou un groupe, contactez-nous directement.</p>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+          <ul className="kd-signature-editorial-list">
             <li>Téléphone : <a href="tel:+33688863419">06 88 86 34 19</a></li>
             <li>WhatsApp : <a href="https://wa.me/33688863419" target="_blank" rel="noopener">06 88 86 34 19</a></li>
             <li>E-mail : <a href="mailto:contact@kdrive-vtc-lyon.fr">contact@kdrive-vtc-lyon.fr</a></li>
           </ul>
-        </div>
-      </section>
+      </FeatureSplit>
 
-      <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
-          <h2 className="kd-h2">Ce qui est inclus</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-            <li>Prise en charge à l&apos;adresse indiquée</li>
-            <li>Aide aux bagages</li>
-            <li>Prise en compte de votre numéro de vol ou de train</li>
-          </ul>
-          <p className="kd-field-hint">Un éventuel supplément (prise en charge aéroport ou gare, animal) vous est précisé avant confirmation, en même temps que le tarif.</p>
-        </div>
-      </section>
+      <EditorialList eyebrow="Votre trajet" title="Ce qui est inclus" image="/images/site/kdrive-travail-arriere-berline-lyon.webp" items={[
+        <>Prise en charge à l&apos;adresse indiquée</>,
+        <>Aide aux bagages</>,
+        <>Prise en compte de votre numéro de vol ou de train</>,
+      ]} note={<p className="kd-field-hint">Un éventuel supplément (prise en charge aéroport ou gare, animal) vous est précisé avant confirmation, en même temps que le tarif.</p>}>
+        <p className="kd-body">Tarif confirmé par téléphone · Facture sur demande · Siège enfant sur demande</p>
+      </EditorialList>
 
       <RelatedLinksRow title="Nos trajets" links={[
         { href: "/taxi-aeroport-lyon", label: "Aéroport Saint-Exupéry" },
