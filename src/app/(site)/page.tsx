@@ -24,6 +24,7 @@ export const metadata = buildMetadata({
   title: "KDRIVE — Chauffeur privé à Lyon",
   description: "Réservation de chauffeur privé premium à Lyon : transferts aéroport et gare, entreprise, mise à disposition.",
   path: "/",
+  languages: { fr: "/", en: "/en", "x-default": "/" },
 });
 
 export default function HomePage() {

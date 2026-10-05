@@ -420,6 +420,12 @@ a:has(> .kd-logo) { text-decoration: none; }
 .kd-nav-dropdown-panel a:hover { opacity: 1; background: rgba(245, 239, 224, 0.08); }
 .kd-nav-actions { display: flex; align-items: center; gap: var(--kd-space-4); font-size: 0.86rem; font-weight: 700; }
 .kd-nav-phone { text-decoration: none; }
+.kd-language-switch {
+  display: inline-flex; align-items: center; gap: 5px; padding: 7px 9px;
+  border: 1px solid var(--kd-line-on-dark); border-radius: var(--kd-radius-pill);
+  color: inherit; text-decoration: none; font-size: 0.76rem; letter-spacing: 0.05em;
+}
+.kd-language-switch:hover { border-color: var(--kd-gold); }
 
 /* ---------- menu mobile (hamburger + panneau) ---------- */
 .kd-mobile-menu-trigger {

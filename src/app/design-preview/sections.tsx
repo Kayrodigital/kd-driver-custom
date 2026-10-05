@@ -61,6 +61,7 @@ export function SiteNav() {
         <li><NavDropdown label="À propos" items={aboutNavItems} /></li>
       </ul>
       <div className="kd-nav-actions">
+        <Link className="kd-language-switch" href="/en" hrefLang="en" aria-label="View the website in English">🇬🇧 EN</Link>
         <a className="kd-nav-phone" href="tel:+33688863419">06 88 86 34 19</a>
         <Link className="kd-btn kd-btn--sm kd-btn--gold" href="/reserver">Réserver</Link>
       </div>

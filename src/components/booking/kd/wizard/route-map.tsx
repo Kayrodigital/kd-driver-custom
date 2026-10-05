@@ -8,6 +8,7 @@ type RouteMapProps = {
   pickup: AddressValue;
   destination: AddressValue;
   route: { distanceMeters: number; durationSeconds: number; encodedPolyline?: string | null } | null;
+  locale?: "fr" | "en";
 };
 
 /**
@@ -15,7 +16,8 @@ type RouteMapProps = {
  * pas de second calcul d'itinéraire) : réutilise exactement la distance et
  * la polyline déjà obtenues via /api/booking/options.
  */
-export function RouteMap({ pickup, destination, route }: RouteMapProps) {
+export function RouteMap({ pickup, destination, route, locale = "fr" }: RouteMapProps) {
+  const en = locale === "en";
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [status, setStatus] = useState<"loading" | "ready" | "no-polyline" | "error">("loading");
@@ -42,7 +44,7 @@ export function RouteMap({ pickup, destination, route }: RouteMapProps) {
           clickableIcons: false,
         });
 
-        new google.Marker({ position: { lat: pickup.latitude, lng: pickup.longitude }, map, title: "Départ" });
+        new google.Marker({ position: { lat: pickup.latitude, lng: pickup.longitude }, map, title: en ? "Pickup" : "Départ" });
         new google.Marker({ position: { lat: destination.latitude, lng: destination.longitude }, map, title: "Destination" });
 
         const path = geometryLib.encoding.decodePath(encodedPolyline as string);
@@ -70,20 +72,20 @@ export function RouteMap({ pickup, destination, route }: RouteMapProps) {
   return (
     <div className="kd-route-map-block">
       <button type="button" className="kd-more-toggle" onClick={() => setVisible((value) => !value)}>
-        {visible ? "Masquer l’itinéraire" : "Voir l’itinéraire"}
+        {visible ? (en ? "Hide route" : "Masquer l’itinéraire") : (en ? "View route" : "Voir l’itinéraire")}
       </button>
       {visible && (
         <div className="kd-route-map">
           <div className="kd-route-map-canvas">
             <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />
-            {status === "loading" && <p className="kd-route-map-fallback">Chargement de la carte…</p>}
-            {status === "no-polyline" && <p className="kd-route-map-fallback">Aperçu de l’itinéraire indisponible pour ce trajet.</p>}
-            {status === "error" && <p className="kd-route-map-fallback">La carte n’a pas pu être chargée.</p>}
+            {status === "loading" && <p className="kd-route-map-fallback">{en ? "Loading map…" : "Chargement de la carte…"}</p>}
+            {status === "no-polyline" && <p className="kd-route-map-fallback">{en ? "Route preview is unavailable for this journey." : "Aperçu de l’itinéraire indisponible pour ce trajet."}</p>}
+            {status === "error" && <p className="kd-route-map-fallback">{en ? "The map could not be loaded." : "La carte n’a pas pu être chargée."}</p>}
           </div>
           <div className="kd-route-map-meta">
-            <span>Distance estimée : {(route.distanceMeters / 1000).toFixed(1)} km</span>
-            <span>Durée estimée : ≈ {Math.round(route.durationSeconds / 60)} min</span>
-            <span className="kd-route-map-note">Itinéraire calculé avec Google</span>
+            <span>{en ? "Estimated distance" : "Distance estimée"} : {(route.distanceMeters / 1000).toFixed(1)} km</span>
+            <span>{en ? "Estimated duration" : "Durée estimée"} : ≈ {Math.round(route.durationSeconds / 60)} min</span>
+            <span className="kd-route-map-note">{en ? "Route calculated with Google" : "Itinéraire calculé avec Google"}</span>
           </div>
         </div>
       )}

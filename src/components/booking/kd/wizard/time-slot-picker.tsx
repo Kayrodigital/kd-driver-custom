@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { availableTimeSlotsForDate } from "@/domain/booking/booking-defaults";
 
-export function TimeSlotPicker({ label, date, value, onChange }: { label: string; date: string; value: string; onChange(value: string): void }) {
+export function TimeSlotPicker({ label, date, value, onChange, locale = "fr" }: { label: string; date: string; value: string; onChange(value: string): void; locale?: "fr" | "en" }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(0);
@@ -47,11 +47,11 @@ export function TimeSlotPicker({ label, date, value, onChange }: { label: string
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onKeyDown}
       >
-        {value || "Choisir une heure"}
+        {value || (locale === "en" ? "Select a time" : "Choisir une heure")}
       </button>
       {open && (
         <ul className="kd-time-slot-list" id="time-slot-listbox" role="listbox">
-          {slots.length === 0 && <li className="kd-time-slot-empty">Plus aucun créneau aujourd’hui</li>}
+          {slots.length === 0 && <li className="kd-time-slot-empty">{locale === "en" ? "No more time slots available today" : "Plus aucun créneau aujourd’hui"}</li>}
           {slots.map((slot, index) => (
             <li key={slot} role="option" aria-selected={slot === value}>
               <button

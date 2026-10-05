@@ -10,27 +10,28 @@ import type { useBookingWizard } from "./use-booking-wizard";
  * la catégorie choisie n'affiche plus aucun prix calculé, seulement le
  * point de départ indicatif du catalogue ("à partir de X €", statique).
  */
-export function StepReservation({ wizard }: { wizard: ReturnType<typeof useBookingWizard> }) {
+export function StepReservation({ wizard, locale = "fr" }: { wizard: ReturnType<typeof useBookingWizard>; locale?: "fr" | "en" }) {
+  const en = locale === "en";
   const vehicle = vehicleCatalog.find((v) => v.slug === wizard.vehicleSlug);
   const capacityExceeded = Boolean(vehicle && (wizard.passengers > vehicle.passengers || wizard.luggage > vehicle.luggage));
 
   return (
     <div className="kd-booking-card">
       <div>
-        <p className="kd-eyebrow">Étape 2 · Votre réservation</p>
-        <h2 className="kd-h3" style={{ marginTop: 6 }}>Choisissez votre catégorie</h2>
+        <p className="kd-eyebrow">{en ? "Step 2 · Your booking" : "Étape 2 · Votre réservation"}</p>
+        <h2 className="kd-h3" style={{ marginTop: 6 }}>{en ? "Choose your vehicle category" : "Choisissez votre catégorie"}</h2>
       </div>
 
       {wizard.route && (
         <div className="kd-card kd-card--flat" style={{ padding: 14 }}>
           <p style={{ fontSize: "0.86rem", margin: 0 }}>{wizard.pickup.address} → {wizard.destination.address}</p>
           <p style={{ fontSize: "0.8rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>
-            {(wizard.route.distanceMeters / 1000).toFixed(1)} km · ≈ {Math.round(wizard.route.durationSeconds / 60)} min · {wizard.date} à {wizard.time}
+            {(wizard.route.distanceMeters / 1000).toFixed(1)} km · ≈ {Math.round(wizard.route.durationSeconds / 60)} min · {wizard.date} {en ? "at" : "à"} {wizard.time}
           </p>
         </div>
       )}
 
-      <RouteMap pickup={wizard.pickup} destination={wizard.destination} route={wizard.route} />
+      <RouteMap pickup={wizard.pickup} destination={wizard.destination} route={wizard.route} locale={locale} />
 
       <div style={{ display: "grid", gap: 12 }}>
         {vehicleCatalog.map((option) => {
@@ -47,83 +48,83 @@ export function StepReservation({ wizard }: { wizard: ReturnType<typeof useBooki
               <div className="kd-wizard-vehicle-card-body" style={{ minWidth: 0 }}>
                 <div style={{ display: "flex", gap: 8, alignItems: "baseline", flexWrap: "wrap" }}>
                   <b>{option.label}</b>
-                  <span style={{ color: "var(--kd-gold)", fontWeight: 700, fontSize: "0.88rem" }}>À partir de {option.fromPriceEuros} €</span>
+                  <span style={{ color: "var(--kd-gold)", fontWeight: 700, fontSize: "0.88rem" }}>{en ? "From" : "À partir de"} {option.fromPriceEuros} €</span>
                 </div>
                 <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "4px 0 0" }}>{option.examples.join(" · ")}</p>
-                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "2px 0 0" }}>{option.passengers} passagers · {option.luggage} bagages</p>
+                <p style={{ fontSize: "0.82rem", color: "var(--kd-muted)", margin: "2px 0 0" }}>{option.passengers} {en ? "passengers" : "passagers"} · {option.luggage} {en ? "bags" : "bagages"}</p>
               </div>
             </button>
           );
         })}
       </div>
 
-      <p className="kd-field-hint">{VEHICLE_EXAMPLES_DISCLAIMER}</p>
+      <p className="kd-field-hint">{en ? "Vehicle models are examples of each category. The exact model depends on availability." : VEHICLE_EXAMPLES_DISCLAIMER}</p>
 
       <div className="kd-fields" style={{ gridTemplateColumns: "1fr 1fr", display: "grid" }}>
         <label className="kd-field">
-          <span className="kd-field-label">Passagers</span>
+          <span className="kd-field-label">{en ? "Passengers" : "Passagers"}</span>
           <input className="kd-input" type="number" min={1} max={20} value={wizard.passengers} onChange={(event) => wizard.setPassengers(Number(event.target.value))} />
         </label>
         <label className="kd-field">
-          <span className="kd-field-label">Bagages</span>
+          <span className="kd-field-label">{en ? "Luggage" : "Bagages"}</span>
           <input className="kd-input" type="number" min={0} max={30} value={wizard.luggage} onChange={(event) => wizard.setLuggage(Number(event.target.value))} />
         </label>
       </div>
 
       {capacityExceeded && (
         <p className="kd-field-error" role="alert">
-          {vehicle?.label} : capacité conseillée {vehicle?.passengers} passagers / {vehicle?.luggage} bagages. Vous pouvez continuer, KDRIVE confirmera si besoin.
+          {en ? `${vehicle?.label}: recommended capacity ${vehicle?.passengers} passengers / ${vehicle?.luggage} bags. You may continue and KDRIVE will confirm if needed.` : `${vehicle?.label} : capacité conseillée ${vehicle?.passengers} passagers / ${vehicle?.luggage} bagages. Vous pouvez continuer, KDRIVE confirmera si besoin.`}
         </p>
       )}
 
       <details>
-        <summary className="kd-more-toggle">Ajouter des options</summary>
+        <summary className="kd-more-toggle">{en ? "Add options" : "Ajouter des options"}</summary>
         <div className="kd-more-fields" style={{ marginTop: "var(--kd-space-3)", display: "grid", gap: 12 }}>
-          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.childSeat} onChange={(event) => wizard.setChildSeat(event.target.checked)} /> Siège enfant</label>
-          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.pet} onChange={(event) => wizard.setPet(event.target.checked)} /> Animal</label>
-          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.wheelchair} onChange={(event) => wizard.setWheelchair(event.target.checked)} /> Fauteuil roulant</label>
+          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.childSeat} onChange={(event) => wizard.setChildSeat(event.target.checked)} /> {en ? "Child seat" : "Siège enfant"}</label>
+          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.pet} onChange={(event) => wizard.setPet(event.target.checked)} /> {en ? "Pet" : "Animal"}</label>
+          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.wheelchair} onChange={(event) => wizard.setWheelchair(event.target.checked)} /> {en ? "Wheelchair" : "Fauteuil roulant"}</label>
           {wizard.wheelchair && (
             <p className="kd-field-hint" style={{ margin: 0 }}>
-              Merci de préciser vos besoins afin que KDRIVE puisse vérifier la disponibilité d’un véhicule adapté.
+              {en ? "Please describe your requirements so KDRIVE can check the availability of a suitable vehicle." : "Merci de préciser vos besoins afin que KDRIVE puisse vérifier la disponibilité d’un véhicule adapté."}
             </p>
           )}
 
           <label className="kd-field">
-            <span className="kd-field-label">Arrêt supplémentaire</span>
-            <input className="kd-input" type="text" value={wizard.extraStop} onChange={(event) => wizard.setExtraStop(event.target.value)} placeholder="Adresse ou lieu (facultatif)" />
+            <span className="kd-field-label">{en ? "Additional stop" : "Arrêt supplémentaire"}</span>
+            <input className="kd-input" type="text" value={wizard.extraStop} onChange={(event) => wizard.setExtraStop(event.target.value)} placeholder={en ? "Address or place (optional)" : "Adresse ou lieu (facultatif)"} />
           </label>
 
           {wizard.isAirportTrip && (
             <label className="kd-field">
-              <span className="kd-field-label">Numéro de vol</span>
+              <span className="kd-field-label">{en ? "Flight number" : "Numéro de vol"}</span>
               <input className="kd-input" type="text" value={wizard.flightNumber} onChange={(event) => wizard.setFlightNumber(event.target.value)} placeholder="AF1234" />
             </label>
           )}
           {wizard.isStationTrip && (
             <label className="kd-field">
-              <span className="kd-field-label">Numéro de train</span>
+              <span className="kd-field-label">{en ? "Train number" : "Numéro de train"}</span>
               <input className="kd-input" type="text" value={wizard.trainNumber} onChange={(event) => wizard.setTrainNumber(event.target.value)} placeholder="TGV 6543" />
             </label>
           )}
 
-          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.forSomeoneElse} onChange={(event) => wizard.setForSomeoneElse(event.target.checked)} /> Réservation pour une autre personne</label>
+          <label className="kd-checkbox-row"><input type="checkbox" checked={wizard.forSomeoneElse} onChange={(event) => wizard.setForSomeoneElse(event.target.checked)} /> {en ? "Booking for another person" : "Réservation pour une autre personne"}</label>
           {wizard.forSomeoneElse && (
             <div className="kd-fields" style={{ gridTemplateColumns: "1fr 1fr", display: "grid" }}>
-              <label className="kd-field"><span className="kd-field-label">Prénom du passager</span><input className="kd-input" type="text" value={wizard.otherFirstName} onChange={(event) => wizard.setOtherFirstName(event.target.value)} /></label>
-              <label className="kd-field"><span className="kd-field-label">Téléphone du passager</span><input className="kd-input" type="tel" value={wizard.otherPhone} onChange={(event) => wizard.setOtherPhone(event.target.value)} /></label>
+              <label className="kd-field"><span className="kd-field-label">{en ? "Passenger first name" : "Prénom du passager"}</span><input className="kd-input" type="text" value={wizard.otherFirstName} onChange={(event) => wizard.setOtherFirstName(event.target.value)} /></label>
+              <label className="kd-field"><span className="kd-field-label">{en ? "Passenger telephone" : "Téléphone du passager"}</span><input className="kd-input" type="tel" value={wizard.otherPhone} onChange={(event) => wizard.setOtherPhone(event.target.value)} /></label>
             </div>
           )}
 
           <label className="kd-field">
-            <span className="kd-field-label">Informations complémentaires</span>
+            <span className="kd-field-label">{en ? "Additional information" : "Informations complémentaires"}</span>
             <textarea className="kd-input" value={wizard.notes} maxLength={1_000} onChange={(event) => wizard.setNotes(event.target.value)} />
           </label>
         </div>
       </details>
 
       <div className="kd-actions" style={{ display: "flex", gap: 10 }}>
-        <button type="button" className="kd-btn kd-btn--outline" onClick={() => wizard.setStep(1)}>Retour</button>
-        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} disabled={!wizard.reservationValid} onClick={wizard.confirmReservation}>Continuer</button>
+        <button type="button" className="kd-btn kd-btn--outline" onClick={() => wizard.setStep(1)}>{en ? "Back" : "Retour"}</button>
+        <button type="button" className="kd-btn kd-btn--gold" style={{ flex: 1 }} disabled={!wizard.reservationValid} onClick={wizard.confirmReservation}>{en ? "Continue" : "Continuer"}</button>
       </div>
     </div>
   );

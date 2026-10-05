@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/seo/site";
 
 export type BreadcrumbItem = { label: string; href?: string };
 
-export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+export function Breadcrumb({ items, locale = "fr" }: { items: BreadcrumbItem[]; locale?: "fr" | "en" }) {
   const last = items.length - 1;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -18,7 +18,7 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
 
   return (
     <>
-      <nav aria-label="Fil d'Ariane" className="kd-breadcrumb">
+      <nav aria-label={locale === "en" ? "Breadcrumb" : "Fil d'Ariane"} className="kd-breadcrumb">
         <ol>
           {items.map((item, index) => (
             <li key={item.label}>

@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Contact | KDRIVE",
   description: "Contactez KDRIVE, chauffeur privé à Lyon, par téléphone ou via le formulaire de réservation.",
   path: "/contact",
+  languages: { fr: "/contact", en: "/en/contact", "x-default": "/contact" },
 });
 
 export default function Contact() {

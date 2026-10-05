@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Mise à disposition | KDRIVE",
   description: "Un chauffeur privé dédié à l’heure ou à la journée pour vos événements et déplacements sur mesure à Lyon.",
   path: "/mise-a-disposition",
+  languages: { fr: "/mise-a-disposition", en: "/en/chauffeur-service", "x-default": "/mise-a-disposition" },
 });
 
 export default function MiseADispositionPage() {

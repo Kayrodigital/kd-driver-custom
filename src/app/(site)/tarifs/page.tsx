@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Tarifs | KDRIVE",
   description: "Essentiel, Premium, Van : demandez votre trajet et recevez votre tarif par téléphone après étude par KDRIVE.",
   path: "/tarifs",
+  languages: { fr: "/tarifs", en: "/en/rates", "x-default": "/tarifs" },
 });
 
 export default function Tarifs() {

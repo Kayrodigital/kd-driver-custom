@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MobileMenu } from "./mobile-menu";
 
-export function MobileNavTrigger() {
+export function MobileNavTrigger({ locale = "fr" }: { locale?: "fr" | "en" }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ export function MobileNavTrigger() {
       <button
         type="button"
         className="kd-mobile-menu-trigger"
-        aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+        aria-label={open ? (locale === "en" ? "Close menu" : "Fermer le menu") : (locale === "en" ? "Open menu" : "Ouvrir le menu")}
         aria-expanded={open}
         aria-controls="kd-mobile-menu-panel"
         onClick={() => setOpen((value) => !value)}
@@ -22,7 +22,7 @@ export function MobileNavTrigger() {
           <span />
         </span>
       </button>
-      <MobileMenu open={open} onClose={() => setOpen(false)} />
+      <MobileMenu open={open} onClose={() => setOpen(false)} locale={locale} />
     </>
   );
 }

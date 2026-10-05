@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 
-const menuLinks = [
+const frenchMenuLinks = [
   { href: "/", label: "Accueil" },
   { href: "/reserver", label: "Réserver" },
   { href: "/transfert-aeroport", label: "Transfert aéroport" },
@@ -18,7 +18,20 @@ const menuLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+const englishMenuLinks = [
+  { href: "/en", label: "Home" },
+  { href: "/en/airport-transfer", label: "Airport transfers" },
+  { href: "/en/train-station-transfer", label: "Train station transfers" },
+  { href: "/en/corporate-chauffeur", label: "Corporate chauffeur" },
+  { href: "/en/chauffeur-service", label: "Hourly chauffeur service" },
+  { href: "/en/long-distance-transfers", label: "Long-distance transfers" },
+  { href: "/en/vehicles", label: "Vehicles" },
+  { href: "/en/rates", label: "Rates" },
+  { href: "/en/contact", label: "Contact" },
+  { href: "/", label: "🇫🇷 Français" },
+];
+
+export function MobileMenu({ open, onClose, locale = "fr" }: { open: boolean; onClose: () => void; locale?: "fr" | "en" }) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,6 +76,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
   }, [open, onClose]);
 
   if (!open) return null;
+  const menuLinks = locale === "en" ? englishMenuLinks : [...frenchMenuLinks, { href: "/en", label: "🇬🇧 English" }];
 
   return (
     <div
@@ -71,7 +85,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       className="kd-mobile-menu-panel"
       role="dialog"
       aria-modal="true"
-      aria-label="Menu KDRIVE"
+      aria-label={locale === "en" ? "KDRIVE menu" : "Menu KDRIVE"}
     >
       <nav>
         <ul className="kd-mobile-menu-links">
@@ -83,11 +97,11 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
         </ul>
       </nav>
       <div className="kd-mobile-menu-actions">
-        <Link className="kd-btn kd-btn--gold kd-btn--block" href="/reserver" onClick={onClose}>
-          Réserver
+        <Link className="kd-btn kd-btn--gold kd-btn--block" href={locale === "en" ? "/en/book" : "/reserver"} onClick={onClose}>
+          {locale === "en" ? "Book a chauffeur" : "Réserver"}
         </Link>
         <a className="kd-btn kd-btn--ghost-dark kd-btn--block" href="tel:+33688863419">
-          Appeler KDRIVE
+          {locale === "en" ? "Call KDRIVE" : "Appeler KDRIVE"}
         </a>
       </div>
     </div>

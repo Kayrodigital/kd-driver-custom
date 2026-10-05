@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Nos véhicules | KDRIVE",
   description: "Essentiel, Premium, Van : les catégories KDRIVE adaptées à chaque trajet à Lyon.",
   path: "/vehicules",
+  languages: { fr: "/vehicules", en: "/en/vehicles", "x-default": "/vehicules" },
 });
 
 export default function VehiculesPage() {
