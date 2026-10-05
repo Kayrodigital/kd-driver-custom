@@ -16,7 +16,7 @@ function suggestionIcon(types: string[]): string {
   return "📍";
 }
 
-export function AddressAutocomplete({ label, value, onChange, allowGeolocation = false, showPopularDestinations = false }: { label: string; value: AddressValue; onChange(value: AddressValue): void; allowGeolocation?: boolean; showPopularDestinations?: boolean }) {
+export function AddressAutocomplete({ label, value, onChange, allowGeolocation = false, showPopularDestinations = false, locale = "fr" }: { label: string; value: AddressValue; onChange(value: AddressValue): void; allowGeolocation?: boolean; showPopularDestinations?: boolean; locale?: "fr" | "en" }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const onChangeRef = useRef(onChange);
@@ -45,7 +45,7 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
         setLoadError("");
       } catch {
         if (requestIdRef.current !== requestId) return;
-        setLoadError("L’autocomplétion est indisponible. Utilisez la saisie manuelle.");
+        setLoadError(locale === "en" ? "Address suggestions are unavailable. Please enter the address manually." : "L’autocomplétion est indisponible. Utilisez la saisie manuelle.");
       }
     }, 220);
     return () => clearTimeout(timeout);
@@ -118,11 +118,11 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
           onFocus={() => { if (suggestions.length > 0 || (showPopularDestinations && query.length < 2)) { setHighlighted(0); setOpen(true); } }}
           onKeyDown={onKeyDown}
         />
-        {allowGeolocation && <button type="button" className="locate-icon" onClick={locate} disabled={location.loading} aria-label="Utiliser ma position actuelle">⌖</button>}
+        {allowGeolocation && <button type="button" className="locate-icon" onClick={locate} disabled={location.loading} aria-label={locale === "en" ? "Use my current location" : "Utiliser ma position actuelle"}>⌖</button>}
       </div>
       {open && showingPopular && (
         <ul className="address-suggestions" id={`address-listbox-${label}`} role="listbox">
-          <li className="address-suggestions-heading" aria-hidden="true">Destinations populaires</li>
+          <li className="address-suggestions-heading" aria-hidden="true">{locale === "en" ? "Popular destinations" : "Destinations populaires"}</li>
           {popularDestinations.map((destination, index) => (
             <li key={destination.label} role="option" aria-selected={index === highlighted}>
               <button type="button" className={index === highlighted ? "is-highlighted" : ""} onMouseEnter={() => setHighlighted(index)} onClick={() => selectPopularDestination(destination)}>
@@ -149,11 +149,11 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
               </button>
             </li>
           ))}
-          <li className="address-suggestions-footer" aria-hidden="true">Résultats fournis par Google</li>
+          <li className="address-suggestions-footer" aria-hidden="true">{locale === "en" ? "Results provided by Google" : "Résultats fournis par Google"}</li>
         </ul>
       )}
-      {allowGeolocation && <button type="button" className="locate-mobile" onClick={locate} disabled={location.loading}>📍 {location.loading ? "Localisation…" : "Utiliser ma position actuelle"}</button>}
-      {detected && <div className="location-confirm" role="status"><span>Adresse détectée : {detected.address}</span><button type="button" onClick={() => { onChange(detected); setDetected(null); }}>Confirmer cette adresse</button></div>}
+      {allowGeolocation && <button type="button" className="locate-mobile" onClick={locate} disabled={location.loading}>📍 {location.loading ? (locale === "en" ? "Locating…" : "Localisation…") : (locale === "en" ? "Use my current location" : "Utiliser ma position actuelle")}</button>}
+      {detected && <div className="location-confirm" role="status"><span>{locale === "en" ? "Detected address" : "Adresse détectée"} : {detected.address}</span><button type="button" onClick={() => { onChange(detected); setDetected(null); }}>{locale === "en" ? "Confirm this address" : "Confirmer cette adresse"}</button></div>}
       {(location.error || loadError) && <p className="field-error" role="alert">{location.error || loadError}</p>}
     </div>
   );

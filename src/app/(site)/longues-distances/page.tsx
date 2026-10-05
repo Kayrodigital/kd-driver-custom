@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Longues distances | KDRIVE",
   description: "Trajets longue distance au départ de Lyon, avec un devis personnalisé établi avant toute confirmation.",
   path: "/longues-distances",
+  languages: { fr: "/longues-distances", en: "/en/long-distance-transfers", "x-default": "/longues-distances" },
 });
 
 export default function LonguesDistancesPage() {

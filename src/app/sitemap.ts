@@ -42,6 +42,7 @@ const FILE_DATE = {
   venues: "2026-09-10",
   skiStations: "2026-09-10",
   longueDistance: "2026-09-10",
+  englishPages: "2026-10-05",
 } as const;
 
 const DESTINATION_FAMILY_DATE: Record<string, string> = {
@@ -65,6 +66,15 @@ const STATIC_PAGES: { path: string; updatedAt: string }[] = [
   { path: "/transfert-gare", updatedAt: FILE_DATE.transfertGare },
   { path: "/vehicules", updatedAt: FILE_DATE.vehicules },
   { path: "/politique-de-confidentialite", updatedAt: FILE_DATE.politiqueConfidentialite },
+  { path: "/en", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/airport-transfer", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/train-station-transfer", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/corporate-chauffeur", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/chauffeur-service", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/long-distance-transfers", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/vehicles", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/rates", updatedAt: FILE_DATE.englishPages },
+  { path: "/en/contact", updatedAt: FILE_DATE.englishPages },
 ];
 
 export function sitemapEntries(): MetadataRoute.Sitemap {

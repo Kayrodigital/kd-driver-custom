@@ -8,6 +8,6 @@
  * automatiquement les changements d'heure française — jamais un décalage
  * fixe comme "+02:00", qui casserait à chaque changement d'heure.
  */
-export function formatDateTimeParis(iso: string, options: Intl.DateTimeFormatOptions): string {
-  return new Intl.DateTimeFormat("fr-FR", { ...options, timeZone: "Europe/Paris" }).format(new Date(iso));
+export function formatDateTimeParis(iso: string, options: Intl.DateTimeFormatOptions, locale = "fr-FR"): string {
+  return new Intl.DateTimeFormat(locale, { ...options, timeZone: "Europe/Paris" }).format(new Date(iso));
 }

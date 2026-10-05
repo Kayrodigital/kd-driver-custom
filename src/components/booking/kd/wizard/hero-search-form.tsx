@@ -29,10 +29,14 @@ export function HeroSearchForm({
   tone = "dark",
   prefillAddress,
   prefillLabel,
+  locale = "fr",
+  bookingPath,
 }: {
   tone?: "light" | "dark";
   prefillAddress?: AddressValue;
   prefillLabel?: string;
+  locale?: "fr" | "en";
+  bookingPath?: string;
 }) {
   const [pickup, setPickup] = useState<AddressValue>(emptyAddress);
   const [destination, setDestination] = useState<AddressValue>(prefillAddress ?? emptyAddress);
@@ -72,7 +76,7 @@ export function HeroSearchForm({
   function goToReserver() {
     if (!valid) return;
     storeSearchPrefill({ pickup, destination, date, time });
-    window.location.assign("/reserver");
+    window.location.assign(bookingPath ?? (locale === "en" ? "/en/book" : "/reserver"));
   }
 
   return (
@@ -81,24 +85,24 @@ export function HeroSearchForm({
       onSubmit={(event) => { event.preventDefault(); goToReserver(); }}
     >
       <div>
-        <p className="kd-eyebrow">Réservation</p>
-        <h3 className="kd-h3" style={{ marginTop: 8 }}>Réserver votre trajet</h3>
+        <p className="kd-eyebrow">{locale === "en" ? "Booking request" : "Réservation"}</p>
+        <h3 className="kd-h3" style={{ marginTop: 8 }}>{locale === "en" ? "Plan your journey" : "Réserver votre trajet"}</h3>
       </div>
 
       {prefillAddress && prefillLabel && (
-        <div className="kd-toggle-group kd-toggle-group--dark" role="group" aria-label={`Sens du trajet depuis ou vers ${prefillLabel}`}>
+        <div className="kd-toggle-group kd-toggle-group--dark" role="group" aria-label={locale === "en" ? `Journey to or from ${prefillLabel}` : `Sens du trajet depuis ou vers ${prefillLabel}`}>
           <button type="button" aria-pressed={prefillAs === "destination"} onClick={() => choosePrefillAs("destination")}>
-            Je vais à {prefillLabel}
+            {locale === "en" ? `I am going to ${prefillLabel}` : `Je vais à ${prefillLabel}`}
           </button>
           <button type="button" aria-pressed={prefillAs === "pickup"} onClick={() => choosePrefillAs("pickup")}>
-            Je pars de {prefillLabel}
+            {locale === "en" ? `I am leaving from ${prefillLabel}` : `Je pars de ${prefillLabel}`}
           </button>
         </div>
       )}
 
       <div className="kd-fields">
-        <AddressAutocomplete label="Départ" value={pickup} onChange={setPickup} allowGeolocation />
-        <AddressAutocomplete label="Destination" value={destination} onChange={setDestination} showPopularDestinations />
+        <AddressAutocomplete label={locale === "en" ? "Pickup" : "Départ"} value={pickup} onChange={setPickup} allowGeolocation locale={locale} />
+        <AddressAutocomplete label="Destination" value={destination} onChange={setDestination} showPopularDestinations locale={locale} />
         <div className="kd-datetime-grid">
           <label className="kd-field" onClick={openDatePicker}>
             <span className="kd-field-label">Date</span>
@@ -112,14 +116,14 @@ export function HeroSearchForm({
               required
             />
           </label>
-          <TimeSlotPicker label="Heure" date={date} value={time} onChange={setTime} />
+          <TimeSlotPicker label={locale === "en" ? "Time" : "Heure"} date={date} value={time} onChange={setTime} locale={locale} />
         </div>
       </div>
 
-      {sameAddress && <p className="kd-field-error" role="alert">Le départ et la destination sont identiques.</p>}
+      {sameAddress && <p className="kd-field-error" role="alert">{locale === "en" ? "Pickup and destination cannot be the same." : "Le départ et la destination sont identiques."}</p>}
 
       <button type="submit" className="kd-btn kd-btn--gold kd-btn--block" disabled={!valid}>
-        Choisir ma catégorie
+        {locale === "en" ? "Choose a vehicle" : "Choisir ma catégorie"}
       </button>
     </form>
   );

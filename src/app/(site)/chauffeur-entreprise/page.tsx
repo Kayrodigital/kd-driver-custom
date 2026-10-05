@@ -6,6 +6,7 @@ export const metadata = buildMetadata({
   title: "Chauffeur privé entreprise | KDRIVE",
   description: "Déplacements professionnels à Lyon : ponctualité, discrétion et facturation simplifiée pour les entreprises.",
   path: "/chauffeur-entreprise",
+  languages: { fr: "/chauffeur-entreprise", en: "/en/corporate-chauffeur", "x-default": "/chauffeur-entreprise" },
 });
 
 export default function ChauffeurEntreprisePage() {

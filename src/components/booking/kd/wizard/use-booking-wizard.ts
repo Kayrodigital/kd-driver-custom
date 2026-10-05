@@ -45,7 +45,7 @@ function toIsoWithOffset(date: string, time: string): string | null {
 function looksLikeAirport(value: string) { return /a[ée]roport|airport/i.test(value); }
 function looksLikeStation(value: string) { return /\bgare\b|station/i.test(value); }
 
-export function useBookingWizard() {
+export function useBookingWizard(locale: "fr" | "en" = "fr") {
   // /reserver est une page statique (générée une fois au build) : la valeur
   // initiale de chaque champ doit être identique entre le HTML figé au build
   // et la première passe d'hydratation côté client, sinon React lève une
@@ -120,7 +120,7 @@ export function useBookingWizard() {
       setRoute(payload.route);
       setStep(2);
     } catch {
-      setSearchError("Impossible de calculer ce trajet. Vérifiez les adresses.");
+      setSearchError(locale === "en" ? "We could not calculate this journey. Please check the addresses." : "Impossible de calculer ce trajet. Vérifiez les adresses.");
     } finally {
       setSearchBusy(false);
     }
@@ -194,9 +194,9 @@ export function useBookingWizard() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error);
       sessionStorage.setItem(`reservation:${payload.reference}`, JSON.stringify(payload.summary));
-      window.location.assign(`/reservation/confirmation/${payload.reference}`);
+      window.location.assign(locale === "en" ? `/en/booking/confirmation/${payload.reference}` : `/reservation/confirmation/${payload.reference}`);
     } catch {
-      setSubmitError("La demande n’a pas pu être envoyée. Réessayez.");
+      setSubmitError(locale === "en" ? "Your request could not be sent. Please try again." : "La demande n’a pas pu être envoyée. Réessayez.");
       submittingRef.current = false;
       setSubmitBusy(false);
     }

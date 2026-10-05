@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   title: "Transfert gares de Lyon : Part-Dieu et Perrache | KDRIVE",
   description: "Chauffeur privé pour vos transferts vers les gares de Lyon Part-Dieu et Perrache, sur réservation. KDRIVE confirme le tarif par téléphone avant votre trajet.",
   path: "/transfert-gare",
+  languages: { fr: "/transfert-gare", en: "/en/train-station-transfer", "x-default": "/transfert-gare" },
 });
 
 export default function TransfertGarePage() {

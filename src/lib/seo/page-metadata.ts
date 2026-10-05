@@ -6,17 +6,21 @@ export function buildMetadata({
   description,
   path,
   noIndex,
+  locale = "fr_FR",
+  languages,
 }: {
   title: string;
   description: string;
   path: string;
   /** Brouillon volontairement non indexable (cf. registre SEO, editorialStatus "draftNoIndex"). */
   noIndex?: boolean;
+  locale?: string;
+  languages?: Record<string, string>;
 }): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: path, ...(languages ? { languages } : {}) },
     /**
      * `follow: true` même en noindex : une page encore trop légère pour être
      * indexée (brouillon, contenu à enrichir) continue de transmettre le
@@ -29,7 +33,7 @@ export function buildMetadata({
       description,
       url: path,
       siteName: SITE_NAME,
-      locale: "fr_FR",
+      locale,
       type: "website",
       images: [{ url: DEFAULT_OG_IMAGE, width: 512, height: 512 }],
     },
