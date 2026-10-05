@@ -8,6 +8,7 @@ import { upcomingArticles } from "@/domain/blog/registry";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
 
 const serviceNavItems = [
+  { label: "Taxi à Lyon", href: "/taxi-lyon" },
   { label: "Transfert aéroport", href: "/transfert-aeroport" },
   { label: "Transfert gare", href: "/transfert-gare" },
   { label: "Chauffeur privé entreprise", href: "/chauffeur-entreprise" },
@@ -381,6 +382,7 @@ export function FooterSection() {
           <div className="kd-footer-col">
             <h4>Services</h4>
             <ul>
+              <li><Link href="/taxi-lyon">Taxi à Lyon</Link></li>
               <li><Link href="/chauffeur-entreprise">Trajets d’affaires</Link></li>
               <li><Link href="/transfert-aeroport">Transfert aéroport</Link></li>
               <li><Link href="/transfert-gare">Transfert gare</Link></li>

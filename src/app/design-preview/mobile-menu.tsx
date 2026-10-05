@@ -6,6 +6,7 @@ import Link from "next/link";
 const frenchMenuLinks = [
   { href: "/", label: "Accueil" },
   { href: "/reserver", label: "Réserver" },
+  { href: "/taxi-lyon", label: "Taxi à Lyon" },
   { href: "/transfert-aeroport", label: "Transfert aéroport" },
   { href: "/transfert-gare", label: "Transfert gare" },
   { href: "/chauffeur-entreprise", label: "Chauffeur entreprise" },
