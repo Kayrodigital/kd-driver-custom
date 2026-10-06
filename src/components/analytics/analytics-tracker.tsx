@@ -38,12 +38,15 @@ export function AnalyticsTracker() {
       const link = (event.target as Element).closest("a[href]");
       if (!link) return;
       const href = link.getAttribute("href") ?? "";
+      const customEvent = link.getAttribute("data-analytics-event");
       if (href.startsWith("tel:")) {
         // Un CTA "course immédiate" porte data-analytics-event pour remonter
         // en conversion secondaire distincte (immediate_ride_phone_click),
         // plutôt que le phone_click générique de tous les autres liens tel:.
-        const eventName = link.getAttribute("data-analytics-event") || "phone_click";
+        const eventName = customEvent || "phone_click";
         trackEvent(eventName, { phone_number: href.replace(/^tel:/, ""), page_path: pathname });
+      } else if (customEvent) {
+        trackEvent(customEvent, { page_path: pathname, link_url: href });
       } else if (href.includes("wa.me")) {
         trackEvent("whatsapp_click", { page_path: pathname });
       }
