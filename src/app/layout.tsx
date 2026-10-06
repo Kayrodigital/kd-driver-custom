@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "KDRIVE",
   description: "Chauffeur privé à Lyon.",
   robots: { index: true, follow: true },
+  verification: { other: { "msvalidate.01": "D29F59C020FECE88312BD5FFA644D032" } },
   openGraph: {
     title: "KDRIVE",
     description: "Chauffeur privé à Lyon.",
