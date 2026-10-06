@@ -108,6 +108,7 @@ export const servicePages: ServicePageContent[] = [
     ctaFinalTitle: "Parlons de vos déplacements professionnels",
     relatedLinksTitle: "Services complémentaires",
     relatedLinks: [
+      { href: "/chauffeur-vtc-sirha-lyon", label: "Transport d’équipes pour le SIRHA Lyon" },
       { href: "/mise-a-disposition", label: "Mise à disposition" },
       { href: "/transfert-aeroport", label: "Transfert aéroport" },
       { href: "/transfert-gare", label: "Transfert gare" },
