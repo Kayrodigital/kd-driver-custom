@@ -28,9 +28,9 @@ export type ServicePageContent = {
 function RelatedLinksSection({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
     <section className="kd-section kd-section--compact kd-on-cream">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
+      <div className="kd-container kd-container--narrow">
         <p className="kd-eyebrow">{title}</p>
-        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+        <ul className="kd-stack kd-related-links-list">
           {links.map((link) => (
             <li key={link.href}>
               <Link className="kd-card-link" href={link.href}>
@@ -55,7 +55,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
   const frameStyle = framed ? { border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" } : undefined;
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--a kd-on-dark">
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />
@@ -73,7 +73,7 @@ export function ServicePageTemplate({ content, framed = true }: { content: Servi
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">{content.presentationEyebrow}</p>
           <h2 className="kd-h2">{content.presentationTitle}</h2>
           <p className="kd-lead">{content.presentationBody}</p>

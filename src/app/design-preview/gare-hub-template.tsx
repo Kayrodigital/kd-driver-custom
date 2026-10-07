@@ -74,7 +74,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
 
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src="/images/site/kdrive-transfert-gare-lyon-part-dieu.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
@@ -133,7 +133,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Tarifs</p>
           <h2 className="kd-h2">Quel prix pour votre transfert en gare à Lyon ?</h2>
           <p className="kd-body">
@@ -180,10 +180,10 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <p className="kd-eyebrow">Correspondances</p>
           <h2 className="kd-h2">Vos correspondances depuis les gares de Lyon</h2>
-          <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+          <ul className="kd-stack kd-related-links-list">
             <li><Link className="kd-card-link" href="/transfert-aeroport">Transfert aéroport <span aria-hidden="true">→</span></Link></li>
             <li><Link className="kd-card-link" href="/chauffeur-entreprise">Déplacements professionnels <span aria-hidden="true">→</span></Link></li>
             <li><Link className="kd-card-link" href="/longues-distances">Trajet longue distance <span aria-hidden="true">→</span></Link></li>
@@ -194,7 +194,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Véhicules</p>
           <h2 className="kd-h2">Voyageurs, passagers et bagages</h2>
           <div className="kd-grid-3" style={{ marginTop: 8 }}>
@@ -210,7 +210,7 @@ export function GareHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes sur les transferts en gare</h2>

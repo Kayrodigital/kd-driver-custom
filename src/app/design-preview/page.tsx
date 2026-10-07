@@ -88,7 +88,7 @@ function DesktopPreview() {
       </div>
 
       <div style={{ border: "1px solid var(--kd-line)", borderRadius: "var(--kd-radius-lg)", overflow: "hidden", boxShadow: "var(--kd-shadow-lg)" }}>
-        <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+        <header className="kd-on-dark kd-site-header"><SiteNav /></header>
         {variant === "a" ? <HeroA /> : <HeroB />}
         <ServicesSection />
         <AdvantagesSection />

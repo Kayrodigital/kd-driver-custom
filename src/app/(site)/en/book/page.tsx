@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Book a private driver | KDRIVE", rob
 export default function EnglishBookingPage() {
   return (
     <div lang="en">
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><EnglishSiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><EnglishSiteNav /></header>
       <main className="kd-on-cream" style={{ padding: "var(--kd-space-7) 0", minHeight: "70vh" }}>
         <div className="kd-container" style={{ maxWidth: 560 }}>
           <div className="kd-section-head kd-section-head--center"><p className="kd-eyebrow">Booking request</p><h1 className="kd-h2">Request a private driver</h1><p className="kd-body">Complete the three steps below. KDRIVE will then confirm availability and the fare by telephone.</p></div>
