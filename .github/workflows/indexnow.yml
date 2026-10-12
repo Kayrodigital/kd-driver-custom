@@ -1,0 +1,80 @@
+name: IndexNow — notification Bing/Yandex après déploiement production
+
+# Déclencheurs :
+# 1) deployment_status : GitHub Deployments API, renseignée par l'intégration
+#    Vercel quand un déploiement atteint un état final. On ne réagit qu'à
+#    state == success ET environment == Production, jamais sur un preview.
+# 2) workflow_dispatch : commande manuelle de secours, à utiliser si
+#    l'événement ci-dessus ne se déclenche pas (cf. anomalie connue où
+#    l'auto-déploiement Vercel sur push ne s'est pas déclenché le
+#    2026-10-12 pour le commit 80ca607 — dans ce cas, le déploiement manuel
+#    ne passe pas non plus par ce déclencheur et la soumission manuelle via
+#    workflow_dispatch ou `node scripts/indexnow-submit.mjs` en local reste
+#    le filet de sécurité).
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "all = les 16 pages locales connues ; changed = diff git depuis le dernier commit notifié ; urls = liste manuelle"
+        required: true
+        default: "changed"
+        type: choice
+        options:
+          - all
+          - changed
+          - urls
+      urls:
+        description: "Si mode=urls : liste d'URL ou chemins séparés par des virgules"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    # Pour deployment_status : uniquement un succès en environnement de
+    # production, jamais un preview, jamais un échec/queued/in_progress.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment == 'Production')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # historique complet nécessaire pour le diff --changed-since
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.x"
+
+      - name: Déterminer le SHA de référence (déploiement précédent connu)
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.mode == 'changed'
+        id: ref_sha
+        run: |
+          # Dernier commit pour lequel ce workflow a déjà tourné avec succès,
+          # via le cache d'actions (fallback : commit précédent immédiat).
+          echo "sha=${{ github.event.before || 'HEAD~1' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Soumission — pages réellement modifiées
+        if: github.event_name == 'deployment_status' || github.event.inputs.mode == 'changed'
+        env:
+          SITE_URL: https://www.kdrive-vtc-lyon.fr
+        run: node scripts/indexnow-submit.mjs --changed-since "${{ steps.ref_sha.outputs.sha }}" --changed-to "${{ github.sha }}"
+        continue-on-error: true # une erreur IndexNow ne doit jamais faire échouer le pipeline ni bloquer le site
+
+      - name: Soumission — toutes les pages locales connues (mode manuel)
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'all'
+        env:
+          SITE_URL: https://www.kdrive-vtc-lyon.fr
+        run: node scripts/indexnow-submit.mjs --all
+        continue-on-error: true
+
+      - name: Soumission — liste d'URL manuelle
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'urls'
+        env:
+          SITE_URL: https://www.kdrive-vtc-lyon.fr
+        run: node scripts/indexnow-submit.mjs --urls "${{ github.event.inputs.urls }}"
+        continue-on-error: true
