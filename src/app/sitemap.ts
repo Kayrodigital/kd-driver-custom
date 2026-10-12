@@ -37,7 +37,7 @@ const FILE_DATE = {
   politiqueConfidentialite: "2026-08-07",
   /** Registres de contenu (date du fichier source dans son ensemble). */
   arrondissements: "2026-09-23",
-  communes: "2026-10-02",
+  communes: "2026-10-12",
   localPages: "2026-09-23",
   hubPages: "2026-09-10",
   venues: "2026-09-10",
