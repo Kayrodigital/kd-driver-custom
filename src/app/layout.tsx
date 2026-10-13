@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
+import "./cookie-consent.css";
 import { OrganizationJsonLd } from "@/lib/seo/organization-jsonld";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo/site";
 import { AnalyticsTracker } from "@/components/analytics/analytics-tracker";
+import { CookieConsent } from "@/components/privacy/cookie-consent";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -26,16 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fr">
       <body>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11347885497" strategy="afterInteractive" />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-11347885497');
-            gtag('config', 'G-FRMHN6NWCY');
-          `}
-        </Script>
+        <CookieConsent />
         <AnalyticsTracker />
         <OrganizationJsonLd />
         {children}

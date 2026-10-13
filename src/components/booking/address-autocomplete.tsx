@@ -6,8 +6,10 @@ import { popularDestinations } from "@/domain/booking/popular-destinations";
 import {
   createAutocompleteSession,
   fetchAddressSuggestions,
+  GoogleMapsConsentRequiredError,
   type PlacePrediction,
 } from "@/infrastructure/maps/google-maps-loader";
+import { CONSENT_CHANGE_EVENT, GOOGLE_MAPS_SERVICE, requestServiceConsent } from "@/lib/privacy/consent";
 import { useCurrentLocation } from "./use-current-location";
 
 function suggestionIcon(types: string[]): string {
@@ -27,8 +29,19 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
   const [loadError, setLoadError] = useState("");
   const [highlighted, setHighlighted] = useState(0);
   const [detected, setDetected] = useState<AddressValue | null>(null);
+  const [mapsConsentVersion, setMapsConsentVersion] = useState(0);
+  const [mapsConsentRequired, setMapsConsentRequired] = useState(false);
   const location = useCurrentLocation();
   useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
+
+  useEffect(() => {
+    function onConsentChange(event: Event) {
+      const detail = (event as CustomEvent<{ service: string }>).detail;
+      if (detail?.service === GOOGLE_MAPS_SERVICE) setMapsConsentVersion((version) => version + 1);
+    }
+    window.addEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+    return () => window.removeEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+  }, []);
 
   useEffect(() => {
     const query = value.address.trim();
@@ -43,13 +56,17 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
         setOpen(results.length > 0);
         setHighlighted(0);
         setLoadError("");
-      } catch {
+      } catch (error) {
         if (requestIdRef.current !== requestId) return;
-        setLoadError(locale === "en" ? "Address suggestions are unavailable. Please enter the address manually." : "L’autocomplétion est indisponible. Utilisez la saisie manuelle.");
+        const consentRequired = error instanceof GoogleMapsConsentRequiredError;
+        setMapsConsentRequired(consentRequired);
+        setLoadError(consentRequired
+          ? (locale === "en" ? "Google address suggestions require your consent. Manual entry remains available." : "Les suggestions Google nécessitent votre accord. La saisie manuelle reste disponible.")
+          : (locale === "en" ? "Address suggestions are unavailable. Please enter the address manually." : "L’autocomplétion est indisponible. Utilisez la saisie manuelle."));
       }
     }, 220);
     return () => clearTimeout(timeout);
-  }, [value.address, value.source]);
+  }, [value.address, value.source, locale, mapsConsentVersion]);
 
   useEffect(() => {
     function onPointerDown(event: MouseEvent) {
@@ -155,6 +172,19 @@ export function AddressAutocomplete({ label, value, onChange, allowGeolocation =
       {allowGeolocation && <button type="button" className="locate-mobile" onClick={locate} disabled={location.loading}>📍 {location.loading ? (locale === "en" ? "Locating…" : "Localisation…") : (locale === "en" ? "Use my current location" : "Utiliser ma position actuelle")}</button>}
       {detected && <div className="location-confirm" role="status"><span>{locale === "en" ? "Detected address" : "Adresse détectée"} : {detected.address}</span><button type="button" onClick={() => { onChange(detected); setDetected(null); }}>{locale === "en" ? "Confirm this address" : "Confirmer cette adresse"}</button></div>}
       {(location.error || loadError) && <p className="field-error" role="alert">{location.error || loadError}</p>}
+      {mapsConsentRequired && (
+        <button
+          type="button"
+          className="kd-consent-action"
+          onClick={() => {
+            requestServiceConsent(GOOGLE_MAPS_SERVICE);
+            setMapsConsentRequired(false);
+            setLoadError("");
+          }}
+        >
+          {locale === "en" ? "Enable Google address suggestions" : "Activer les suggestions Google"}
+        </button>
+      )}
     </div>
   );
 }

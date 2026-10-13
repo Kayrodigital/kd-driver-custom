@@ -33,10 +33,9 @@ export function ConfirmationSummary({ reference, locale = "fr" }: { reference: s
   useEffect(() => {
     if (tracked.current) return;
     tracked.current = true;
-    // Nom d'événement générique en attendant un libellé de conversion
-    // Google Ads dédié (Ads > Conversions > Nouvelle action) : une fois créé,
-    // ajouter { send_to: "AW-11347885497/<libellé>" } aux paramètres pour
-    // que ça remonte comme une vraie conversion Ads, pas juste un événement.
+    // Événement GA4 unique. Les conversions Google Ads doivent être importées
+    // depuis GA4 : ne pas ajouter ici de second identifiant gtag, au risque de
+    // doubler le chargeur Google et le comptage des conversions.
     trackEvent("booking_request_submitted", { transaction_id: reference });
   }, [reference]);
 

@@ -664,18 +664,25 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
 
           <h2>11. Cookies et autres traceurs</h2>
           <p>
-            Le site KDRIVE peut utiliser des cookies ou technologies similaires nécessaires à son
-            fonctionnement ainsi que des outils permettant notamment d’assurer la sécurité, de
-            mémoriser certaines préférences et de mesurer l’utilisation du site.
-          </p>
-          <p>Certains traceurs sont indispensables au fonctionnement technique du site.</p>
-          <p>
-            Lorsque la réglementation l’exige, les traceurs qui ne sont pas strictement nécessaires
-            sont utilisés conformément aux règles applicables en matière de consentement.
+            Le site KDRIVE utilise tarteaucitron.js, dans sa version libre hébergée directement par
+            KDRIVE, afin de recueillir et mémoriser les choix relatifs aux services non essentiels.
           </p>
           <p>
-            Lorsque des outils de gestion des préférences sont proposés sur le site, l’utilisateur
-            peut les utiliser afin de modifier ses choix.
+            Google Analytics 4 est utilisé pour la mesure d’audience, Google Ads pour la mesure des
+            campagnes publicitaires, et Google Maps pour les suggestions d’adresses et l’affichage
+            d’itinéraires. Ces services et leurs scripts ne sont chargés qu’après l’accord de
+            l’utilisateur pour la catégorie correspondante.
+          </p>
+          <p>
+            Par défaut, les signaux <code>analytics_storage</code>, <code>ad_storage</code>,
+            <code>ad_user_data</code> et <code>ad_personalization</code> sont refusés. Le refus de
+            Google Maps n’empêche pas d’effectuer une réservation : l’adresse peut toujours être
+            saisie manuellement.
+          </p>
+          <p>
+            Le choix peut être modifié à tout moment depuis le lien « Gestion des cookies » présent
+            dans le pied de page. La politique de consentement ne concerne pas les traitements
+            techniques strictement nécessaires à la réception et à la gestion d’une réservation.
           </p>
 
           <h2>12. Sécurité des données</h2>

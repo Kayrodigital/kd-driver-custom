@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { AddressValue } from "@/domain/booking/address";
-import { getGeometryLibrary, getGoogleMapsNamespace, getMapsLibrary } from "@/infrastructure/maps/google-maps-loader";
+import { getGeometryLibrary, getGoogleMapsNamespace, getMapsLibrary, GoogleMapsConsentRequiredError } from "@/infrastructure/maps/google-maps-loader";
+import { CONSENT_CHANGE_EVENT, GOOGLE_MAPS_SERVICE, requestServiceConsent } from "@/lib/privacy/consent";
 
 type RouteMapProps = {
   pickup: AddressValue;
@@ -20,7 +21,17 @@ export function RouteMap({ pickup, destination, route, locale = "fr" }: RouteMap
   const en = locale === "en";
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
-  const [status, setStatus] = useState<"loading" | "ready" | "no-polyline" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "no-polyline" | "consent-required" | "error">("loading");
+  const [mapsConsentVersion, setMapsConsentVersion] = useState(0);
+
+  useEffect(() => {
+    function onConsentChange(event: Event) {
+      const detail = (event as CustomEvent<{ service: string }>).detail;
+      if (detail?.service === GOOGLE_MAPS_SERVICE) setMapsConsentVersion((version) => version + 1);
+    }
+    window.addEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+    return () => window.removeEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+  }, []);
 
   /* eslint-disable react-hooks/set-state-in-effect -- chargement asynchrone de Google Maps, pattern loading/erreur standard */
   useEffect(() => {
@@ -56,15 +67,15 @@ export function RouteMap({ pickup, destination, route, locale = "fr" }: RouteMap
 
         if (!cancelled) setStatus("ready");
       } catch (error) {
-        console.error("route_map_render_failed", error);
-        if (!cancelled) setStatus("error");
+        if (!(error instanceof GoogleMapsConsentRequiredError)) console.error("route_map_render_failed", error);
+        if (!cancelled) setStatus(error instanceof GoogleMapsConsentRequiredError ? "consent-required" : "error");
       }
     }
 
     void render();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, route?.encodedPolyline]);
+  }, [visible, route?.encodedPolyline, mapsConsentVersion]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!route) return null;
@@ -80,6 +91,14 @@ export function RouteMap({ pickup, destination, route, locale = "fr" }: RouteMap
             <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />
             {status === "loading" && <p className="kd-route-map-fallback">{en ? "Loading map…" : "Chargement de la carte…"}</p>}
             {status === "no-polyline" && <p className="kd-route-map-fallback">{en ? "Route preview is unavailable for this journey." : "Aperçu de l’itinéraire indisponible pour ce trajet."}</p>}
+            {status === "consent-required" && (
+              <div className="kd-route-map-fallback kd-route-map-consent">
+                <p>{en ? "Allow Google Maps to display the route." : "Autorisez Google Maps pour afficher l’itinéraire."}</p>
+                <button type="button" className="kd-consent-action" onClick={() => requestServiceConsent(GOOGLE_MAPS_SERVICE)}>
+                  {en ? "Enable Google Maps" : "Activer Google Maps"}
+                </button>
+              </div>
+            )}
             {status === "error" && <p className="kd-route-map-fallback">{en ? "The map could not be loaded." : "La carte n’a pas pu être chargée."}</p>}
           </div>
           <div className="kd-route-map-meta">
