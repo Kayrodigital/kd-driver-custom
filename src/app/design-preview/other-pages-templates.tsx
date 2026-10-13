@@ -392,31 +392,104 @@ export function FaqPage({ framed = true, showTrustBadge = true }: { framed?: boo
   );
 }
 
+export function LegalNoticesPage({ framed = true }: { framed?: boolean } = {}) {
+  return (
+    <PageShell framed={framed}>
+      <PageHero
+        eyebrow="Informations légales"
+        title="Mentions légales"
+        lead="Dernière mise à jour : 14 octobre 2026"
+        breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Mentions légales" }]}
+        showTrustBadge={false}
+      />
+      <section className="kd-section kd-on-cream">
+        <div className="kd-container kd-legal" style={{ maxWidth: 720 }}>
+          <p>Conformément aux dispositions applicables aux services de communication au public en ligne, les présentes mentions légales identifient l’éditeur du site Kdrive et ses prestataires techniques.</p>
+          <h2>1. Éditeur du site</h2>
+          <p>
+            <strong>Kdrive — Chauffeur privé à Lyon</strong><br />
+            Exploitant : Karamba Diaby — Entrepreneur individuel<br />
+            SIREN : 852 641 000<br />
+            Adresse professionnelle : 4 rue d’Aguesseau, 69007 Lyon, France<br />
+            Activité : transport de personnes avec chauffeur (VTC)<br />
+            Téléphone : <a href="tel:+33688863419">06 88 86 34 19</a><br />
+            E-mail : <a href="mailto:contact@kdrive-vtc-lyon.fr">contact@kdrive-vtc-lyon.fr</a><br />
+            Site : <a href="https://www.kdrive-vtc-lyon.fr/">www.kdrive-vtc-lyon.fr</a>
+          </p>
+          <p>Directeur de la publication : Karamba Diaby.</p>
+          <p>Numéro d’inscription au registre des exploitants VTC : à compléter après vérification auprès de l’exploitant. SIRET et informations d’immatriculation détaillées : à confirmer.</p>
+          <h2>2. Création et développement du site</h2>
+          <p><strong>Aboubacar Diaby — Kayro Digital</strong><br />
+            Conception du site, développement, expérience utilisateur, référencement naturel et intégration du système de réservation.<br />
+            Site : <a href="https://kayrodigital.com/" target="_blank" rel="noopener noreferrer">kayrodigital.com</a>
+          </p>
+          <p>L’exploitation commerciale des prestations de transport relève de Karamba Diaby, et non du concepteur du site.</p>
+          <h2>3. Hébergement et infrastructure technique</h2>
+          <h3>Vercel — Hébergement de l’application</h3>
+          <p><strong>Vercel Inc.</strong><br />
+            440 N Barranca Avenue #4133<br />
+            Covina, CA 91723, États-Unis<br />
+            Site : <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer">vercel.com</a>
+          </p>
+          <h3>Supabase — Infrastructure de base de données</h3>
+          <p><strong>Supabase</strong><br />
+            Service technique de base de données et de gestion des informations de réservation.<br />
+            Site : <a href="https://supabase.com/" target="_blank" rel="noopener noreferrer">supabase.com</a>
+          </p>
+          <p>La localisation effective des données dépend de la région de déploiement et des paramètres techniques du projet.</p>
+          <h2>4. Propriété intellectuelle</h2>
+          <p>Les textes, logos, photographies, éléments graphiques et autres contenus originaux du site sont protégés par le droit de la propriété intellectuelle. Ils appartiennent à leurs titulaires respectifs ou sont utilisés avec leur autorisation. Toute reproduction ou réutilisation non autorisée est interdite, sous réserve des exceptions légales. Les composants de tiers restent soumis à leurs licences.</p>
+          <h2>5. Informations et responsabilité</h2>
+          <p>Kdrive veille à la qualité des informations présentées sur ses prestations, véhicules, tarifs et zones desservies. Ces informations peuvent évoluer et ne remplacent pas la confirmation des conditions particulières de chaque réservation. La responsabilité de Kdrive reste régie par les dispositions légales et contractuelles applicables.</p>
+          <h2>6. Réservations</h2>
+          <p>Le site permet de demander une réservation VTC, notamment en renseignant départ, destination, date, horaire et coordonnées. Les modalités de confirmation, tarification, annulation et paiement doivent être consultées dans les conditions générales de vente lorsqu’elles sont mises à disposition.</p>
+          <h2>7. Données personnelles</h2>
+          <p>Les informations recueillies dans les formulaires et lors des réservations sont traitées pour répondre aux demandes et organiser les transports. Les finalités, bases légales, destinataires, droits et durées de conservation sont détaillés dans la <Link href="/politique-de-confidentialite">politique de confidentialité</Link>.</p>
+          <p>Pour exercer vos droits : <a href="mailto:contact@kdrive-vtc-lyon.fr">contact@kdrive-vtc-lyon.fr</a>.</p>
+          <h2>8. Cookies et services tiers</h2>
+          <p>Le site utilise un gestionnaire de consentement tarteaucitron.js pour les services non essentiels, notamment Google Analytics 4, Google Ads et Google Maps. Les préférences peuvent être modifiées depuis « Gestion des cookies » dans le pied de page. Les traitements strictement nécessaires à la réservation restent accessibles sans accord pour ces services.</p>
+          <h2>9. Liens externes</h2>
+          <p>Certains liens dirigent vers des sites de tiers dont Kdrive ne maîtrise pas les contenus et les pratiques de traitement des données.</p>
+          <h2>10. Droit applicable et médiation</h2>
+          <p>Le site est soumis au droit français. En cas de litige relatif à une prestation, le client peut contacter Kdrive afin de rechercher une solution amiable. Le consommateur peut, dans les conditions prévues par la loi, recourir gratuitement à un médiateur de la consommation. Les coordonnées du médiateur désigné par l’exploitant restent à compléter.</p>
+          <h2>11. Contact</h2>
+          <p><strong>Kdrive</strong><br />
+            Karamba Diaby<br />
+            4 rue d’Aguesseau, 69007 Lyon, France<br />
+            <a href="tel:+33688863419">06 88 86 34 19</a><br />
+            <a href="mailto:contact@kdrive-vtc-lyon.fr">contact@kdrive-vtc-lyon.fr</a>
+          </p>
+        </div>
+      </section>
+    </PageShell>
+  );
+}
+
 export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) {
   return (
     <PageShell framed={framed}>
       <PageHero
         eyebrow="Confidentialité"
         title="Politique de confidentialité"
-        lead="Dernière mise à jour : 7 août 2026"
+        lead="Dernière mise à jour : 14 octobre 2026"
         breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Politique de confidentialité" }]}
       />
       <section className="kd-section kd-on-cream">
         <div className="kd-container kd-legal" style={{ maxWidth: 720 }}>
           <p>
-            KD Driver / KDRIVE accorde une importance particulière à la protection de la vie privée
+            Kdrive accorde une importance particulière à la protection de la vie privée
             et des données personnelles de ses clients, prospects et visiteurs.
           </p>
           <p>
             La présente politique de confidentialité explique quelles informations peuvent être
-            collectées lors de l’utilisation du site KDRIVE, pourquoi elles sont collectées, comment
+            collectées lors de l’utilisation du site Kdrive, pourquoi elles sont collectées, comment
             elles sont utilisées, à qui elles peuvent être transmises et quels sont vos droits.
           </p>
 
           <h2>1. Responsable du traitement</h2>
           <p>Le responsable du traitement des données personnelles collectées sur ce site est :</p>
           <p>
-            <strong>KD Driver / KDRIVE</strong><br />
+            <strong>Kdrive</strong><br />
             Exploitant : Karamba DIABY – Entrepreneur individuel<br />
             SIREN / RCS : 852 641 000 R.C.S. Lyon<br />
             Adresse : 4 rue d’Aguesseau, 69007 Lyon, France<br />
@@ -425,9 +498,11 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             Téléphone : <a href="tel:+33688863419">06 88 86 34 19</a>
           </p>
 
+          <p>Site conçu et développé par <strong>Aboubacar Diaby — Kayro Digital</strong>, prestataire technique intervenant pour le compte de Kdrive.</p>
+
           <h2>2. Données personnelles susceptibles d’être collectées</h2>
           <p>
-            KD Driver / KDRIVE limite la collecte de données personnelles aux informations
+            Kdrive limite la collecte de données personnelles aux informations
             nécessaires à la gestion des demandes, des réservations et des prestations de transport.
           </p>
           <p>Selon votre utilisation du site et les services demandés, les données suivantes peuvent notamment être collectées :</p>
@@ -470,12 +545,12 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           </ul>
 
           <h2>4. Bases juridiques des traitements</h2>
-          <p>Selon la nature du traitement, KD Driver / KDRIVE peut traiter vos données personnelles sur les bases juridiques suivantes :</p>
+          <p>Selon la nature du traitement, Kdrive peut traiter vos données personnelles sur les bases juridiques suivantes :</p>
           <ul>
             <li><strong>L’exécution de mesures précontractuelles :</strong> lorsque vous demandez un renseignement, un tarif, une estimation ou une réservation.</li>
             <li><strong>L’exécution d’un contrat :</strong> lorsque vous réservez une prestation de transport VTC.</li>
             <li><strong>Le respect d’obligations légales :</strong> notamment en matière comptable, fiscale ou réglementaire.</li>
-            <li><strong>L’intérêt légitime de KD Driver / KDRIVE :</strong> pour sécuriser son site, prévenir les abus, gérer son activité et améliorer ses services.</li>
+            <li><strong>L’intérêt légitime de Kdrive :</strong> pour sécuriser son site, prévenir les abus, gérer son activité et améliorer ses services.</li>
             <li><strong>Votre consentement :</strong> lorsque celui-ci est requis pour l’utilisation de certains traceurs, outils ou traitements spécifiques.</li>
           </ul>
 
@@ -487,7 +562,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           </p>
           <p>Elles peuvent notamment être communiquées :</p>
           <ul>
-            <li>à KD Driver / KDRIVE ;</li>
+            <li>à Kdrive ;</li>
             <li>au chauffeur chargé de la course ;</li>
             <li>à un chauffeur partenaire lorsque son intervention est nécessaire à la réalisation de la prestation ;</li>
             <li>aux prestataires d’hébergement et d’infrastructure technique ;</li>
@@ -499,7 +574,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           </ul>
           <p>
             <strong>
-              KD Driver / KDRIVE ne vend pas les données personnelles de ses clients ou prospects et
+              Kdrive ne vend pas les données personnelles de ses clients ou prospects et
               ne commercialise pas les coordonnées collectées sur son site auprès de sociétés tierces.
             </strong>
           </p>
@@ -534,7 +609,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             traitées par un prestataire de paiement spécialisé.
           </p>
           <p>
-            KD Driver / KDRIVE n’a pas vocation à enregistrer directement les informations bancaires
+            Kdrive n’a pas vocation à enregistrer directement les informations bancaires
             complètes du client telles que le numéro intégral de sa carte bancaire ou son cryptogramme.
           </p>
           <p>
@@ -544,7 +619,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
 
           <h2>8. Durée de conservation des données</h2>
           <p>
-            KD Driver / KDRIVE conserve les données personnelles uniquement pendant la durée
+            Kdrive conserve les données personnelles uniquement pendant la durée
             nécessaire aux finalités pour lesquelles elles ont été collectées et au respect de ses
             obligations légales.
           </p>
@@ -560,7 +635,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           <h2>9. Hébergement et prestataires techniques</h2>
           <p>
             Pour assurer le fonctionnement du site, la gestion des réservations, les communications
-            et la mesure de son audience, KD Driver / KDRIVE utilise différents prestataires techniques.
+            et la mesure de son audience, Kdrive utilise différents prestataires techniques.
           </p>
 
           <h3>9.1 Vercel – Hébergement et déploiement du site</h3>
@@ -573,7 +648,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           </p>
           <p>
             Vercel fournit notamment l’infrastructure permettant l’hébergement, le déploiement et la
-            mise à disposition de l’application web KDRIVE.
+            mise à disposition de l’application web Kdrive.
           </p>
 
           <h3>9.2 Supabase – Base de données et services backend</h3>
@@ -585,7 +660,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             E-mail relatif à la confidentialité : <a href="mailto:privacy@supabase.com">privacy@supabase.com</a>
           </p>
           <p>
-            Supabase fournit des services techniques nécessaires au fonctionnement de KDRIVE,
+            Supabase fournit des services techniques nécessaires au fonctionnement de Kdrive,
             notamment des services de base de données et de backend.
           </p>
           <p>
@@ -602,7 +677,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             E-mail relatif à la confidentialité : <a href="mailto:privacy@twilio.com">privacy@twilio.com</a>
           </p>
           <p>
-            Twilio peut être utilisé par KD Driver / KDRIVE pour transmettre des SMS et autres
+            Twilio peut être utilisé par Kdrive pour transmettre des SMS et autres
             communications directement liés à la gestion d’une réservation.
           </p>
           <p>
@@ -619,7 +694,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             Irlande
           </p>
           <p>
-            KD Driver / KDRIVE peut utiliser Google Analytics afin de mesurer la fréquentation du
+            Kdrive peut utiliser Google Analytics afin de mesurer la fréquentation du
             site et de mieux comprendre la manière dont il est utilisé.
           </p>
           <p>
@@ -627,7 +702,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             parcours de navigation, les interactions avec le site et certaines conversions.
           </p>
           <p>
-            KD Driver / KDRIVE configure, lorsque cela est techniquement disponible et pertinent, les
+            Kdrive configure, lorsque cela est techniquement disponible et pertinent, les
             paramètres permettant de limiter les informations collectées et de réduire l’identification
             directe des visiteurs.
           </p>
@@ -639,11 +714,13 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             Laval, Québec H7P 0G1<br />
             Canada
           </p>
-          <p>PlanetHoster peut intervenir dans la gestion technique du nom de domaine et de certains services associés à KDRIVE.</p>
+          <p>PlanetHoster peut intervenir dans la gestion technique du nom de domaine et de certains services associés à Kdrive.</p>
+
+          <p>Les modalités d’accès aux données personnelles par les prestataires techniques sont limitées aux opérations nécessaires au service. La région d’hébergement Supabase et les transferts éventuels doivent être vérifiés dans la configuration réelle du projet.</p>
 
           <h2>10. Mesure d’audience</h2>
           <p>
-            KD Driver / KDRIVE utilise ou peut utiliser des outils de mesure d’audience afin de
+            Kdrive utilise ou peut utiliser des outils de mesure d’audience afin de
             comprendre comment les visiteurs utilisent son site, mesurer ses performances et
             améliorer l’expérience proposée.
           </p>
@@ -658,14 +735,14 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             <li>certaines actions considérées comme des conversions.</li>
           </ul>
           <p>
-            Ces informations permettent à KD Driver / KDRIVE d’évaluer l’efficacité du site et de ses
+            Ces informations permettent à Kdrive d’évaluer l’efficacité du site et de ses
             actions de communication et d’acquisition.
           </p>
 
           <h2>11. Cookies et autres traceurs</h2>
           <p>
-            Le site KDRIVE utilise tarteaucitron.js, dans sa version libre hébergée directement par
-            KDRIVE, afin de recueillir et mémoriser les choix relatifs aux services non essentiels.
+            Le site Kdrive utilise tarteaucitron.js, dans sa version libre hébergée directement par
+            Kdrive, afin de recueillir et mémoriser les choix relatifs aux services non essentiels.
           </p>
           <p>
             Google Analytics 4 est utilisé pour la mesure d’audience, Google Ads pour la mesure des
@@ -685,8 +762,10 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             techniques strictement nécessaires à la réception et à la gestion d’une réservation.
           </p>
 
+          <p>Les visiteurs peuvent accepter, refuser ou personnaliser ces services. Les scripts Google Analytics 4 et Google Ads ne sont pas chargés avant le consentement correspondant (Consent Mode v2 en mode Basic). Les données strictement nécessaires à la gestion des réservations sont traitées indépendamment de ce choix.</p>
+
           <h2>12. Sécurité des données</h2>
-          <p>KD Driver / KDRIVE met en œuvre des mesures techniques et organisationnelles raisonnables destinées à protéger les informations personnelles contre notamment :</p>
+          <p>Kdrive met en œuvre des mesures techniques et organisationnelles raisonnables destinées à protéger les informations personnelles contre notamment :</p>
           <ul>
             <li>l’accès non autorisé ;</li>
             <li>la divulgation non autorisée ;</li>
@@ -698,27 +777,27 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           <p>
             L’accès aux informations personnelles est limité aux personnes et prestataires qui en ont
             besoin pour traiter les réservations, réaliser les prestations ou assurer le
-            fonctionnement des services techniques de KDRIVE.
+            fonctionnement des services techniques de Kdrive.
           </p>
           <p>
-            KD Driver / KDRIVE applique également un principe de minimisation des données afin de
+            Kdrive applique également un principe de minimisation des données afin de
             limiter la collecte aux informations nécessaires à son activité.
           </p>
           <p>
-            Aucun système informatique ne permettant de garantir une sécurité absolue, KD Driver /
-            KDRIVE veille à adapter ses mesures de protection aux risques identifiés et aux outils
+            Aucun système informatique ne permettant de garantir une sécurité absolue, Kdrive /
+            Kdrive veille à adapter ses mesures de protection aux risques identifiés et aux outils
             utilisés.
           </p>
 
           <h2>13. Transferts internationaux de données</h2>
           <p>
-            Certains prestataires techniques utilisés par KD Driver / KDRIVE sont établis ou
+            Certains prestataires techniques utilisés par Kdrive sont établis ou
             disposent d’infrastructures situées en dehors de l’Espace économique européen.
           </p>
           <p>Cela peut notamment concerner des prestataires situés aux États-Unis ou au Canada.</p>
           <p>
-            Lorsque des données personnelles font l’objet d’un transfert international, KD Driver /
-            KDRIVE s’appuie, lorsque cela est applicable, sur les mécanismes et garanties prévus par
+            Lorsque des données personnelles font l’objet d’un transfert international, Kdrive /
+            Kdrive s’appuie, lorsque cela est applicable, sur les mécanismes et garanties prévus par
             la réglementation européenne ainsi que sur les engagements contractuels et mécanismes mis
             en place par ses prestataires.
           </p>
@@ -726,7 +805,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           <h2>14. Vos droits sur vos données personnelles</h2>
           <p>Conformément à la réglementation applicable relative à la protection des données personnelles, vous pouvez notamment disposer des droits suivants :</p>
           <ul>
-            <li><strong>Droit d’accès :</strong> obtenir des informations sur les données personnelles que KD Driver / KDRIVE détient à votre sujet.</li>
+            <li><strong>Droit d’accès :</strong> obtenir des informations sur les données personnelles que Kdrive détient à votre sujet.</li>
             <li><strong>Droit de rectification :</strong> demander la correction de données inexactes ou incomplètes.</li>
             <li><strong>Droit à l’effacement :</strong> demander la suppression de certaines données lorsque les conditions légales sont remplies.</li>
             <li><strong>Droit à la limitation :</strong> demander la limitation de certains traitements.</li>
@@ -734,24 +813,24 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
             <li><strong>Droit à la portabilité :</strong> recevoir certaines données dans un format structuré lorsque ce droit est applicable.</li>
             <li><strong>Droit de retrait du consentement :</strong> retirer votre consentement lorsqu’un traitement repose sur celui-ci.</li>
           </ul>
-          <p>Pour exercer vos droits, vous pouvez contacter KD Driver / KDRIVE :</p>
+          <p>Pour exercer vos droits, vous pouvez contacter Kdrive :</p>
           <p>E-mail : <a href="mailto:contact@kdrive-vtc-lyon.fr">contact@kdrive-vtc-lyon.fr</a></p>
           <p>
             Courrier :<br />
-            KD Driver / KDRIVE<br />
+            Kdrive<br />
             Karamba DIABY<br />
             4 rue d’Aguesseau<br />
             69007 Lyon, France
           </p>
           <p>
             Afin d’éviter qu’une personne non autorisée accède aux données personnelles d’un tiers,
-            KD Driver / KDRIVE peut demander des informations permettant de vérifier l’identité du
+            Kdrive peut demander des informations permettant de vérifier l’identité du
             demandeur lorsque cela est nécessaire.
           </p>
 
           <h2>15. Réclamation auprès de la CNIL</h2>
           <p>
-            Si vous estimez, après avoir contacté KD Driver / KDRIVE, que vos droits relatifs à la
+            Si vous estimez, après avoir contacté Kdrive, que vos droits relatifs à la
             protection de vos données ne sont pas respectés, vous pouvez adresser une réclamation à
             la Commission Nationale de l’Informatique et des Libertés (CNIL).
           </p>
@@ -766,18 +845,18 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
 
           <h2>16. Liens et services tiers</h2>
           <p>
-            Le site KDRIVE peut contenir des liens ou fonctionnalités permettant d’accéder à des
+            Le site Kdrive peut contenir des liens ou fonctionnalités permettant d’accéder à des
             services tiers, notamment des services de messagerie, de cartographie, de paiement ou de
             communication.
           </p>
           <p>
-            Lorsque vous utilisez un service tiers ou quittez le site KDRIVE, le traitement de vos
+            Lorsque vous utilisez un service tiers ou quittez le site Kdrive, le traitement de vos
             données peut également être soumis à la politique de confidentialité et aux conditions du
             prestataire concerné.
           </p>
 
           <h2>17. Données relatives à une autre personne</h2>
-          <p>Le service KDRIVE permet, dans certaines situations, d’effectuer une réservation pour un tiers.</p>
+          <p>Le service Kdrive permet, dans certaines situations, d’effectuer une réservation pour un tiers.</p>
           <p>
             Lorsque vous fournissez les coordonnées ou informations d’une autre personne pour
             organiser son transport, vous devez vous assurer que vous êtes autorisé à communiquer ces
@@ -787,7 +866,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           <p>Ces informations seront utilisées uniquement dans la mesure nécessaire à l’organisation et à la réalisation du trajet.</p>
 
           <h2>18. Modification de la politique de confidentialité</h2>
-          <p>KD Driver / KDRIVE peut modifier la présente politique de confidentialité afin de tenir compte notamment :</p>
+          <p>Kdrive peut modifier la présente politique de confidentialité afin de tenir compte notamment :</p>
           <ul>
             <li>de l’évolution de ses services ;</li>
             <li>de l’évolution de son site internet ;</li>
@@ -800,7 +879,7 @@ export function PrivacyPolicyPage({ framed = true }: { framed?: boolean } = {}) 
           <h2>19. Nous contacter</h2>
           <p>Pour toute question concernant la présente politique de confidentialité, le traitement de vos données personnelles ou l’exercice de vos droits, vous pouvez contacter :</p>
           <p>
-            <strong>KD Driver / KDRIVE</strong><br />
+            <strong>Kdrive</strong><br />
             Karamba DIABY – Entrepreneur individuel<br />
             4 rue d’Aguesseau<br />
             69007 Lyon, France<br />
