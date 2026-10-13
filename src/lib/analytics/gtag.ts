@@ -1,5 +1,7 @@
 "use client";
 
+import { GA4_SERVICE, hasServiceConsent } from "@/lib/privacy/consent";
+
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -15,6 +17,6 @@ declare global {
  * tracking.
  */
 export function trackEvent(name: string, params: Record<string, unknown> = {}): void {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  if (!hasServiceConsent(GA4_SERVICE) || typeof window.gtag !== "function") return;
   window.gtag("event", name, params);
 }

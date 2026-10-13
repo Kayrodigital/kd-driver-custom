@@ -1,3 +1,5 @@
+import { GOOGLE_MAPS_SERVICE, hasServiceConsent } from "@/lib/privacy/consent";
+
 export type PlaceLike = {
   id?: string;
   formattedAddress?: string;
@@ -50,7 +52,15 @@ type GoogleMapsWindow = Window & {
 
 let loader: Promise<void> | null = null;
 
+export class GoogleMapsConsentRequiredError extends Error {
+  constructor() {
+    super("Le consentement Google Maps est requis.");
+    this.name = "GoogleMapsConsentRequiredError";
+  }
+}
+
 export function loadGoogleMaps(): Promise<void> {
+  if (!hasServiceConsent(GOOGLE_MAPS_SERVICE)) return Promise.reject(new GoogleMapsConsentRequiredError());
   if ((window as GoogleMapsWindow).google?.maps) return Promise.resolve();
   if (loader) return loader;
   loader = new Promise((resolve, reject) => {

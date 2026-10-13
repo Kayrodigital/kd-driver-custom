@@ -6,6 +6,7 @@ import { SceneImage } from "./scene-image";
 import { ArticleCard } from "./blog-cards";
 import { upcomingArticles } from "@/domain/blog/registry";
 import { vehicleCatalog, VEHICLE_EXAMPLES_DISCLAIMER } from "@/domain/pricing/vehicle-catalog";
+import { ManageCookiesLink } from "@/components/privacy/manage-cookies-link";
 
 const serviceNavItems = [
   { label: "Taxi à Lyon", href: "/taxi-lyon" },
@@ -418,7 +419,7 @@ export function FooterSection() {
         </div>
         <div className="kd-footer-bottom">
           <span>© {new Date().getFullYear()} KDRIVE</span>
-          <span>Mentions légales · <Link href="/politique-de-confidentialite">Confidentialité</Link> · <Link href="/blog">Blog</Link></span>
+          <span><Link href="/mentions-legales">Mentions légales</Link> · <Link href="/politique-de-confidentialite">Confidentialité</Link> · <Link href="/blog">Blog</Link> · <ManageCookiesLink /></span>
         </div>
       </div>
     </footer>

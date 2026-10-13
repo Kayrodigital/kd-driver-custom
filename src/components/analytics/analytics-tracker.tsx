@@ -22,8 +22,8 @@ export function AnalyticsTracker() {
 
   useEffect(() => {
     if (isAdmin) return;
-    // gtag.js envoie déjà une vue de page pour le tout premier chargement
-    // (via gtag('config', ...) dans le layout) : ne pas la dupliquer ici,
+    // gtag.js envoie déjà une vue de page lors de son activation après
+    // consentement : ne pas la dupliquer ici,
     // seulement les navigations suivantes côté client (App Router).
     if (isFirstPageview.current) {
       isFirstPageview.current = false;
