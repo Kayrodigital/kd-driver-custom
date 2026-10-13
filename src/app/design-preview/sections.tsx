@@ -419,7 +419,7 @@ export function FooterSection() {
         </div>
         <div className="kd-footer-bottom">
           <span>© {new Date().getFullYear()} KDRIVE</span>
-          <span>Mentions légales · <Link href="/politique-de-confidentialite">Confidentialité</Link> · <Link href="/blog">Blog</Link> · <ManageCookiesLink /></span>
+          <span><Link href="/mentions-legales">Mentions légales</Link> · <Link href="/politique-de-confidentialite">Confidentialité</Link> · <Link href="/blog">Blog</Link> · <ManageCookiesLink /></span>
         </div>
       </div>
     </footer>
