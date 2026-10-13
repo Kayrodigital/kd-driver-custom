@@ -35,6 +35,7 @@ const FILE_DATE = {
   transfertGare: "2026-09-09",
   vehicules: "2026-08-11",
   politiqueConfidentialite: "2026-08-07",
+  mentionsLegales: "2026-10-14",
   /** Registres de contenu (date du fichier source dans son ensemble). */
   arrondissements: "2026-09-23",
   communes: "2026-10-12",
@@ -69,6 +70,7 @@ const STATIC_PAGES: { path: string; updatedAt: string }[] = [
   { path: "/transfert-gare", updatedAt: FILE_DATE.transfertGare },
   { path: "/vehicules", updatedAt: FILE_DATE.vehicules },
   { path: "/politique-de-confidentialite", updatedAt: FILE_DATE.politiqueConfidentialite },
+  { path: "/mentions-legales", updatedAt: FILE_DATE.mentionsLegales },
   { path: "/en", updatedAt: FILE_DATE.englishPages },
   { path: "/en/airport-transfer", updatedAt: FILE_DATE.englishPages },
   { path: "/en/train-station-transfer", updatedAt: FILE_DATE.englishPages },
