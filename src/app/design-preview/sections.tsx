@@ -373,7 +373,7 @@ export function ImmediateRideSection() {
         <p className="kd-eyebrow">Course immédiate</p>
         <h2 className="kd-h2">Besoin d’un chauffeur maintenant ?</h2>
         <p className="kd-lead">Une prise en charge rapide peut être proposée selon les disponibilités et les conditions de circulation.</p>
-        <a className="kd-btn kd-btn--primary" href="tel:+33688863419" data-analytics-event="immediate_ride_phone_click">📞 Appeler KDRIVE — 06 88 86 34 19</a>
+        <a className="kd-btn kd-btn--gold" href="tel:+33688863419" data-analytics-event="immediate_ride_phone_click">📞 Appeler KDRIVE — 06 88 86 34 19</a>
       </div>
     </section>
   );
