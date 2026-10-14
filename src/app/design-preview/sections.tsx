@@ -24,12 +24,20 @@ const infoNavItems = [
   { label: "Blog", href: "/blog" },
 ];
 
-const services = [
+type HomeService = {
+  title: string;
+  body: string;
+  image: string;
+  href: string;
+  alt?: string;
+};
+
+const services: HomeService[] = [
   { title: "Transferts aéroports", body: "Lyon-Saint-Exupéry et autres aéroports : prise en charge préparée à l’avance.", image: "/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp", href: "/transfert-aeroport" },
   { title: "Transferts gares", body: "Part-Dieu, Perrache et autres gares, sur réservation.", image: "/images/site/kdrive-transfert-gare-lyon-part-dieu.webp", href: "/transfert-gare" },
   { title: "Déplacements professionnels", body: "Rendez-vous, équipes en déplacement : ponctualité et discrétion à chaque étape.", image: "/images/service-affaires.jpg", href: "/chauffeur-entreprise" },
-  { title: "Transferts hôtels & destinations privées", body: "Un chauffeur dédié pour vos arrivées, départs et déplacements sur mesure.", image: "/images/service-disposition.jpg", href: "/mise-a-disposition" },
-  { title: "Événements & sorties", body: "Soirées, événements privés ou professionnels : réservez votre trajet en ligne.", image: "/images/service-vip.jpg", href: "/reserver" },
+  { title: "Transferts hôtels & destinations privées", body: "Un chauffeur dédié pour vos arrivées, départs et déplacements sur mesure.", image: "/images/kd-driver-transfert-hotel-lyon.webp", href: "/mise-a-disposition", alt: "Chauffeur prenant en charge les bagages d’une voyageuse pour un transfert hôtel à Lyon" },
+  { title: "Événements & sorties", body: "Soirées, événements privés ou professionnels : réservez votre trajet en ligne.", image: "/images/kd-driver-evenements-sorties-lyon.webp", href: "/reserver", alt: "Chauffeur accueillant un couple pour une sortie en soirée à Lyon" },
   { title: "Transport de groupes", body: "Familles, groupes et bagages nombreux : la catégorie Van s’adapte à vos besoins.", image: "/images/vehicle-van.jpg", href: "/vehicules" },
   { title: "Course immédiate", body: "Besoin d’un chauffeur maintenant ? Appelez-nous directement.", image: "/images/site/kdrive-berline-autoroute-lyon.webp", href: "/#course-immediate" },
 ];
@@ -84,7 +92,7 @@ export function ServicesSection() {
         <div className="kd-services-grid">
           {services.map((service) => (
             <Link key={service.title} href={service.href} className="kd-card kd-card--hover kd-service-card">
-              <SceneImage src={service.image} alt={service.title} className="kd-service-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+              <SceneImage src={service.image} alt={service.alt ?? service.title} className="kd-service-image" sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               <h3 className="kd-h4">{service.title}</h3>
               <p className="kd-body">{service.body}</p>
               <span className="kd-card-link">Découvrir le service <span aria-hidden="true">→</span></span>
