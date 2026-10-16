@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Réserver | KDRIVE", robots: { index
 export default function BookingPage() {
   return (
     <>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
       <main className="kd-on-cream" style={{ padding: "var(--kd-space-7) 0", minHeight: "70vh" }}>
         <div className="kd-container" style={{ maxWidth: 560 }}>
           <div className="kd-section-head kd-section-head--center">

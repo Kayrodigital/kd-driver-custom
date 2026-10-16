@@ -96,7 +96,7 @@ export function EnglishContactCta({ title = "Plan your journey with KDRIVE" }: {
 export function EnglishServicePageTemplate({ content }: { content: EnglishServicePageContent }) {
   return (
     <div lang="en">
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><EnglishSiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><EnglishSiteNav /></header>
 
       <section className="kd-hero kd-hero--a kd-on-dark">
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />

@@ -52,7 +52,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
 
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src="/images/site/kdrive-transfert-aeroport-lyon-saint-exupery.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
@@ -71,7 +71,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Départ</p>
           <h2 className="kd-h2">Rejoindre l&apos;aéroport depuis Lyon et sa métropole</h2>
           <p className="kd-body">
@@ -88,7 +88,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Arrivée</p>
           <h2 className="kd-h2">Réserver votre chauffeur à votre arrivée</h2>
           <p className="kd-body">
@@ -104,10 +104,10 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-section--compact kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Point de rendez-vous</p>
           <h2 className="kd-h2">Où retrouver votre chauffeur à Saint-Exupéry ?</h2>
-          <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+          <ul className="kd-body kd-bullet-list">
             <li>L&apos;aéroport Lyon Saint-Exupéry compte deux terminaux passagers (Terminal 1 et Terminal 2), reliés entre eux.</li>
             <li>Des zones de dépose-minute et de prise en charge taxi/VTC existent aux abords des terminaux ; leur emplacement précis est consultable sur le plan officiel de l&apos;aéroport (lyonaeroports.com).</li>
             <li>Le point de rendez-vous exact avec votre chauffeur est confirmé avec vous au moment de la réservation ou par téléphone, selon les zones d&apos;accès autorisées le jour de votre trajet.</li>
@@ -117,7 +117,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Tarifs</p>
           <h2 className="kd-h2">Quel prix pour votre transfert aéroport ?</h2>
           <p className="kd-body">
@@ -138,7 +138,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Véhicules</p>
           <h2 className="kd-h2">Un transfert adapté à vos passagers et bagages</h2>
           <div className="kd-grid-3" style={{ marginTop: 8 }}>
@@ -154,12 +154,12 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">Destinations</p>
             <h2 className="kd-h2">Vos trajets entre l&apos;aéroport, Lyon et les communes desservies</h2>
           </div>
-          <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+          <ul className="kd-stack kd-related-links-list">
             <li><Link className="kd-card-link" href="/vtc-lyon-part-dieu">Aéroport → Gare Lyon Part-Dieu <span aria-hidden="true">→</span></Link></li>
             <li><Link className="kd-card-link" href="/vtc-lyon-perrache">Aéroport → Gare Lyon Perrache <span aria-hidden="true">→</span></Link></li>
             <li><Link className="kd-card-link" href="/vtc-gare-lyon-saint-exupery-tgv">Gare Lyon Saint-Exupéry TGV (voyageurs en train) <span aria-hidden="true">→</span></Link></li>
@@ -173,7 +173,7 @@ export function AirportHubPage({ framed = true }: { framed?: boolean } = {}) {
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes</h2>

@@ -54,7 +54,7 @@ export function HubPageTemplate({ content, framed = true }: { content: HubPageCo
 
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />
@@ -73,7 +73,7 @@ export function HubPageTemplate({ content, framed = true }: { content: HubPageCo
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Présentation</p>
           <h2 className="kd-h2">{content.presentationTitle}</h2>
           {content.presentationBody.map((paragraph) => (
@@ -104,7 +104,7 @@ export function HubPageTemplate({ content, framed = true }: { content: HubPageCo
       ))}
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">FAQ</p>
             <h2 className="kd-h2">Questions fréquentes</h2>

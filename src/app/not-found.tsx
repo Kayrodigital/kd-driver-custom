@@ -16,7 +16,7 @@ export default function NotFound() {
   return (
     <div className={`kd-preview ${display.variable} ${sans.variable}`}>
       <div className="kd-on-dark" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <header style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}>
+        <header className="kd-site-header">
           <div className="kd-container kd-nav">
             <Link href="/" aria-label="KDRIVE, accueil"><Logo /></Link>
           </div>
