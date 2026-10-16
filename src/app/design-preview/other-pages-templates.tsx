@@ -421,7 +421,7 @@ export function LegalNoticesPage({ framed = true }: { framed?: boolean } = {}) {
           <h2>2. Création et développement du site</h2>
           <p><strong>Aboubacar Diaby — Kayro Digital</strong><br />
             Conception du site, développement, expérience utilisateur, référencement naturel et intégration du système de réservation.<br />
-            Site : <a href="https://kayrodigital.com/" target="_blank" rel="noopener noreferrer">kayrodigital.com</a>
+            Site : kayrodigital.com
           </p>
           <p>L’exploitation commerciale des prestations de transport relève de Karamba Diaby, et non du concepteur du site.</p>
           <h2>3. Hébergement et infrastructure technique</h2>

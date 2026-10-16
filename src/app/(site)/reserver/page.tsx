@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BookingWizard } from "@/components/booking/kd/wizard/booking-wizard";
 import { SiteNav } from "@/app/design-preview/sections";
 
-export const metadata: Metadata = { title: "Réserver | KDRIVE", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Réserver | KDRIVE", robots: { index: false, follow: true } };
 
 export default function BookingPage() {
   return (
