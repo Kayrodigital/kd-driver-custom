@@ -18,7 +18,7 @@ export default function EnglishVehiclesPage() {
     <div lang="en">
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><EnglishSiteNav /></header>
       <section className="kd-hero kd-hero--a kd-on-dark">
-        <SceneImage src="/images/vehicle-premium.jpg" alt="KDRIVE private driver vehicle" className="kd-hero-photo" priority sizes="100vw" />
+        <SceneImage src="/images/vehicle-berline.jpg" alt="KDRIVE private driver vehicle" className="kd-hero-photo" priority sizes="100vw" />
         <div className="kd-container kd-hero-inner" style={{ gridTemplateColumns: "1fr" }}><div className="kd-hero-copy"><p className="kd-eyebrow">Our vehicles</p><h1 className="kd-h1">Comfort suited to every journey.</h1><p className="kd-lead">Select a category according to your passenger count, luggage and preferred level of comfort.</p><Link className="kd-btn kd-btn--gold" href="/en/contact">Request a vehicle</Link></div></div>
       </section>
       <section className="kd-section kd-on-cream"><div className="kd-container"><div className="kd-grid-3">

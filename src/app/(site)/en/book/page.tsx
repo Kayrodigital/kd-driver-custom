@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BookingWizard } from "@/components/booking/kd/wizard/booking-wizard";
 import { EnglishFooter, EnglishSiteNav } from "@/app/design-preview/en/english-site-components";
 
-export const metadata: Metadata = { title: "Book a private driver | KDRIVE", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Book a private driver | KDRIVE", robots: { index: false, follow: true } };
 
 export default function EnglishBookingPage() {
   return (
