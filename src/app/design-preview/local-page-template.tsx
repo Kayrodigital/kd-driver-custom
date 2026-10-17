@@ -93,9 +93,9 @@ export type LocalPageContent = {
 function RelatedLinks({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
     <section className="kd-section kd-section--compact kd-on-cream">
-      <div className="kd-container" style={{ maxWidth: 720 }}>
+      <div className="kd-container kd-container--narrow">
         <p className="kd-eyebrow">{title}</p>
-        <ul className="kd-stack" style={{ marginTop: 16, listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 16 }}>
+        <ul className="kd-stack kd-related-links-list">
           {links.map((link) => (
             <li key={link.href}>
               <Link className="kd-card-link" href={link.href}>
@@ -124,7 +124,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
   return (
     <div style={frameStyle}>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src={content.heroImage} alt="" className="kd-hero-photo" priority sizes="100vw" />
@@ -149,7 +149,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
       </section>
 
       <section className="kd-section kd-on-cream">
-        <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-stack kd-container--narrow">
           <p className="kd-eyebrow">Présentation</p>
           <h2 className="kd-h2">{content.presentationTitle}</h2>
           {content.presentationBody.map((paragraph) => (
@@ -200,10 +200,10 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
       {content.casUsageTitle && content.casUsageItems && (
         <section className="kd-section kd-section--compact kd-on-cream">
-          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-stack kd-container--narrow">
             <p className="kd-eyebrow">Motifs de prise en charge</p>
             <h2 className="kd-h2">{content.casUsageTitle}</h2>
-            <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+            <ul className="kd-body kd-bullet-list">
               {content.casUsageItems.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -214,10 +214,10 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
       {content.practicalInfoTitle && content.practicalInfoItems && (
         <section className="kd-section kd-section--compact kd-on-white">
-          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-stack kd-container--narrow">
             <p className="kd-eyebrow">Informations pratiques</p>
             <h2 className="kd-h2">{content.practicalInfoTitle}</h2>
-            <ul className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+            <ul className="kd-body kd-bullet-list">
               {content.practicalInfoItems.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -245,7 +245,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
       {content.extraTitle && content.extraBody && (
         <section className="kd-section kd-on-cream">
-          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-stack kd-container--narrow">
             <h2 className="kd-h2">{content.extraTitle}</h2>
             <p className="kd-body">{content.extraBody}</p>
           </div>
@@ -254,7 +254,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
       {content.pricingTitle && content.pricingBody && (
         <section className="kd-section kd-on-cream">
-          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-stack kd-container--narrow">
             <p className="kd-eyebrow">Tarifs</p>
             <h2 className="kd-h2">{content.pricingTitle}</h2>
             <p className="kd-body">{content.pricingBody}</p>
@@ -278,7 +278,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
       <RelatedLinks title={content.pillarLinksTitle} links={content.pillarLinks} />
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">FAQ locale</p>
             <h2 className="kd-h2">Questions fréquentes</h2>
@@ -289,7 +289,7 @@ export function LegacyLocalPageTemplate({ content, framed = true }: { content: L
 
       {content.learnMoreItems && content.learnMoreItems.length > 0 && (
         <section className="kd-section kd-section--compact kd-on-cream">
-          <div className="kd-container" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-container--narrow">
             <div className="kd-section-head">
               <p className="kd-eyebrow">En savoir plus</p>
               <h2 className="kd-h2">{content.learnMoreTitle}</h2>

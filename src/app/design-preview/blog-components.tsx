@@ -11,14 +11,14 @@ export { ArticleCard, StatusPill, formatEventDateRange } from "./blog-cards";
 
 function ArticleBody({ article }: { article: BlogArticle }) {
   return (
-    <div className="kd-stack" style={{ maxWidth: 720 }}>
+    <div className="kd-stack kd-container--narrow">
       {article.body.map((block, index) => {
         if (block.type === "heading") {
           return <h2 key={index} className="kd-h4">{block.text}</h2>;
         }
         if (block.type === "list") {
           return (
-            <ul key={index} className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
+            <ul key={index} className="kd-body kd-bullet-list">
               {block.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -69,7 +69,7 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
 
   return (
     <div>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src={article.heroImage} alt={article.heroImageAlt} className="kd-hero-photo" priority sizes="100vw" />
@@ -102,7 +102,7 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
 
       {article.isPlaceholder && (
         <section className="kd-section kd-section--compact kd-on-cream">
-          <div className="kd-container kd-stack" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-stack kd-container--narrow">
             <p className="kd-body" style={{ fontWeight: 700 }}>
               Contenu de test — cette page n&apos;est pas indexée (`noIndex`) et sert uniquement à valider le moteur de blog.
             </p>
@@ -118,7 +118,7 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
 
       {article.faq && article.faq.length > 0 && (
         <section className="kd-section kd-on-cream">
-          <div className="kd-container" style={{ maxWidth: 720 }}>
+          <div className="kd-container kd-container--narrow">
             <div className="kd-section-head">
               <p className="kd-eyebrow">FAQ</p>
               <h2 className="kd-h2">Questions fréquentes</h2>
@@ -129,7 +129,7 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
       )}
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container" style={{ maxWidth: 720 }}>
+        <div className="kd-container kd-container--narrow">
           <div className="kd-section-head">
             <p className="kd-eyebrow">Poursuivre</p>
             <h2 className="kd-h2">Organiser votre trajet</h2>

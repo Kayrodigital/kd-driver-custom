@@ -30,7 +30,7 @@ export const metadata = buildMetadata({
 export default function HomePage() {
   return (
     <>
-      <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
+      <header className="kd-on-dark kd-site-header"><SiteNav /></header>
 
       <section className="kd-hero kd-hero--b kd-on-dark">
         <SceneImage src="/images/site/kdrive-dirigeant-hotel-business-lyon.webp" alt="" className="kd-hero-photo" priority sizes="100vw" />
