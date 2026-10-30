@@ -19,7 +19,11 @@ export function formatEventDateRange(article: BlogArticle): string | undefined {
 }
 
 export function StatusPill({ article }: { article: BlogArticle }) {
-  const label = article.status === "a-venir" ? "À venir" : endedStatusLabel(article);
+  const label = article.status === "permanent"
+    ? "Guide pratique"
+    : article.status === "a-venir"
+      ? "À venir"
+      : endedStatusLabel(article);
   return <span className="kd-pill">{label}</span>;
 }
 

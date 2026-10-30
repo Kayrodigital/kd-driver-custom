@@ -2,6 +2,12 @@ import type { BlogCategory } from "./types";
 
 export const blogCategories: BlogCategory[] = [
   {
+    slug: "guides-vtc",
+    name: "Guides VTC à Lyon",
+    intro:
+      "Conseils pratiques pour réserver votre chauffeur privé à Lyon, préparer une prise en charge en gare ou à l’aéroport et choisir le véhicule adapté à votre trajet.",
+  },
+  {
     slug: "evenements-lyon",
     name: "Événements & salons à Lyon",
     intro:

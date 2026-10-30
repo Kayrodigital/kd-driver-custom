@@ -1,4 +1,4 @@
-export type ArticleStatus = "a-venir" | "termine";
+export type ArticleStatus = "a-venir" | "termine" | "permanent";
 
 export type ArticleBlock =
   | { type: "paragraph"; text: string }
