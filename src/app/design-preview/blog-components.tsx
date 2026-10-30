@@ -10,29 +10,62 @@ import { KdAccordion } from "@/components/kd-accordion";
 export { ArticleCard, StatusPill, formatEventDateRange } from "./blog-cards";
 
 function ArticleBody({ article }: { article: BlogArticle }) {
+  const inlineCtaIndex = Math.min(2, article.body.length - 1);
+
   return (
-    <div className="kd-stack" style={{ maxWidth: 720 }}>
+    <div className="kd-blog-body">
       {article.body.map((block, index) => {
         if (block.type === "heading") {
-          return <h2 key={index} className="kd-h4">{block.text}</h2>;
+          return (
+            <div key={index}>
+              <h2 id={`section-${index}`} className="kd-h4">{block.text}</h2>
+              {index === inlineCtaIndex && <ArticleInlineCta />}
+            </div>
+          );
         }
         if (block.type === "list") {
           return (
-            <ul key={index} className="kd-body" style={{ margin: 0, paddingLeft: "1.2em", listStyle: "disc", display: "grid", gap: 8 }}>
-              {block.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <div key={index}>
+              <ul className="kd-body kd-blog-list">
+                {block.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              {index === inlineCtaIndex && <ArticleInlineCta />}
+            </div>
           );
         }
-        return <p key={index} className="kd-body">{block.text}</p>;
+        return (
+          <div key={index}>
+            <p className="kd-body">{block.text}</p>
+            {index === inlineCtaIndex && <ArticleInlineCta />}
+          </div>
+        );
       })}
     </div>
   );
 }
 
+function ArticleInlineCta() {
+  return (
+    <aside className="kd-blog-inline-cta" aria-label="Réserver un chauffeur">
+      <div>
+        <p className="kd-eyebrow">Votre trajet</p>
+        <h3 className="kd-h3">Besoin d&apos;un chauffeur&nbsp;?</h3>
+        <p>Recevez une confirmation claire avant votre départ.</p>
+      </div>
+      <Link className="kd-btn kd-btn--gold" href="/reserver">
+        Réserver <span aria-hidden="true">→</span>
+      </Link>
+    </aside>
+  );
+}
+
 export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogArticle; categoryLabel: string }) {
   const dateRange = formatEventDateRange(article);
+  const tableOfContents = article.body.flatMap((block, index) =>
+    block.type === "heading" ? [{ label: block.text, href: `#section-${index}` }] : [],
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -71,9 +104,8 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
     <div>
       <header className="kd-on-dark" style={{ borderBottom: "1px solid var(--kd-line-on-dark)" }}><SiteNav /></header>
 
-      <section className="kd-hero kd-hero--b kd-on-dark">
-        <SceneImage src={article.heroImage} alt={article.heroImageAlt} className="kd-hero-photo" priority sizes="100vw" />
-        <div className="kd-container kd-hero-inner">
+      <section className="kd-blog-hero kd-on-dark">
+        <div className="kd-container kd-blog-hero-inner">
           <div className="kd-hero-copy">
             <Breadcrumb
               items={[
@@ -94,8 +126,13 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
             )}
             <StatusPill article={article} />
           </div>
-          <div className="kd-hero-form-card">
-            <HeroSearchForm tone="dark" />
+          <div className="kd-blog-hero-visual">
+            <SceneImage src={article.heroImage} alt={article.heroImageAlt} className="kd-blog-hero-image" priority sizes="(max-width: 900px) 100vw, 42vw" />
+            <div className="kd-blog-hero-badge" aria-hidden="true">
+              <span>Service</span>
+              <strong>24/7</strong>
+              <span>Lyon</span>
+            </div>
           </div>
         </div>
       </section>
@@ -111,8 +148,34 @@ export function BlogArticleTemplate({ article, categoryLabel }: { article: BlogA
       )}
 
       <section className="kd-section kd-on-white">
-        <div className="kd-container">
-          <ArticleBody article={article} />
+        <div className="kd-container kd-blog-layout">
+          <article className="kd-blog-article-card">
+            <ArticleBody article={article} />
+          </article>
+          <aside className="kd-blog-sidebar" aria-label="Réservation et navigation dans l'article">
+            <div className="kd-blog-booking">
+              <HeroSearchForm tone="dark" />
+              <ul className="kd-blog-reassurance" aria-label="Avantages de la réservation KDRIVE">
+                <li>Confirmation humaine</li>
+                <li>Tarif annoncé</li>
+                <li>Chauffeur ponctuel</li>
+                <li>Paiement sécurisé</li>
+              </ul>
+            </div>
+            {tableOfContents.length > 0 && (
+              <nav className="kd-blog-toc" aria-label="Sommaire de l'article">
+                <h2 className="kd-h4">Dans ce guide</h2>
+                {tableOfContents.map((item) => (
+                  <Link key={item.href} href={item.href}>{item.label}</Link>
+                ))}
+              </nav>
+            )}
+            <div className="kd-blog-help">
+              <p className="kd-eyebrow">Besoin d&apos;aide&nbsp;?</p>
+              <h2 className="kd-h4">Une demande particulière&nbsp;?</h2>
+              <a href="tel:+33688863419">06 88 86 34 19 <span aria-hidden="true">→</span></a>
+            </div>
+          </aside>
         </div>
       </section>
 

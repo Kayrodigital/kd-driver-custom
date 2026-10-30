@@ -916,6 +916,124 @@ a.kd-card:hover .kd-card-link span { transform: translateX(3px); }
 }
 
 /* ============================================================
+   BLOG — GABARIT ÉDITORIAL PARTAGÉ
+   Un seul template pour tous les articles actuels et futurs.
+   ============================================================ */
+.kd-blog-hero {
+  padding: clamp(42px, 6vw, 84px) 0 clamp(64px, 8vw, 112px);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(176, 141, 79, 0.16), transparent 32%),
+    var(--kd-black);
+  overflow: hidden;
+}
+.kd-blog-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  gap: clamp(44px, 7vw, 100px);
+  align-items: end;
+}
+.kd-blog-hero .kd-hero-copy { max-width: 720px; }
+.kd-blog-hero .kd-h1 { font-size: clamp(2.8rem, 5vw, 4.7rem); }
+.kd-blog-hero-visual { position: relative; }
+.kd-blog-hero-image { min-height: clamp(360px, 42vw, 520px); box-shadow: var(--kd-shadow-lg); }
+.kd-blog-hero-image .kd-scene-photo { filter: saturate(0.82) contrast(1.04); }
+.kd-blog-hero-badge {
+  position: absolute; z-index: 2; left: -34px; bottom: 28px;
+  width: 138px; aspect-ratio: 1; border-radius: 50%;
+  display: grid; place-content: center; text-align: center;
+  color: var(--kd-black); background: var(--kd-gold);
+  text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.62rem; font-weight: 800;
+  box-shadow: var(--kd-shadow-lg);
+}
+.kd-blog-hero-badge strong { display: block; font-family: var(--kd-font-display); font-size: 2rem; line-height: 1; letter-spacing: 0; }
+
+.kd-blog-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 760px) minmax(300px, 360px);
+  gap: clamp(40px, 6vw, 82px);
+  align-items: start;
+}
+.kd-blog-article-card {
+  padding: clamp(30px, 5vw, 64px);
+  border: 1px solid var(--kd-line);
+  border-radius: var(--kd-radius-lg);
+  background: var(--kd-white);
+  box-shadow: 0 1px 0 rgba(14, 13, 12, 0.03);
+}
+.kd-blog-body { display: grid; gap: 22px; }
+.kd-blog-body .kd-h4 {
+  margin-top: 36px;
+  padding-top: 8px;
+  font-size: clamp(1.75rem, 3vw, 2.45rem);
+  scroll-margin-top: 28px;
+}
+.kd-blog-body .kd-h4:first-child { margin-top: 0; }
+.kd-blog-body .kd-body { margin: 0; font-size: 1.04rem; line-height: 1.78; }
+.kd-blog-list { padding-left: 1.2em; list-style: disc; display: grid; gap: 10px; }
+.kd-blog-list li::marker { color: var(--kd-gold-ink); }
+
+.kd-blog-inline-cta {
+  margin: 38px 0 20px;
+  padding: clamp(26px, 4vw, 38px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  border-radius: var(--kd-radius-md);
+  color: var(--kd-cream);
+  background: var(--kd-black);
+}
+.kd-blog-inline-cta .kd-h3 { margin: 8px 0; color: var(--kd-cream); }
+.kd-blog-inline-cta p:not(.kd-eyebrow) { margin: 0; color: var(--kd-muted-on-dark); font-size: 0.86rem; }
+
+.kd-blog-sidebar { position: sticky; top: 24px; display: grid; gap: 18px; }
+.kd-blog-booking { border-radius: var(--kd-radius-lg); box-shadow: var(--kd-shadow-lg); overflow: hidden; }
+.kd-blog-booking .kd-card { border: 0; border-radius: var(--kd-radius-lg) var(--kd-radius-lg) 0 0; box-shadow: none; }
+.kd-blog-booking .kd-h3 { color: var(--kd-cream); }
+.kd-blog-sidebar .kd-datetime-grid { grid-template-columns: minmax(0, 1fr); gap: var(--kd-space-3); }
+.kd-blog-reassurance {
+  margin: 0; padding: 0 26px 26px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 9px 14px;
+  list-style: none; color: var(--kd-muted-on-dark); background: var(--kd-black);
+  font-size: 0.7rem; font-weight: 600;
+}
+.kd-blog-reassurance li::before { content: "✓"; color: var(--kd-gold); margin-right: 6px; }
+.kd-blog-toc, .kd-blog-help { padding: 24px; border: 1px solid var(--kd-line); border-radius: var(--kd-radius-md); background: var(--kd-white); }
+.kd-blog-toc .kd-h4, .kd-blog-help .kd-h4 { margin-bottom: 14px; font-size: 1.35rem; }
+.kd-blog-toc a {
+  display: block; padding: 10px 0; border-top: 1px solid var(--kd-line);
+  color: var(--kd-muted-strong); text-decoration: none; font-size: 0.8rem; line-height: 1.45;
+}
+.kd-blog-toc a:hover { color: var(--kd-gold-ink); }
+.kd-blog-help { background: var(--kd-gold-soft); border-color: transparent; }
+.kd-blog-help .kd-h4 { margin-top: 10px; }
+.kd-blog-help > a { display: inline-flex; gap: 8px; margin-top: 6px; color: var(--kd-ink); font-weight: 800; text-decoration: none; }
+
+@media (max-width: 980px) {
+  .kd-blog-hero-inner, .kd-blog-layout { grid-template-columns: minmax(0, 1fr); }
+  .kd-blog-hero-visual { max-width: 720px; }
+  .kd-blog-layout { gap: 28px; }
+  .kd-blog-sidebar { position: static; order: -1; grid-template-columns: minmax(0, 1fr) minmax(240px, 0.65fr); align-items: start; }
+  .kd-blog-booking { grid-row: span 2; }
+}
+
+@media (max-width: 680px) {
+  .kd-blog-hero { padding: 30px 0 52px; }
+  .kd-blog-hero-inner { gap: 36px; }
+  .kd-blog-hero .kd-h1 { font-size: clamp(2.55rem, 12vw, 3.7rem); }
+  .kd-blog-hero-image { min-height: 280px; }
+  .kd-blog-hero-badge { left: 12px; bottom: -26px; width: 96px; font-size: 0.5rem; }
+  .kd-blog-hero-badge strong { font-size: 1.5rem; }
+  .kd-blog-sidebar { grid-template-columns: minmax(0, 1fr); }
+  .kd-blog-booking { grid-row: auto; }
+  .kd-blog-toc { display: none; }
+  .kd-blog-article-card { padding: 30px 22px; }
+  .kd-blog-body .kd-h4 { margin-top: 28px; }
+  .kd-blog-inline-cta { grid-template-columns: minmax(0, 1fr); }
+  .kd-blog-inline-cta .kd-btn { justify-self: start; }
+}
+
+/* ============================================================
    PAGE LOCALE — DIRECTION « SIGNATURE »
    Variante isolée pour Villeurbanne. Les classes dédiées évitent de
    modifier le gabarit partagé par les autres pages locales.
