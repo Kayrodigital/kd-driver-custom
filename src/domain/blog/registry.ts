@@ -1,4 +1,5 @@
 import { blogArticlesEvenementsLyon } from "./articles-evenements-lyon";
+import { blogArticlesGuidesVtc } from "./articles-guides-vtc";
 import { blogCategories, findCategory } from "./categories";
 import type { BlogArticle } from "./types";
 
@@ -9,7 +10,7 @@ export { blogCategories, findCategory };
  * nouvelle catégorie = créer un fichier `articles-<slug>.ts` et l'inclure
  * ici, sans toucher aux routes ni aux gabarits.
  */
-export const allBlogArticles: BlogArticle[] = [...blogArticlesEvenementsLyon];
+export const allBlogArticles: BlogArticle[] = [...blogArticlesGuidesVtc, ...blogArticlesEvenementsLyon];
 
 export function findArticle(slug: string): BlogArticle | undefined {
   return allBlogArticles.find((article) => article.slug === slug);
@@ -41,6 +42,13 @@ export function pastArticles(categorySlug?: string): BlogArticle[] {
   return publishedArticles(categorySlug)
     .filter((article) => article.status === "termine")
     .sort((a, b) => eventSortKey(b).localeCompare(eventSortKey(a)));
+}
+
+/** Guides permanents, les plus récemment mis à jour en premier. */
+export function guideArticles(categorySlug?: string): BlogArticle[] {
+  return publishedArticles(categorySlug)
+    .filter((article) => article.status === "permanent")
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 /** Libellé de statut affiché sur un événement terminé. */

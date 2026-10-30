@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { HeroSearchForm } from "@/components/booking/kd/wizard/hero-search-form";
 import { buildMetadata } from "@/lib/seo/page-metadata";
-import { blogCategories, upcomingArticles, pastArticles } from "@/domain/blog/registry";
+import { blogCategories, guideArticles, upcomingArticles, pastArticles } from "@/domain/blog/registry";
 import { ArticleCard } from "@/app/design-preview/blog-components";
 import { SiteNav, FooterSection } from "@/app/design-preview/sections";
 import { Breadcrumb } from "@/app/design-preview/breadcrumb";
@@ -15,6 +15,7 @@ export const metadata = buildMetadata({
 });
 
 export default function BlogHomePage() {
+  const guides = guideArticles();
   const upcoming = upcomingArticles();
   const past = pastArticles();
 
@@ -55,6 +56,22 @@ export default function BlogHomePage() {
           </div>
         </div>
       </section>
+
+      {guides.length > 0 && (
+        <section className="kd-section kd-on-white">
+          <div className="kd-container">
+            <div className="kd-section-head">
+              <p className="kd-eyebrow">Conseils</p>
+              <h2 className="kd-h2">Guides pratiques VTC à Lyon</h2>
+            </div>
+            <div className="kd-grid-3">
+              {guides.map((article) => (
+                <ArticleCard key={article.slug} article={article} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {upcoming.length > 0 && (
         <section className="kd-section kd-on-white">
